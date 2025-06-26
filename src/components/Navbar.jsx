@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem, IconButton, D
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/Login';
 
 // Gebruik directe URL voor de asset
 const logo = '/assets/logo-hofmans.png';
@@ -75,6 +76,24 @@ function Navbar() {
           <Button color="primary" component={Link} to="/contact" sx={{ fontWeight: 'bold', color: '#ffffff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
             Contact
           </Button>
+          <Button 
+            color="secondary" 
+            href="https://portal.hofmansautomotiveacademie.nl" 
+            target="_blank"
+            startIcon={<LoginIcon />}
+            sx={{ 
+              fontWeight: 'bold', 
+              backgroundColor: 'rgba(255, 255, 255, 0.15)', 
+              color: '#ffffff', 
+              '&:hover': { 
+                backgroundColor: 'rgba(255, 255, 255, 0.25)' 
+              },
+              borderRadius: '20px',
+              padding: '6px 16px'
+            }}
+          >
+            Portal Inloggen
+          </Button>
         </Box>
         {/* Mobile menu button */}
         <IconButton
@@ -130,6 +149,27 @@ function Navbar() {
               </ListItem>
               <ListItem button component={Link} to="/contact">
                 <ListItemText primary="Contact" />
+              </ListItem>
+              <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', my: 1 }} />
+              <ListItem 
+                button 
+                component="a" 
+                href="https://portal.hofmansautomotiveacademie.nl" 
+                target="_blank"
+                sx={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                  borderRadius: 1,
+                  my: 1
+                }}
+              >
+                <ListItemText 
+                  primary={
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <LoginIcon sx={{ mr: 1, fontSize: '0.9rem' }} />
+                      <Typography>Portal Inloggen</Typography>
+                    </Box>
+                  } 
+                />
               </ListItem>
             </List>
           </Box>
