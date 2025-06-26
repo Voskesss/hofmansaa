@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Alert, Snackbar } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
 import { SEO } from '../utils/seo.jsx';
+import emailjs from '@emailjs/browser';
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -12,7 +13,20 @@ function Contact() {
     phone: '',
     training: [],
     message: ''
-  }); 
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: '',
+    severity: 'success'
+  });
+
+  // EmailJS configuratie - veilig opgeslagen in environment variables
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
   // Controleer bij het laden van de component of er een geselecteerde training is
   useEffect(() => {
@@ -40,27 +54,80 @@ function Contact() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Hier zou je een API-aanroep kunnen doen om het formulier te verzenden
-    
-    // Maak een leesbare weergave van de geselecteerde trainingen voor de bevestiging
-    const selectedOptions = {
-      'voertuigtechniek': 'Voertuigtechniek Werkplaats',
-      'llo': 'Leven Lang Ontwikkelen (LLO)',
-      'niet-technisch': 'Niet-Technisch Personeel',
-      'nederlands-rekenen': 'Nederlands & Rekenen'
-    };
-    
-    const selectedTrainings = formData.training.length > 0 
-      ? formData.training.map(item => selectedOptions[item]).join(', ')
-      : 'Geen specifieke training geselecteerd';
+    setIsSubmitting(true);
+
+    try {
+      // Maak een leesbare weergave van de geselecteerde trainingen
+      const selectedOptions = {
+        'voertuigtechniek': 'Voertuigtechniek Werkplaats',
+        'llo': 'Leven Lang Ontwikkelen (LLO)',
+        'niet-technisch': 'Niet-Technisch Personeel',
+        'nederlands-rekenen': 'Nederlands & Rekenen'
+      };
       
-    alert(`Bedankt voor je aanmelding voor: ${selectedTrainings}! We nemen zo snel mogelijk contact met je op.`);
-    
-    // Reset het formulier met een lege array voor training
-    setFormData({ name: '', email: '', phone: '', training: [], message: '' });
+      const selectedTrainings = formData.training.length > 0 
+        ? formData.training.map(item => selectedOptions[item]).join(', ')
+        : 'Geen specifieke training geselecteerd';
+
+      // EmailJS template parameters
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        selected_trainings: selectedTrainings,
+        message: formData.message,
+        to_email: 'info@hofmansautomotiveacademie.nl' // Vervang met je eigen email
+      };
+
+      // Verstuur email via EmailJS
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      // Verstuur auto-reply email via EmailJS
+      const autoReplyTemplateParams = {
+        to_name: formData.name,
+        to_email: formData.email,
+        phone: formData.phone,
+        selected_trainings: selectedTrainings,
+        message: formData.message
+      };
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_AUTOREPLY_TEMPLATE_ID,
+        autoReplyTemplateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      // Toon succesbericht
+      setNotification({
+        open: true,
+        message: `Bedankt ${formData.name}! Je aanmelding voor "${selectedTrainings}" is verzonden. We nemen binnen 24 uur contact met je op.`,
+        severity: 'success'
+      });
+
+      // Reset het formulier
+      setFormData({ name: '', email: '', phone: '', training: [], message: '' });
+
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setNotification({
+        open: true,
+        message: 'Er is een fout opgetreden bij het verzenden van je bericht. Probeer het opnieuw of neem direct contact met ons op.',
+        severity: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCloseNotification = () => {
+    setNotification({ ...notification, open: false });
   };
 
   return (
@@ -243,8 +310,9 @@ function Contact() {
                     size="large" 
                     endIcon={<SendIcon />} 
                     sx={{ marginTop: 3, width: '100%', padding: '14px 0', fontSize: '1.1rem' }}
+                    disabled={isSubmitting}
                   >
-                    Verzenden
+                    {isSubmitting ? 'Verzenden...' : 'Verzenden'}
                   </Button>
                 </form>
               </CardContent>
@@ -280,6 +348,13 @@ function Contact() {
           </Grid>
         </Grid>
       </Container>
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={6000}
+        onClose={handleCloseNotification}
+        message={notification.message}
+        severity={notification.severity}
+      />
     </Box>
   );
 }
