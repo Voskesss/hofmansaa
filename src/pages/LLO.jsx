@@ -11,10 +11,10 @@ function LLO() {
   const mainContent = (
     <>
       <Typography variant="h4" sx={{ mb: 3, color: 'primary.main', fontWeight: 700 }}>
-        Over onze LLO & APK Keuzedeel trainingen
+        Over onze Leven Lang Ontwikkelen (LLO) trainingen
       </Typography>
       <Typography variant="body1" sx={{ mb: 3 }}>
-        Onze Leven Lang Ontwikkelen (LLO) programma's en het APK Keuzedeel zijn speciaal ontwikkeld voor professionals in de automotive sector die hun kennis en vaardigheden willen blijven ontwikkelen. In een snel veranderende branche is het essentieel om bij te blijven met de nieuwste ontwikkelingen.
+        Onze Leven Lang Ontwikkelen (LLO) programma's zijn speciaal ontwikkeld voor professionals in de automotive sector die hun kennis en vaardigheden willen blijven ontwikkelen. In een snel veranderende branche is het essentieel om bij te blijven met de nieuwste ontwikkelingen.
       </Typography>
       <Typography variant="body1" sx={{ mb: 3 }}>
         Of je nu je huidige expertise wilt uitbreiden of een nieuwe specialisatie wilt ontwikkelen, onze trainingen bieden een praktijkgerichte aanpak die direct toepasbaar is in je dagelijkse werk.
@@ -27,13 +27,13 @@ function LLO() {
           Nieuwste technologieën en technieken in de automotive sector
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          APK-keuringstechnieken en regelgeving
+          Nieuwe technieken en innovaties in de automotive sector
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
           Specialistische vaardigheden voor je huidige of toekomstige functie
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Voorbereiding op certificering als APK-keurmeester
+          Voorbereiding op diverse certificeringen in de automotive branche
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
           Praktijkgerichte oefeningen en casussen uit de dagelijkse praktijk
@@ -64,12 +64,12 @@ function LLO() {
           <Card sx={{ height: '100%', boxShadow: 'none', bgcolor: 'transparent' }}>
             <CardHeader
               avatar={<SchoolIcon sx={{ fontSize: 45, color: 'primary.main' }} />}
-              title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>APK Keuzedeel</Typography>}
+              title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Continu Ontwikkelen</Typography>}
               sx={{ paddingBottom: 0, paddingLeft: 0 }}
             />
             <CardContent sx={{ paddingLeft: 0 }}>
               <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
-                Specialiseer je in APK-keuringen met ons uitgebreide keuzedeel. Leer alles wat je nodig hebt om een gecertificeerde APK-keurmeester te worden.
+                Blijf je ontwikkelen met onze uitgebreide modules. Leer alles wat je nodig hebt om een voorloper te blijven in de snel veranderende automotive sector.
               </Typography>
             </CardContent>
           </Card>
@@ -80,13 +80,13 @@ function LLO() {
 
   return (
     <TrainingPageTemplate
-      title="LLO & APK Keuzedeel"
-      description="Blijf leren met onze Leven Lang Ontwikkelen programma's en specialiseer je met het APK keuzedeel bij Hofmans Automotive Academie."
-      keywords="LLO, APK keuzedeel, automotive onderwijs, Hofmans Automotive Academie"
+      title="Leven Lang Ontwikkelen (LLO)"
+      description="Blijf leren met onze Leven Lang Ontwikkelen programma's bij Hofmans Automotive Academie. Perfect voor professionals die up-to-date willen blijven."
+      keywords="LLO, Leven Lang Ontwikkelen, automotive onderwijs, Hofmans Automotive Academie"
       imageUrl={trainingImg}
       url="https://hofmansautomotiveacademie.nl/llo"
-      trainingId="llo-apk"
-      subtitle="Blijf leren met onze Leven Lang Ontwikkelen programma's en specialiseer je met het APK keuzedeel. Perfect voor professionals die up-to-date willen blijven."
+      trainingId="llo"
+      subtitle="Blijf leren met onze Leven Lang Ontwikkelen programma's. Perfect voor professionals die up-to-date willen blijven in de automotive sector."
       mainContent={mainContent}
       additionalContent={additionalContent}
     />

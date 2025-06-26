@@ -11,8 +11,8 @@ function Trainingen() {
     <Box>
       <SEO 
         title="Trainingen | Hofmans Automotive Academie"
-        description="Ontdek ons uitgebreide aanbod aan automotive trainingen bij Hofmans Automotive Academie. Van voertuigtechniek tot LLO en meer."
-        keywords="automotive trainingen, voertuigtechniek, LLO, APK keuzedeel, Hofmans Automotive Academie"
+        description="Ontdek ons uitgebreide aanbod aan automotive trainingen bij Hofmans Automotive Academie. Van voertuigtechniek tot Leven Lang Ontwikkelen en meer."
+        keywords="automotive trainingen, voertuigtechniek, LLO, Leven Lang Ontwikkelen, Nederlands & Rekenen, Niet-Technisch Personeel, Hofmans Automotive Academie"
         image="/assets/logo-hofmans.png"
         url="https://hofmansautomotiveacademie.github.io/trainingen"
       />
@@ -38,6 +38,10 @@ function Trainingen() {
       </Box>
 
       <Container maxWidth="lg" sx={{ padding: '80px 0' }}>
+        <Typography variant="h4" sx={{ mb: 5, textAlign: 'center', color: 'primary.main', fontWeight: 600 }}>
+          Onze Specialistische Trainingen
+        </Typography>
+        
         <Grid container spacing={6}>
           <Grid item xs={12} sm={6} md={4}>
             <Card sx={{ textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'translateY(-10px)', boxShadow: '0 12px 40px rgba(0,0,0,0.15)' } }}>
@@ -60,12 +64,12 @@ function Trainingen() {
             <Card sx={{ textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'translateY(-10px)', boxShadow: '0 12px 40px rgba(0,0,0,0.15)' } }}>
               <CardHeader
                 avatar={<PeopleIcon sx={{ fontSize: 60, color: 'primary.main', marginBottom: 2 }} />}
-                title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>LLO & APK Keuzedeel</Typography>}
+                title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Leven Lang Ontwikkelen (LLO)</Typography>}
                 sx={{ paddingBottom: 0 }}
               />
               <CardContent>
                 <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
-                  Leven Lang Ontwikkelen programma's en specialisatie in APK-keuringen om je kennis up-to-date te houden.
+                  Leven Lang Ontwikkelen programma's om je kennis en vaardigheden up-to-date te houden in de snel veranderende automotive sector.
                 </Typography>
                 <Button variant="contained" color="primary" component={Link} to="/llo" sx={{ marginTop: 2 }}>
                   Meer Informatie
@@ -91,6 +95,66 @@ function Trainingen() {
             </Card>
           </Grid>
         </Grid>
+        
+        {/* Niet-Technisch Personeel training toevoegen */}
+        <Grid container spacing={6} sx={{ mt: 4 }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'translateY(-10px)', boxShadow: '0 12px 40px rgba(0,0,0,0.15)' } }}>
+              <CardHeader
+                avatar={<PeopleIcon sx={{ fontSize: 60, color: 'primary.main', marginBottom: 2 }} />}
+                title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Niet-Technisch Personeel</Typography>}
+                sx={{ paddingBottom: 0 }}
+              />
+              <CardContent>
+                <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
+                  Trainingen voor receptie, verkoop en management. Verbeter je kennis van voertuigtechniek zonder zelf sleutelaar te worden.
+                </Typography>
+                <Button variant="contained" color="primary" component={Link} to="/niet-technisch" sx={{ marginTop: 2 }}>
+                  Meer Informatie
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          
+          <Grid item xs={12} md={8}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', p: 3, bgcolor: 'rgba(59, 130, 246, 0.05)' }}>
+              <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold', color: 'primary.main' }}>
+                Waarom kiezen voor Hofmans Automotive Academie?
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ mr: 2, color: 'primary.main', fontWeight: 'bold', fontSize: '1.2rem' }}>✓</Box>
+                    <Typography>Praktijkgerichte trainingen</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ mr: 2, color: 'primary.main', fontWeight: 'bold', fontSize: '1.2rem' }}>✓</Box>
+                    <Typography>Ervaren docenten uit de praktijk</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ mr: 2, color: 'primary.main', fontWeight: 'bold', fontSize: '1.2rem' }}>✓</Box>
+                    <Typography>Kleine groepen voor persoonlijke aandacht</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ mr: 2, color: 'primary.main', fontWeight: 'bold', fontSize: '1.2rem' }}>✓</Box>
+                    <Typography>Modern lesmateriaal en faciliteiten</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ mr: 2, color: 'primary.main', fontWeight: 'bold', fontSize: '1.2rem' }}>✓</Box>
+                    <Typography>Flexibele planning mogelijk</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box sx={{ mr: 2, color: 'primary.main', fontWeight: 'bold', fontSize: '1.2rem' }}>✓</Box>
+                    <Typography>Direct toepasbaar in de praktijk</Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+        </Grid>
+        
         <Box sx={{ textAlign: 'center', marginTop: 8 }}>
           <Button variant="contained" color="secondary" size="large" href="/contact" sx={{ padding: '14px 40px', fontSize: '1.1rem' }}>
             Meld Je Aan Voor Een Training

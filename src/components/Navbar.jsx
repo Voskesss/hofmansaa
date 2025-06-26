@@ -62,7 +62,7 @@ function Navbar() {
                 Voertuigtechniek
               </MenuItem>
               <MenuItem onClick={handleClose} component={Link} to="/llo" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
-                LLO & APK Keuzedeel
+                Leven Lang Ontwikkelen (LLO)
               </MenuItem>
               <MenuItem onClick={handleClose} component={Link} to="/nederlands-rekenen" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
                 Nederlands & Rekenen
@@ -120,7 +120,7 @@ function Navbar() {
                 <ListItemText primary="Voertuigtechniek" />
               </ListItem>
               <ListItem button component={Link} to="/llo">
-                <ListItemText primary="LLO & APK Keuzedeel" />
+                <ListItemText primary="Leven Lang Ontwikkelen (LLO)" />
               </ListItem>
               <ListItem button component={Link} to="/nederlands-rekenen">
                 <ListItemText primary="Nederlands & Rekenen" />

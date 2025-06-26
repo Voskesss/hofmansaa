@@ -48,7 +48,7 @@ function Contact() {
     // Maak een leesbare weergave van de geselecteerde trainingen voor de bevestiging
     const selectedOptions = {
       'voertuigtechniek': 'Voertuigtechniek Werkplaats',
-      'llo': 'LLO & APK Keuzedeel',
+      'llo': 'Leven Lang Ontwikkelen (LLO)',
       'niet-technisch': 'Niet-Technisch Personeel',
       'nederlands-rekenen': 'Nederlands & Rekenen'
     };
@@ -162,7 +162,7 @@ function Contact() {
                         
                         const selectedOptions = {
                           'voertuigtechniek': 'Voertuigtechniek Werkplaats',
-                          'llo': 'LLO & APK Keuzedeel',
+                          'llo': 'Leven Lang Ontwikkelen (LLO)',
                           'niet-technisch': 'Niet-Technisch Personeel',
                           'nederlands-rekenen': 'Nederlands & Rekenen'
                         };
@@ -196,7 +196,7 @@ function Contact() {
                             readOnly 
                             style={{ marginRight: '8px' }} 
                           />
-                          LLO & APK Keuzedeel
+                          Leven Lang Ontwikkelen (LLO)
                         </Box>
                       </MenuItem>
                       <MenuItem value="niet-technisch">
