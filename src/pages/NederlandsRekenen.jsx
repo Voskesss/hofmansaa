@@ -2,9 +2,10 @@ import React from 'react';
 import { Typography, Box, Grid, Card, CardHeader, CardContent } from '@mui/material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import TrainingPageTemplate from '../components/training/TrainingPageTemplate';
+import { getAssetPath } from '../utils/assetUtils';
 
-// Gebruik directe URL voor de asset
-const nederlandsRekenenImg = '/assets/nedrlands-en-wiskunde-toetsing (1).jpg';
+// Gebruik de asset utility functie voor het afbeeldingspad
+const nederlandsRekenenImg = getAssetPath('/assets/nedrlands-en-wiskunde-toetsing (1).jpg');
 
 function NederlandsRekenen() {
   // Hoofdinhoud van de training

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typography, Box } from '@mui/material';
 import TrainingPageTemplate from '../components/training/TrainingPageTemplate';
+import { getAssetPath } from '../utils/assetUtils';
 
 function NietTechnisch() {
   // Hoofdinhoud van de training

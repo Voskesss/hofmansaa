@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography, Container, Card, CardContent, Button, Grid } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { SEO } from '../../utils/seo.jsx';
+import { getAssetPath } from '../../utils/assetUtils';
 
 /**
  * Herbruikbare template voor trainingspagina's
@@ -42,11 +43,13 @@ function TrainingPageTemplate({
         title={`${title} | Hofmans Automotive Academie`}
         description={description}
         keywords={keywords}
-        image="/assets/logo-hofmans.png"
+        image={getAssetPath('/assets/logo-hofmans.png')}
         url={url}
       />
       <Box sx={{ 
-        background: 'linear-gradient(135deg, rgba(26, 75, 140, 0.9), rgba(37, 99, 235, 0.85))', 
+        background: `linear-gradient(135deg, rgba(26, 75, 140, 0.9), rgba(37, 99, 235, 0.85)), url(${getAssetPath(imageUrl)})`, 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         color: 'white', 
         padding: '80px 0 60px', 
         position: 'relative',
