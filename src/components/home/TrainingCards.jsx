@@ -6,12 +6,13 @@ import CarRepairIcon from '@mui/icons-material/CarRepair';
 import SchoolIcon from '@mui/icons-material/School';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BusinessIcon from '@mui/icons-material/Business';
+import { getAssetPath } from '../../utils/assetUtils';
 
-// Gebruik directe URL's voor de assets
-const automotiveImg = '/assets/voertuigtechniek.jpg';
-const trainingImg = '/assets/nedrlands-en-wiskunde-toetsing.jpg';
-const nederlandsRekenenImg = '/assets/nedrlands-en-wiskunde-toetsing (1).jpg';
-const nietTechnischImg = '/assets/opleidingen-niet-technisch-personeel.jpg';
+// Gebruik de asset utility functie voor de afbeeldingspaden
+const automotiveImg = getAssetPath('/assets/voertuigtechniek.jpg');
+const trainingImg = getAssetPath('/assets/nedrlands-en-wiskunde-toetsing.jpg');
+const nederlandsRekenenImg = getAssetPath('/assets/nedrlands-en-wiskunde-toetsing (1).jpg');
+const nietTechnischImg = getAssetPath('/assets/opleidingen-niet-technisch-personeel.jpg');
 
 // Animatie varianten voor framer-motion
 const cardVariants = {

@@ -5,9 +5,10 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import TrainingCards from '../components/home/TrainingCards';
 import { SEO } from '../utils/seo.jsx';
 import { motion } from 'framer-motion';
+import { getAssetPath } from '../utils/assetUtils';
 
-// Gebruik directe URL's voor de assets
-const logo = '/assets/logo-hofmans.png';
+// Gebruik de asset utility functie voor het logo pad
+const logo = getAssetPath('/assets/logo-hofmans.png');
 
 // Animatie varianten voor framer-motion
 const fadeIn = {

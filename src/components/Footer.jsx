@@ -2,9 +2,10 @@ import React from 'react';
 import { Box, Typography, Link, Button, Card, CardContent } from '@mui/material';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import LoginIcon from '@mui/icons-material/Login';
+import { getAssetPath } from '../utils/assetUtils';
 
-// Gebruik directe URL voor de asset
-const logo = '/assets/logo-hofmans.png';
+// Gebruik de asset utility functie voor het logo pad
+const logo = getAssetPath('/assets/logo-hofmans.png');
 
 function Footer() {
   return (

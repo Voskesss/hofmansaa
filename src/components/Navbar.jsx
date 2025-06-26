@@ -5,9 +5,10 @@ import CarRepairIcon from '@mui/icons-material/CarRepair';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
+import { getAssetPath } from '../utils/assetUtils';
 
-// Gebruik directe URL voor de asset
-const logo = '/assets/logo-hofmans.png';
+// Gebruik de asset utility functie voor het logo pad
+const logo = getAssetPath('/assets/logo-hofmans.png');
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
