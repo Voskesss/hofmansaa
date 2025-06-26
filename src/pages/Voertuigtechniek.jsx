@@ -2,7 +2,9 @@ import React from 'react';
 import { Box, Typography, Container, Grid, Card, CardHeader, CardContent, Button } from '@mui/material';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import { SEO } from '../utils/seo.jsx';
-import automotiveImg from '/assets/voertuigtechniek.jpg';
+
+// Gebruik directe URL voor de asset
+const automotiveImg = '/assets/voertuigtechniek.jpg';
 
 function Voertuigtechniek() {
   return (
@@ -14,7 +16,7 @@ function Voertuigtechniek() {
         image="/assets/logo-hofmans.png"
         url="https://hofmansautomotiveacademie.github.io/voertuigtechniek"
       />
-      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden', marginBottom: 5 }}>
         <Box sx={{ 
           position: 'absolute', 
           top: 0, 

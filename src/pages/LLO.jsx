@@ -2,7 +2,9 @@ import React from 'react';
 import { Box, Typography, Container, Grid, Card, CardHeader, CardContent, Button } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import { SEO } from '../utils/seo.jsx';
-import trainingImg from '/assets/nedrlands-en-wiskunde-toetsing.jpg';
+
+// Gebruik directe URL voor de asset
+const trainingImg = '/assets/nedrlands-en-wiskunde-toetsing.jpg';
 
 function LLO() {
   return (
@@ -14,7 +16,7 @@ function LLO() {
         image="/assets/logo-hofmans.png"
         url="https://hofmansautomotiveacademie.github.io/llo"
       />
-      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden', marginBottom: 5 }}>
         <Box sx={{ 
           position: 'absolute', 
           top: 0, 

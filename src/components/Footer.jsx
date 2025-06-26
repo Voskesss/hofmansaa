@@ -1,7 +1,9 @@
 import React from 'react';
 import { Box, Typography, Link } from '@mui/material';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
-import logo from '../../public/assets/logo-hofmans.png';
+
+// Gebruik directe URL voor de asset
+const logo = '/assets/logo-hofmans.png';
 
 function Footer() {
   return (

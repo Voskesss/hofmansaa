@@ -2,7 +2,9 @@ import React from 'react';
 import { Box, Typography, Container, Grid, Card, CardHeader, CardContent, Button } from '@mui/material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { SEO } from '../utils/seo.jsx';
-import nederlandsRekenenImg from '/assets/nedrlands-en-wiskunde-toetsing (1).jpg';
+
+// Gebruik directe URL voor de asset
+const nederlandsRekenenImg = '/assets/nedrlands-en-wiskunde-toetsing (1).jpg';
 
 function NederlandsRekenen() {
   return (
@@ -14,7 +16,7 @@ function NederlandsRekenen() {
         image="/assets/logo-hofmans.png"
         url="https://hofmansautomotiveacademie.github.io/nederlands-rekenen"
       />
-      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden', marginBottom: 5 }}>
         <Box sx={{ 
           position: 'absolute', 
           top: 0, 

@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem } from '@mui/material';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import logo from '../../public/assets/logo-hofmans.png';
+
+// Gebruik directe URL voor de asset
+const logo = '/assets/logo-hofmans.png';
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
@@ -100,24 +100,32 @@ function Contact() {
                     variant="outlined"
                     sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: 1 }}
                   />
-                  <TextField 
+                  <FormControl 
                     fullWidth 
                     margin="normal" 
-                    label="Interesse in Training" 
-                    name="training" 
-                    select 
-                    value={formData.training} 
-                    onChange={handleChange} 
-                    SelectProps={{ native: true }} 
                     variant="outlined"
-                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: 1 }}
+                    sx={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                      borderRadius: 1,
+                      minWidth: 200
+                    }}
                   >
-                    <option value="">Selecteer een training</option>
-                    <option value="voertuigtechniek">Voertuigtechniek Werkplaats</option>
-                    <option value="llo">LLO & APK Keuzedeel</option>
-                    <option value="niet-technisch">Niet-Technisch Personeel</option>
-                    <option value="nederlands-rekenen">Nederlands & Rekenen</option>
-                  </TextField>
+                    <InputLabel id="training-select-label">Interesse in Training</InputLabel>
+                    <Select
+                      labelId="training-select-label"
+                      id="training-select"
+                      name="training"
+                      value={formData.training}
+                      onChange={handleChange}
+                      label="Interesse in Training"
+                    >
+                      <MenuItem value=""><em>Selecteer een training</em></MenuItem>
+                      <MenuItem value="voertuigtechniek">Voertuigtechniek Werkplaats</MenuItem>
+                      <MenuItem value="llo">LLO & APK Keuzedeel</MenuItem>
+                      <MenuItem value="niet-technisch">Niet-Technisch Personeel</MenuItem>
+                      <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
+                    </Select>
+                  </FormControl>
                   <TextField 
                     fullWidth 
                     margin="normal" 
