@@ -167,7 +167,7 @@ function Navbar() {
                   primary={
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <LoginIcon sx={{ mr: 1, fontSize: '0.9rem' }} />
-                      <Typography>Portal Inloggen</Typography>
+                      <Typography>Studentenportal Inloggen</Typography>
                     </Box>
                   } 
                 />
