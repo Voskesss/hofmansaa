@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Alert, Snackbar } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { SEO } from '../utils/seo.jsx';
 import emailjs from '@emailjs/browser';
 
@@ -58,6 +59,31 @@ function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Debug: Log environment variables
+    console.log('🔍 Debug - Environment Variables:', {
+      service: EMAILJS_SERVICE_ID,
+      template: EMAILJS_TEMPLATE_ID,
+      autoreply: EMAILJS_AUTOREPLY_TEMPLATE_ID,
+      publicKey: EMAILJS_PUBLIC_KEY ? 'LOADED' : 'MISSING'
+    });
+
+    // Controleer of alle vereiste waarden aanwezig zijn
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      console.error('❌ Missing EmailJS configuration:', {
+        service: !!EMAILJS_SERVICE_ID,
+        template: !!EMAILJS_TEMPLATE_ID,
+        publicKey: !!EMAILJS_PUBLIC_KEY
+      });
+      
+      setNotification({
+        open: true,
+        message: '⚠️ Er is een configuratiefout. Probeer het later opnieuw of neem direct contact met ons op.',
+        severity: 'error'
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       // Maak een leesbare weergave van de geselecteerde trainingen
       const selectedOptions = {
@@ -107,7 +133,11 @@ function Contact() {
       // Toon succesbericht
       setNotification({
         open: true,
-        message: `Bedankt ${formData.name}! Je aanmelding voor "${selectedTrainings}" is verzonden. We nemen binnen 24 uur contact met je op.`,
+        message: `🎉 Fantastisch ${formData.name}! 
+
+Wat leuk dat je ons een bericht hebt gestuurd! We hebben je aanmelding voor "${selectedTrainings}" ontvangen.
+
+We nemen zo spoedig mogelijk contact met je op voor verdere informatie. Tot snel! 🚀`,
         severity: 'success'
       });
 
@@ -348,13 +378,55 @@ function Contact() {
           </Grid>
         </Grid>
       </Container>
-      <Snackbar
+      <Dialog
         open={notification.open}
-        autoHideDuration={6000}
         onClose={handleCloseNotification}
-        message={notification.message}
-        severity={notification.severity}
-      />
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white'
+          }
+        }}
+      >
+        <DialogContent sx={{ padding: 6, textAlign: 'center' }}>
+          <CheckCircleIcon sx={{ fontSize: 80, color: '#4ade80', marginBottom: 3, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }} />
+          <Typography variant="h4" sx={{ 
+            fontWeight: 'bold', 
+            marginBottom: 3,
+            fontSize: { xs: '1.5rem', md: '2rem' },
+            lineHeight: 1.4,
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+          }}>
+            {notification.message}
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ padding: 4, justifyContent: 'center' }}>
+          <Button 
+            onClick={handleCloseNotification} 
+            variant="contained" 
+            size="large"
+            sx={{
+              backgroundColor: 'white',
+              color: '#667eea',
+              fontWeight: 'bold',
+              fontSize: '1.1rem',
+              padding: '12px 32px',
+              borderRadius: 2,
+              '&:hover': {
+                backgroundColor: '#f8fafc',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
+              },
+              transition: 'all 0.3s ease'
+            }}
+          >
+            Geweldig! 🎉
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
