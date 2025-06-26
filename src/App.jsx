@@ -3,6 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Trainingen from './pages/Trainingen';
 import Contact from './pages/Contact';
+import Voertuigtechniek from './pages/Voertuigtechniek';
+import LLO from './pages/LLO';
+import NederlandsRekenen from './pages/NederlandsRekenen';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -71,6 +74,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/trainingen" element={<Trainingen />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/voertuigtechniek" element={<Voertuigtechniek />} />
+        <Route path="/llo" element={<LLO />} />
+        <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />
       </Routes>
       <Footer />
     </ThemeProvider>

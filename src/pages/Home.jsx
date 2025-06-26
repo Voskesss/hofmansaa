@@ -8,6 +8,7 @@ import { SEO, defaultSEO } from '../utils/seo.jsx';
 import automotiveImg from '/assets/voertuigtechniek.jpg';
 import trainingImg from '/assets/nedrlands-en-wiskunde-toetsing.jpg';
 import nederlandsRekenenImg from '/assets/nedrlands-en-wiskunde-toetsing (1).jpg';
+import logo from '/assets/logo-hofmans.png';
 
 function Home() {
   return (
@@ -32,6 +33,9 @@ function Home() {
           zIndex: 0 
         }} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 3 }}>
+            <img src={logo} alt="Hofmans Automotive Logo" style={{ height: '120px', maxWidth: '100%' }} />
+          </Box>
           <Typography variant="h1" sx={{ fontWeight: 'bold', marginBottom: 3, fontSize: { xs: '2.5rem', md: '4rem' } }}>
             Jouw Toekomst in Automotive Begint Hier
           </Typography>
@@ -68,6 +72,9 @@ function Home() {
                 <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
                   Onze geavanceerde trainingen richten zich op de nieuwste technieken in voertuigonderhoud en -reparatie. Ideaal voor monteurs die hun expertise willen verdiepen.
                 </Typography>
+                <Button variant="contained" color="primary" component={Link} to="/voertuigtechniek" sx={{ marginTop: 2 }}>
+                  Meer Informatie
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -85,6 +92,9 @@ function Home() {
                 <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
                   Blijf leren met onze Leven Lang Ontwikkelen programma's en specialiseer je met het APK keuzedeel. Perfect voor professionals die up-to-date willen blijven.
                 </Typography>
+                <Button variant="contained" color="primary" component={Link} to="/llo" sx={{ marginTop: 2 }}>
+                  Meer Informatie
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -102,6 +112,9 @@ function Home() {
                 <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
                   Essentiële basisvaardigheden voor EVC-trajecten. Met onze trainingen en toetsingen behaal je het niveau dat nodig is voor de volgende stap in je carrière.
                 </Typography>
+                <Button variant="contained" color="primary" component={Link} to="/nederlands-rekenen" sx={{ marginTop: 2 }}>
+                  Meer Informatie
+                </Button>
               </CardContent>
             </Card>
           </Grid>
