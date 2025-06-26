@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagina wordt geladen... | Hofmans Automotive Academie</title>
+  <script>
+    // Functie om de huidige URL te verwerken en om te leiden naar de hoofdpagina met de juiste route
+    (function() {
+      // Haal de huidige URL op
+      const path = window.location.pathname;
+      const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+      
+      // Bepaal de base URL op basis van de omgeving
+      const baseUrl = isProduction ? '/hofmans-automotive-academie' : '';
+      
+      // Verwijder de base URL van het pad om de echte route te krijgen
+      let route = path;
+      if (isProduction && path.startsWith(baseUrl)) {
+        route = path.substr(baseUrl.length);
+      }
+      
+      // Sla de route op in sessionStorage
+      sessionStorage.setItem('redirect_route', route);
+      
+      // Leid om naar de hoofdpagina
+      window.location.replace(baseUrl + '/');
+    })();
+  </script>
+  <style>
+    body {
+      font-family: 'Nunito', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f9fafb;
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .loader {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #1a4b8c;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pagina wordt geladen...</h1>
+  <div class="loader"></div>
+  <p>Een moment geduld alstublieft, u wordt doorgestuurd naar de juiste pagina.</p>
+</body>
+</html>
