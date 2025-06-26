@@ -1,16 +1,40 @@
 import React from 'react';
-import { Box, Typography, Container, Grid, Card, CardHeader, CardContent, Button } from '@mui/material';
+import { Box, Typography, Container, Button, Chip, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
-import CarRepairIcon from '@mui/icons-material/CarRepair';
-import SchoolIcon from '@mui/icons-material/School';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
+import TrainingCards from '../components/home/TrainingCards';
 import { SEO } from '../utils/seo.jsx';
+import { motion } from 'framer-motion';
 
 // Gebruik directe URL's voor de assets
-const automotiveImg = '/assets/voertuigtechniek.jpg';
-const trainingImg = '/assets/nedrlands-en-wiskunde-toetsing.jpg';
-const nederlandsRekenenImg = '/assets/nedrlands-en-wiskunde-toetsing (1).jpg';
 const logo = '/assets/logo-hofmans.png';
+
+// Animatie varianten voor framer-motion
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const heroImageVariants = {
+  animate: {
+    scale: [1, 1.05, 1],
+    transition: {
+      duration: 20,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
 
 function Home() {
   return (
@@ -23,106 +47,175 @@ function Home() {
         url="https://hofmansautomotiveacademie.github.io"
       />
       {/* Hero Section */}
-      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '100px 0', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <Box 
+        sx={{ 
+          background: 'linear-gradient(135deg, #1a4b8c, #2563eb)', 
+          color: 'white', 
+          padding: { xs: '80px 0', md: '120px 0' }, 
+          textAlign: 'center', 
+          position: 'relative', 
+          overflow: 'hidden',
+          borderBottom: '5px solid #ff6b35'
+        }}
+      >
+        {/* Animated background pattern */}
+        <Box sx={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundSize: '30px 30px',
+          opacity: 0.4,
+          zIndex: 0
+        }} />
+        
+        {/* Hero background image */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url(https://hofmansautomotiveacademie.nl/wp-content/uploads/2023/11/Hofmans-Automotive-Academy-1024x683.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.15,
+            zIndex: 0
+          }}
+          variants={heroImageVariants}
+          animate="animate"
+        />
+        
+        {/* Decorative elements */}
         <Box sx={{ 
           position: 'absolute', 
           top: 0, 
           left: 0, 
           width: '100%', 
           height: '100%', 
-          background: 'url(https://hofmansautomotiveacademie.nl/wp-content/uploads/2023/11/Hofmans-Automotive-Academy-1024x683.jpg) no-repeat center center/cover', 
-          opacity: 0.2, 
-          zIndex: 0,
-          animation: 'moveBackground 15s ease-in-out infinite',
-          '@keyframes moveBackground': {
-            '0%': { backgroundPosition: 'center top' },
-            '50%': { backgroundPosition: 'center bottom' },
-            '100%': { backgroundPosition: 'center top' }
-          }
+          background: 'linear-gradient(135deg, rgba(46, 196, 182, 0.1), rgba(255, 107, 53, 0.1))',
+          zIndex: 0
         }} />
+        
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 3 }}>
-            <img src={logo} alt="Hofmans Automotive Logo" style={{ height: '120px', maxWidth: '100%' }} />
+          <motion.div 
+            initial="hidden" 
+            animate="visible" 
+            variants={fadeIn}
+          >
+            <Box 
+              sx={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                marginBottom: 4,
+                position: 'relative'
+              }}
+            >
+              <motion.img 
+                src={logo} 
+                alt="Hofmans Automotive Logo" 
+                style={{ 
+                  height: '140px', 
+                  maxWidth: '100%',
+                  filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.2))'
+                }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              />
+            </Box>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            <Typography 
+              variant="h1" 
+              sx={{ 
+                fontWeight: 800, 
+                marginBottom: 3, 
+                fontSize: { xs: '2.25rem', sm: '3rem', md: '3.75rem' },
+                textShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+                background: 'linear-gradient(90deg, #ffffff, #e2e8f0)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              Hofmans Automotive Academie
+            </Typography>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+          >
+            <Typography 
+              variant="h5" 
+              sx={{ 
+                maxWidth: '800px', 
+                margin: '0 auto', 
+                lineHeight: 1.7, 
+                marginBottom: 5,
+                fontWeight: 400,
+                fontSize: { xs: '1rem', sm: '1.15rem', md: '1.25rem' },
+                opacity: 0.9
+              }}
+            >
+              Hoogwaardige trainingen en onderwijs voor de automotive sector. 
+              <Box component="span" sx={{ color: '#ff6b35', fontWeight: 600 }}>Van voertuigtechniek tot LLO-programma's</Box>, 
+              wij helpen u vooruit met professionele kennis en vaardigheden.
+            </Typography>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.9, duration: 0.5, type: 'spring' }}
+          >
+            <Button 
+              variant="contained" 
+              color="secondary" 
+              size="large" 
+              component={Link}
+              to="/contact" 
+              sx={{ 
+                padding: '16px 42px', 
+                fontSize: '1.1rem',
+                borderRadius: '50px',
+                boxShadow: '0 10px 25px rgba(255, 107, 53, 0.4)'
+              }}
+            >
+              Meld Je Aan
+            </Button>
+          </motion.div>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+            <motion.div 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            >
+              <Chip 
+                icon={<EmojiObjectsIcon />} 
+                label="Ontdek onze trainingen" 
+                sx={{ 
+                  bgcolor: 'rgba(255, 255, 255, 0.15)', 
+                  color: 'white',
+                  backdropFilter: 'blur(10px)',
+                  '& .MuiChip-icon': { color: '#ff6b35' }
+                }}
+              />
+            </motion.div>
           </Box>
-          <Typography variant="h2" sx={{ fontWeight: 'bold', marginBottom: 3, fontSize: { xs: '2.5rem', md: '3.75rem' } }}>
-            Hofmans Automotive Academie
-          </Typography>
-          <Typography variant="h5" sx={{ maxWidth: '800px', margin: '0 auto', lineHeight: 1.6, marginBottom: 5 }}>
-            Hoogwaardige trainingen en onderwijs voor de automotive sector. Van voertuigtechniek tot LLO-programma's, wij helpen u vooruit.
-          </Typography>
-          <Button variant="contained" color="secondary" size="large" href="/contact" sx={{ padding: '14px 40px', fontSize: '1.1rem' }}>
-            Meld Je Aan
-          </Button>
         </Container>
       </Box>
-      {/* Content Section */}
-      <Container maxWidth="lg" sx={{ padding: '60px 0' }}>
-        <Typography variant="h3" sx={{ textAlign: 'center', marginBottom: 6, fontWeight: 'bold', color: 'primary.main' }}>
-          Onze Trainingen
-        </Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ maxWidth: 345, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 10px 20px rgba(0,0,0,0.2)' } }}>
-              <CardHeader
-                avatar={<CarRepairIcon sx={{ color: 'primary.main', fontSize: 40 }} />}
-                title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Voertuigtechniek</Typography>}
-                sx={{ paddingBottom: 0 }}
-              />
-              <Box component="img" src={automotiveImg} alt="Voertuigtechniek" sx={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: 1, marginBottom: 2, background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }} />
-              <CardContent>
-                <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
-                  Onze geavanceerde trainingen richten zich op de nieuwste technieken in voertuigonderhoud en -reparatie. Ideaal voor monteurs die hun expertise willen verdiepen.
-                </Typography>
-              </CardContent>
-              <Box sx={{ padding: 2 }}>
-                <Button variant="contained" color="primary" component={Link} to="/voertuigtechniek" fullWidth sx={{ marginTop: 2 }}>
-                  Meer Informatie
-                </Button>
-              </Box>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ maxWidth: 345, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 10px 20px rgba(0,0,0,0.2)' } }}>
-              <CardHeader
-                avatar={<SchoolIcon sx={{ color: 'primary.main', fontSize: 40 }} />}
-                title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>LLO & APK Keuzedeel</Typography>}
-                sx={{ paddingBottom: 0 }}
-              />
-              <Box component="img" src={trainingImg} alt="LLO & APK Keuzedeel" sx={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: 1, marginBottom: 2, background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }} />
-              <CardContent>
-                <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
-                  Blijf leren met onze Leven Lang Ontwikkelen programma's en specialiseer je met het APK keuzedeel. Perfect voor professionals die up-to-date willen blijven.
-                </Typography>
-              </CardContent>
-              <Box sx={{ padding: 2 }}>
-                <Button variant="contained" color="primary" component={Link} to="/llo" fullWidth sx={{ marginTop: 2 }}>
-                  Meer Informatie
-                </Button>
-              </Box>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Card sx={{ maxWidth: 345, margin: '0 auto', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 10px 20px rgba(0,0,0,0.2)' } }}>
-              <CardHeader
-                avatar={<AssignmentIcon sx={{ color: 'primary.main', fontSize: 40 }} />}
-                title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Nederlands & Rekenen</Typography>}
-                sx={{ paddingBottom: 0 }}
-              />
-              <Box component="img" src={nederlandsRekenenImg} alt="Nederlands & Rekenen" sx={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: 1, marginBottom: 2, background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }} />
-              <CardContent>
-                <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
-                  Essentiële basisvaardigheden voor EVC-trajecten. Met onze trainingen en toetsingen behaal je het niveau dat nodig is voor de volgende stap in je carrière.
-                </Typography>
-              </CardContent>
-              <Box sx={{ padding: 2 }}>
-                <Button variant="contained" color="primary" component={Link} to="/nederlands-rekenen" fullWidth sx={{ marginTop: 2 }}>
-                  Meer Informatie
-                </Button>
-              </Box>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
+      {/* Trainingen Section */}
+      <TrainingCards />
     </Box>
   );
 }
