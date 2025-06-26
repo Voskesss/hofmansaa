@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Trainingen from './pages/Trainingen';
 import Contact from './pages/Contact';
@@ -255,6 +255,20 @@ const theme = createTheme({
 });
 
 function App() {
+  const navigate = useNavigate();
+
+  // Verwerk de omleiding van 404.html
+  useEffect(() => {
+    // Controleer of er een opgeslagen route is in sessionStorage
+    const redirectRoute = sessionStorage.getItem('redirect_route');
+    if (redirectRoute && redirectRoute !== '/') {
+      // Verwijder de opgeslagen route
+      sessionStorage.removeItem('redirect_route');
+      // Navigeer naar de opgeslagen route
+      navigate(redirectRoute);
+    }
+  }, [navigate]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
