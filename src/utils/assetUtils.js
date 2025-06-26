@@ -8,7 +8,9 @@ export function getAssetPath(assetPath) {
   const isProduction = import.meta.env.PROD;
   
   // Voeg de base URL toe in productie
-  return isProduction 
-    ? `/hofmans-automotive-academie${assetPath}` 
+  const fullPath = isProduction 
+    ? `/hofmansaa${assetPath}` 
     : assetPath;
+  console.log(`Asset path: ${fullPath} (PROD: ${import.meta.env.PROD})`); // Debug log
+  return fullPath;
 }
