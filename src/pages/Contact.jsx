@@ -10,21 +10,43 @@ function Contact() {
     name: '',
     email: '',
     phone: '',
-    training: '',
+    training: [],
     message: ''
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+    
+    if (name === 'training') {
+      // Voor de training select met multiple optie
+      setFormData(prevState => ({ ...prevState, [name]: value }));
+    } else {
+      // Voor alle andere velden
+      setFormData(prevState => ({ ...prevState, [name]: value }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
     // Hier zou je een API-aanroep kunnen doen om het formulier te verzenden
-    alert('Bedankt voor je aanmelding! We nemen zo snel mogelijk contact met je op.');
-    setFormData({ name: '', email: '', phone: '', training: '', message: '' });
+    
+    // Maak een leesbare weergave van de geselecteerde trainingen voor de bevestiging
+    const selectedOptions = {
+      'voertuigtechniek': 'Voertuigtechniek Werkplaats',
+      'llo': 'LLO & APK Keuzedeel',
+      'niet-technisch': 'Niet-Technisch Personeel',
+      'nederlands-rekenen': 'Nederlands & Rekenen'
+    };
+    
+    const selectedTrainings = formData.training.length > 0 
+      ? formData.training.map(item => selectedOptions[item]).join(', ')
+      : 'Geen specifieke training geselecteerd';
+      
+    alert(`Bedankt voor je aanmelding voor: ${selectedTrainings}! We nemen zo snel mogelijk contact met je op.`);
+    
+    // Reset het formulier met een lege array voor training
+    setFormData({ name: '', email: '', phone: '', training: [], message: '' });
   };
 
   return (
@@ -118,12 +140,73 @@ function Contact() {
                       value={formData.training}
                       onChange={handleChange}
                       label="Interesse in Training"
+                      multiple
+                      renderValue={(selected) => {
+                        if (selected.length === 0) {
+                          return <em>Selecteer trainingen</em>;
+                        }
+                        
+                        const selectedOptions = {
+                          'voertuigtechniek': 'Voertuigtechniek Werkplaats',
+                          'llo': 'LLO & APK Keuzedeel',
+                          'niet-technisch': 'Niet-Technisch Personeel',
+                          'nederlands-rekenen': 'Nederlands & Rekenen'
+                        };
+                        
+                        return selected.map(item => selectedOptions[item]).join(', ');
+                      }}
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 300
+                          }
+                        }
+                      }}
                     >
-                      <MenuItem value=""><em>Selecteer een training</em></MenuItem>
-                      <MenuItem value="voertuigtechniek">Voertuigtechniek Werkplaats</MenuItem>
-                      <MenuItem value="llo">LLO & APK Keuzedeel</MenuItem>
-                      <MenuItem value="niet-technisch">Niet-Technisch Personeel</MenuItem>
-                      <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
+                      <MenuItem value="voertuigtechniek">
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <input 
+                            type="checkbox" 
+                            checked={formData.training.indexOf('voertuigtechniek') > -1} 
+                            readOnly 
+                            style={{ marginRight: '8px' }} 
+                          />
+                          Voertuigtechniek Werkplaats
+                        </Box>
+                      </MenuItem>
+                      <MenuItem value="llo">
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <input 
+                            type="checkbox" 
+                            checked={formData.training.indexOf('llo') > -1} 
+                            readOnly 
+                            style={{ marginRight: '8px' }} 
+                          />
+                          LLO & APK Keuzedeel
+                        </Box>
+                      </MenuItem>
+                      <MenuItem value="niet-technisch">
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <input 
+                            type="checkbox" 
+                            checked={formData.training.indexOf('niet-technisch') > -1} 
+                            readOnly 
+                            style={{ marginRight: '8px' }} 
+                          />
+                          Niet-Technisch Personeel
+                        </Box>
+                      </MenuItem>
+                      <MenuItem value="nederlands-rekenen">
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <input 
+                            type="checkbox" 
+                            checked={formData.training.indexOf('nederlands-rekenen') > -1} 
+                            readOnly 
+                            style={{ marginRight: '8px' }} 
+                          />
+                          Nederlands & Rekenen
+                        </Box>
+                      </MenuItem>
                     </Select>
                   </FormControl>
                   <TextField 
