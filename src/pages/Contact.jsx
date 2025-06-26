@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -13,6 +13,20 @@ function Contact() {
     training: [],
     message: ''
   });
+
+  // Controleer bij het laden van de component of er een geselecteerde training is
+  useEffect(() => {
+    const selectedTraining = localStorage.getItem('selectedTraining');
+    if (selectedTraining) {
+      // Voeg de geselecteerde training toe aan het formulier
+      setFormData(prevState => ({
+        ...prevState,
+        training: [...prevState.training, selectedTraining]
+      }));
+      // Verwijder de selectie uit localStorage na gebruik
+      localStorage.removeItem('selectedTraining');
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
