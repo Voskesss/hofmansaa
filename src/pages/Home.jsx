@@ -168,7 +168,7 @@ function Home() {
                 opacity: 0.9
               }}
             >
-              Hoogwaardige trainingen en onderwijs voor de automotive sector. 
+              Hoogwaardige autotrainingen en onderwijs voor de automotive sector. 
               <Box component="span" sx={{ color: '#ff6b35', fontWeight: 600 }}>Van voertuigtechniek tot LLO-programma's</Box>, 
               wij helpen u vooruit met professionele kennis en vaardigheden.
             </Typography>
