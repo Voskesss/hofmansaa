@@ -5,7 +5,7 @@ import TrainingPageTemplate from '../components/training/TrainingPageTemplate';
 import { getAssetPath } from '../utils/assetUtils';
 
 // Gebruik de asset utility functie voor het afbeeldingspad
-const nederlandsRekenenImg = getAssetPath('/assets/nedrlands-en-wiskunde-toetsing (1).jpg');
+const nederlandsRekenenImg = getAssetPath('/assets/nedrlands-en-wiskunde-toetsing.jpg');
 
 function NederlandsRekenen() {
   // Hoofdinhoud van de training

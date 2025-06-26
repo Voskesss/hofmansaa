@@ -55,16 +55,6 @@ function TrainingPageTemplate({
         position: 'relative',
         overflow: 'hidden'
       }}>
-        <Box sx={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: 0, 
-          width: '100%', 
-          height: '100%', 
-          background: `url(${imageUrl}) no-repeat center center/cover`, 
-          opacity: 0.2, 
-          zIndex: 0 
-        }} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Typography variant="h1" sx={{ 
             fontWeight: 800, 
