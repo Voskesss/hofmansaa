@@ -37,6 +37,10 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+          VITE_EMAILJS_SERVICE_ID: ${{ vars.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_TEMPLATE_ID }}
+          VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID }}
+          VITE_EMAILJS_PUBLIC_KEY: ${{ vars.VITE_EMAILJS_PUBLIC_KEY }}
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
