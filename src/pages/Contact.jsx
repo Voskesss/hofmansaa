@@ -12,7 +12,7 @@ function Contact() {
     phone: '',
     training: [],
     message: ''
-  });
+  }); 
 
   // Controleer bij het laden van de component of er een geselecteerde training is
   useEffect(() => {
