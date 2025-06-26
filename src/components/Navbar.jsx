@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem, IconButton, Drawer, List, ListItem, ListItemText, Divider } from '@mui/material';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import MenuIcon from '@mui/icons-material/Menu';
 
 // Gebruik directe URL voor de asset
 const logo = '/assets/logo-hofmans.png';
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,6 +18,10 @@ function Navbar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
   };
 
   return (
@@ -29,7 +35,8 @@ function Navbar() {
             </Typography>
           </Box>
         </Link>
-        <Box sx={{ display: 'flex', gap: { xs: 1, md: 3 } }}>
+        {/* Desktop menu */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3 }}>
           <Button color="primary" component={Link} to="/" sx={{ fontWeight: 'bold', color: '#ffffff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
             Home
           </Button>
@@ -60,12 +67,73 @@ function Navbar() {
               <MenuItem onClick={handleClose} component={Link} to="/nederlands-rekenen" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
                 Nederlands & Rekenen
               </MenuItem>
+              <MenuItem onClick={handleClose} component={Link} to="/niet-technisch" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+                Niet-Technisch Personeel
+              </MenuItem>
             </Menu>
           </Box>
           <Button color="primary" component={Link} to="/contact" sx={{ fontWeight: 'bold', color: '#ffffff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
             Contact
           </Button>
         </Box>
+        {/* Mobile menu button */}
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={handleDrawerToggle}
+          sx={{ display: { md: 'none' } }}
+        >
+          <MenuIcon />
+        </IconButton>
+        
+        {/* Mobile drawer */}
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: 240, 
+              backgroundColor: 'rgba(30, 58, 138, 0.95)', 
+              color: '#ffffff' 
+            },
+          }}
+        >
+          <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', p: 2 }}>
+            <img src={logo} alt="Hofmans Automotive Logo" style={{ height: '40px', marginBottom: '10px' }} />
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+              Hofmans Automotive
+            </Typography>
+            <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', mb: 2 }} />
+            <List>
+              <ListItem button component={Link} to="/">
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem button component={Link} to="/trainingen">
+                <ListItemText primary="Alle Trainingen" />
+              </ListItem>
+              <ListItem button component={Link} to="/voertuigtechniek">
+                <ListItemText primary="Voertuigtechniek" />
+              </ListItem>
+              <ListItem button component={Link} to="/llo">
+                <ListItemText primary="LLO & APK Keuzedeel" />
+              </ListItem>
+              <ListItem button component={Link} to="/nederlands-rekenen">
+                <ListItemText primary="Nederlands & Rekenen" />
+              </ListItem>
+              <ListItem button component={Link} to="/niet-technisch">
+                <ListItemText primary="Niet-Technisch Personeel" />
+              </ListItem>
+              <ListItem button component={Link} to="/contact">
+                <ListItemText primary="Contact" />
+              </ListItem>
+            </List>
+          </Box>
+        </Drawer>
       </Toolbar>
     </AppBar>
   );
