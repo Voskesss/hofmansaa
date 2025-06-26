@@ -93,7 +93,7 @@ function Navbar() {
               padding: '6px 16px'
             }}
           >
-            Portal Inloggen
+            Studentenportal Inloggen
           </Button>
         </Box>
         {/* Mobile menu button */}
@@ -167,7 +167,7 @@ function Navbar() {
                   primary={
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <LoginIcon sx={{ mr: 1, fontSize: '0.9rem' }} />
-                      <Typography>Studentenportal Inloggen</Typography>
+                      <Typography>Portal Inloggen</Typography>
                     </Box>
                   } 
                 />
