@@ -67,6 +67,8 @@ function Contact() {
       publicKey: EMAILJS_PUBLIC_KEY ? `${EMAILJS_PUBLIC_KEY.substring(0, 8)}...` : 'MISSING'
     });
 
+    // Force deployment update - v2.0
+
     // Controleer of alle vereiste waarden aanwezig zijn
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       console.error('❌ Missing EmailJS configuration:', {
