@@ -64,6 +64,18 @@ function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // DEBUG: Log alle environment variables
+    console.log('🔍 GITHUB DEBUG - Environment Variables:', {
+      service: EMAILJS_SERVICE_ID,
+      template: EMAILJS_TEMPLATE_ID,
+      autoreply: EMAILJS_AUTOREPLY_TEMPLATE_ID,
+      publicKey: EMAILJS_PUBLIC_KEY,
+      env_service: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      env_template: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      env_public: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+      all_env: import.meta.env
+    });
+
     // Controleer of alle vereiste waarden aanwezig zijn
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       console.error('❌ Missing EmailJS configuration:', {
