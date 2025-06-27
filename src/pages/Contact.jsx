@@ -83,7 +83,7 @@ function Contact() {
     }
 
     try {
-      // Maak een leesbare weergave van de geselecteerde trainingen
+      // Maak een leesbare weergave van de geselecteerde trainingen 
       const selectedOptions = {
         'voertuigtechniek': 'Voertuigtechniek Werkplaats',
         'llo': 'Leven Lang Ontwikkelen (LLO)',
