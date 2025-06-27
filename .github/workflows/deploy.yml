@@ -41,6 +41,7 @@ jobs:
           VITE_EMAILJS_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_TEMPLATE_ID }}
           VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID }}
           VITE_EMAILJS_PUBLIC_KEY: ${{ vars.VITE_EMAILJS_PUBLIC_KEY }}
+          VITE_EMAILJS_PRIVATE_KEY: ${{ secrets.VITE_EMAILJS_PRIVATE_KEY }}
           
       - name: Setup Pages
         uses: actions/configure-pages@v4

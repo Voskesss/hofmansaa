@@ -28,6 +28,12 @@ function Contact() {
   const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_37a1ftj';
   const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID || 'template_06x3cuo';
   const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rBcqZk3mmSP0xkpQh';
+  const EMAILJS_PRIVATE_KEY = import.meta.env.VITE_EMAILJS_PRIVATE_KEY;
+
+  // Initialiseer EmailJS met public key (eenmalig)
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
 
   // Controleer bij het laden van de component of er een geselecteerde training is
   useEffect(() => {
@@ -58,16 +64,6 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Debug: Log environment variables
-    console.log('🔍 Debug - Environment Variables:', {
-      service: EMAILJS_SERVICE_ID,
-      template: EMAILJS_TEMPLATE_ID,
-      autoreply: EMAILJS_AUTOREPLY_TEMPLATE_ID,
-      publicKey: EMAILJS_PUBLIC_KEY ? `${EMAILJS_PUBLIC_KEY.substring(0, 8)}...` : 'MISSING'
-    });
-
-    // Force deployment update - v2.0
 
     // Controleer of alle vereiste waarden aanwezig zijn
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
@@ -109,8 +105,6 @@ function Contact() {
         to_email: 'info@hofmansautomotiveacademie.nl' // Vervang met je eigen email
       };
 
-      console.log('📧 Template Parameters:', templateParams);
-
       // Verstuur email via EmailJS
       await emailjs.send(
         EMAILJS_SERVICE_ID,
@@ -119,8 +113,6 @@ function Contact() {
         EMAILJS_PUBLIC_KEY
       );
 
-      // TODO: Auto-reply tijdelijk uitgeschakeld voor debugging
-      /*
       // Verstuur auto-reply email via EmailJS
       const autoReplyTemplateParams = {
         to_name: formData.name,
@@ -135,7 +127,6 @@ function Contact() {
         autoReplyTemplateParams,
         EMAILJS_PUBLIC_KEY
       );
-      */
 
       // Toon succesbericht
       setNotification({
