@@ -67,8 +67,6 @@ function Contact() {
       publicKey: EMAILJS_PUBLIC_KEY ? `${EMAILJS_PUBLIC_KEY.substring(0, 8)}...` : 'MISSING'
     });
 
-    console.log('📧 Template Parameters:', templateParams);
-
     // Controleer of alle vereiste waarden aanwezig zijn
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       console.error('❌ Missing EmailJS configuration:', {
@@ -108,6 +106,8 @@ function Contact() {
         message: formData.message,
         to_email: 'info@hofmansautomotiveacademie.nl' // Vervang met je eigen email
       };
+
+      console.log('📧 Template Parameters:', templateParams);
 
       // Verstuur email via EmailJS
       await emailjs.send(
