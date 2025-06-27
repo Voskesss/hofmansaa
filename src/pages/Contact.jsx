@@ -64,8 +64,10 @@ function Contact() {
       service: EMAILJS_SERVICE_ID,
       template: EMAILJS_TEMPLATE_ID,
       autoreply: EMAILJS_AUTOREPLY_TEMPLATE_ID,
-      publicKey: EMAILJS_PUBLIC_KEY ? 'LOADED' : 'MISSING'
+      publicKey: EMAILJS_PUBLIC_KEY ? `${EMAILJS_PUBLIC_KEY.substring(0, 8)}...` : 'MISSING'
     });
+
+    console.log('📧 Template Parameters:', templateParams);
 
     // Controleer of alle vereiste waarden aanwezig zijn
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
@@ -115,6 +117,8 @@ function Contact() {
         EMAILJS_PUBLIC_KEY
       );
 
+      // TODO: Auto-reply tijdelijk uitgeschakeld voor debugging
+      /*
       // Verstuur auto-reply email via EmailJS
       const autoReplyTemplateParams = {
         to_name: formData.name,
@@ -129,6 +133,7 @@ function Contact() {
         autoReplyTemplateParams,
         EMAILJS_PUBLIC_KEY
       );
+      */
 
       // Toon succesbericht
       setNotification({
