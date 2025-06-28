@@ -36,20 +36,19 @@ jobs:
         
       - name: Debug Environment Variables
         run: |
-          echo "🔍 Checking environment variables..."
-          echo "SERVICE_ID exists: ${{ vars.VITE_EMAILJS_SERVICE_ID != '' }}"
-          echo "TEMPLATE_ID exists: ${{ vars.VITE_EMAILJS_TEMPLATE_ID != '' }}"
-          echo "PUBLIC_KEY exists: ${{ vars.VITE_EMAILJS_PUBLIC_KEY != '' }}"
+          echo "🔍 Checking secrets availability..."
+          echo "SERVICE_ID exists: ${{ secrets.VITE_EMAILJS_SERVICE_ID != '' }}"
+          echo "TEMPLATE_ID exists: ${{ secrets.VITE_EMAILJS_TEMPLATE_ID != '' }}"
+          echo "PUBLIC_KEY exists: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY != '' }}"
           
       - name: Build project
         run: npm run build
         env:
           NODE_ENV: production
-          VITE_EMAILJS_SERVICE_ID: ${{ vars.VITE_EMAILJS_SERVICE_ID }}
-          VITE_EMAILJS_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_TEMPLATE_ID }}
-          VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID }}
-          VITE_EMAILJS_PUBLIC_KEY: ${{ vars.VITE_EMAILJS_PUBLIC_KEY }}
-          VITE_EMAILJS_PRIVATE_KEY: ${{ vars.VITE_EMAILJS_PRIVATE_KEY }}
+          VITE_EMAILJS_SERVICE_ID: ${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}
+          VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID }}
+          VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
