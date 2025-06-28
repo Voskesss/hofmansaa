@@ -29,6 +29,21 @@ function Contact() {
   const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID || 'template_06x3cuo';
   const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rBcqZk3mmSP0xkpQh';
 
+  // 🐛 DEBUG: Log configuratie om te zien wat er gebruikt wordt
+  console.log('🔧 EmailJS Debug Info:', {
+    environment: import.meta.env.MODE,
+    serviceId: EMAILJS_SERVICE_ID,
+    templateId: EMAILJS_TEMPLATE_ID,
+    autoReplyTemplateId: EMAILJS_AUTOREPLY_TEMPLATE_ID,
+    publicKey: EMAILJS_PUBLIC_KEY?.substring(0, 8) + '...', // Alleen eerste 8 chars voor veiligheid
+    envVarsLoaded: {
+      service: !!import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      template: !!import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      autoReply: !!import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID,
+      publicKey: !!import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    }
+  });
+
   // Initialiseer EmailJS met public key (eenmalig)
   useEffect(() => {
     emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -154,10 +169,25 @@ We nemen zo spoedig mogelijk contact met je op voor verdere informatie. Tot snel
       setFormData({ name: '', email: '', phone: '', training: [], message: '' });
 
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('❌ EmailJS Error Details:', {
+        error: error,
+        status: error.status,
+        text: error.text,
+        message: error.message,
+        usedConfig: {
+          serviceId: EMAILJS_SERVICE_ID,
+          templateId: EMAILJS_TEMPLATE_ID,
+          publicKey: EMAILJS_PUBLIC_KEY?.substring(0, 8) + '...'
+        }
+      });
+      
       setNotification({
         open: true,
-        message: 'Er is een fout opgetreden bij het verzenden van je bericht. Probeer het opnieuw of neem direct contact met ons op.',
+        message: `Er is een fout opgetreden bij het verzenden van je bericht. 
+
+🐛 Debug info: ${error.status} - ${error.text || error.message}
+
+Probeer het opnieuw of neem direct contact met ons op.`,
         severity: 'error'
       });
     } finally {
