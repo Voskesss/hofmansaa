@@ -41,7 +41,21 @@ function Contact() {
       template: !!import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
       autoReply: !!import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID,
       publicKey: !!import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-    }
+    },
+    // Toon de volledige environment voor debugging
+    allEnvVars: Object.keys(import.meta.env).filter(key => key.startsWith('VITE_'))
+  });
+  
+  // Log een speciale debug message voor GitHub Pages
+  console.log('🔍 GITHUB DEBUG - Environment Variables:', {
+    service: EMAILJS_SERVICE_ID,
+    template: EMAILJS_TEMPLATE_ID,
+    autoreply: EMAILJS_AUTOREPLY_TEMPLATE_ID,
+    publicKey: EMAILJS_PUBLIC_KEY,
+    env_service: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
+    env_template: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+    env_mode: import.meta.env.MODE,
+    env_base: import.meta.env.BASE_URL
   });
 
   // Initialiseer EmailJS met public key (eenmalig)
