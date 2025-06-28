@@ -19,6 +19,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: github-pages  # Specificeer het environment voor variables
     
     steps:
       - name: Checkout code
@@ -33,6 +34,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
+      - name: Debug Environment Variables
+        run: |
+          echo "🔍 Checking environment variables..."
+          echo "SERVICE_ID exists: ${{ vars.VITE_EMAILJS_SERVICE_ID != '' }}"
+          echo "TEMPLATE_ID exists: ${{ vars.VITE_EMAILJS_TEMPLATE_ID != '' }}"
+          echo "PUBLIC_KEY exists: ${{ vars.VITE_EMAILJS_PUBLIC_KEY != '' }}"
+          
       - name: Build project
         run: npm run build
         env:
@@ -41,7 +49,7 @@ jobs:
           VITE_EMAILJS_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_TEMPLATE_ID }}
           VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID }}
           VITE_EMAILJS_PUBLIC_KEY: ${{ vars.VITE_EMAILJS_PUBLIC_KEY }}
-          VITE_EMAILJS_PRIVATE_KEY: ${{ secrets.VITE_EMAILJS_PRIVATE_KEY }}
+          VITE_EMAILJS_PRIVATE_KEY: ${{ vars.VITE_EMAILJS_PRIVATE_KEY }}
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
