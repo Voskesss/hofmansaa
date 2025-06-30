@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Container, Grid, Card, CardHeader, CardContent, Button } from '@mui/material';
+import { Box, Typography, Container, Grid, Card, CardHeader, CardContent, Button, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
@@ -29,6 +29,7 @@ const cardVariants = {
 };
 
 const TrainingCards = () => {
+  const theme = useTheme();
   return (
     <Container maxWidth="lg" sx={{ padding: '60px 0' }}>
       <motion.div
@@ -52,7 +53,7 @@ const TrainingCards = () => {
               transform: 'translateX(-50%)',
               width: '80px',
               height: '4px',
-              background: 'linear-gradient(90deg, #1a4b8c, #ff6b35)',
+              background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
               borderRadius: '2px'
             }
           }}
@@ -141,7 +142,6 @@ const TrainingCards = () => {
               <Box sx={{ p: 3, pt: 0 }}>
                 <Button 
                   variant="contained" 
-                  color="primary" 
                   component={Link} 
                   to="/voertuigtechniek" 
                   fullWidth 
@@ -151,9 +151,11 @@ const TrainingCards = () => {
                     fontWeight: 600,
                     textTransform: 'none',
                     fontSize: '1rem',
-                    boxShadow: '0 4px 12px rgba(26, 75, 140, 0.25)',
+                    bgcolor: theme.palette.primary.main,
+                    boxShadow: `0 4px 12px ${theme.palette.primary.main}40`,
                     '&:hover': {
-                      boxShadow: '0 6px 16px rgba(26, 75, 140, 0.4)',
+                      bgcolor: theme.palette.primary.dark,
+                      boxShadow: `0 6px 16px ${theme.palette.primary.main}66`,
                     }
                   }}
                 >
@@ -243,7 +245,6 @@ const TrainingCards = () => {
               <Box sx={{ p: 3, pt: 0 }}>
                 <Button 
                   variant="contained" 
-                  color="primary" 
                   component={Link} 
                   to="/llo" 
                   fullWidth 
@@ -253,9 +254,11 @@ const TrainingCards = () => {
                     fontWeight: 600,
                     textTransform: 'none',
                     fontSize: '1rem',
-                    boxShadow: '0 4px 12px rgba(26, 75, 140, 0.25)',
+                    bgcolor: theme.palette.primary.main,
+                    boxShadow: `0 4px 12px ${theme.palette.primary.main}40`,
                     '&:hover': {
-                      boxShadow: '0 6px 16px rgba(26, 75, 140, 0.4)',
+                      bgcolor: theme.palette.primary.dark,
+                      boxShadow: `0 6px 16px ${theme.palette.primary.main}66`,
                     }
                   }}
                 >
@@ -345,7 +348,6 @@ const TrainingCards = () => {
               <Box sx={{ p: 3, pt: 0 }}>
                 <Button 
                   variant="contained" 
-                  color="primary" 
                   component={Link} 
                   to="/niet-technisch" 
                   fullWidth 
@@ -355,9 +357,11 @@ const TrainingCards = () => {
                     fontWeight: 600,
                     textTransform: 'none',
                     fontSize: '1rem',
-                    boxShadow: '0 4px 12px rgba(26, 75, 140, 0.25)',
+                    bgcolor: theme.palette.primary.main,
+                    boxShadow: `0 4px 12px ${theme.palette.primary.main}40`,
                     '&:hover': {
-                      boxShadow: '0 6px 16px rgba(26, 75, 140, 0.4)',
+                      bgcolor: theme.palette.primary.dark,
+                      boxShadow: `0 6px 16px ${theme.palette.primary.main}66`,
                     }
                   }}
                 >
@@ -447,7 +451,6 @@ const TrainingCards = () => {
               <Box sx={{ p: 3, pt: 0 }}>
                 <Button 
                   variant="contained" 
-                  color="primary" 
                   component={Link} 
                   to="/nederlands-rekenen" 
                   fullWidth 
@@ -457,9 +460,11 @@ const TrainingCards = () => {
                     fontWeight: 600,
                     textTransform: 'none',
                     fontSize: '1rem',
-                    boxShadow: '0 4px 12px rgba(26, 75, 140, 0.25)',
+                    bgcolor: theme.palette.primary.main,
+                    boxShadow: `0 4px 12px ${theme.palette.primary.main}40`,
                     '&:hover': {
-                      boxShadow: '0 6px 16px rgba(26, 75, 140, 0.4)',
+                      bgcolor: theme.palette.primary.dark,
+                      boxShadow: `0 6px 16px ${theme.palette.primary.main}66`,
                     }
                   }}
                 >

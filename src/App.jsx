@@ -16,17 +16,17 @@ import CssBaseline from '@mui/material/CssBaseline';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1a4b8c', // Rijk, diep blauw voor betrouwbaarheid en professionaliteit
-      light: '#4d7ab8', // Lichtere variant voor hover states
-      dark: '#0d2e5c', // Donkerdere variant voor nadruk
+      main: '#2e7d32', // Modern groen voor duurzaamheid en groei
+      light: '#4caf50', // Lichtere variant voor hover states
+      dark: '#1b5e20', // Donkerdere variant voor nadruk
     },
     secondary: {
-      main: '#ff6b35', // Levendig oranje voor speelse accenten
+      main: '#ff6b35', // Levendig oranje voor speelse accenten (behouden)
       light: '#ff9468', // Lichtere variant
       dark: '#cc4a1a', // Donkerdere variant
     },
     tertiary: {
-      main: '#2ec4b6', // Turquoise als derde kleur voor speelse elementen
+      main: '#2ec4b6', // Turquoise als derde kleur voor speelse elementen (behouden)
       light: '#5edbcf',
       dark: '#1a9e92',
     },

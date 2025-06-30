@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Container, Card, CardContent, Button, Grid } from '@mui/material';
+import { Box, Typography, Container, Card, CardContent, Button, Grid, useTheme } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { SEO } from '../../utils/seo.jsx';
 import { getAssetPath } from '../../utils/assetUtils';
@@ -29,6 +29,7 @@ function TrainingPageTemplate({
   additionalContent
 }) {
   const navigate = useNavigate();
+  const theme = useTheme();
 
   // Functie om naar contactpagina te navigeren met voorgeselecteerde training
   const handleAanmelden = () => {
@@ -47,7 +48,7 @@ function TrainingPageTemplate({
         url={url}
       />
       <Box sx={{ 
-        background: `linear-gradient(135deg, rgba(26, 75, 140, 0.9), rgba(37, 99, 235, 0.85)), url(${getAssetPath(imageUrl)})`, 
+        background: `linear-gradient(135deg, ${theme.palette.primary.dark}E6, ${theme.palette.primary.main}D9), url(${getAssetPath(imageUrl)})`, 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: 'white', 
@@ -83,7 +84,7 @@ function TrainingPageTemplate({
             <Card sx={{ 
               mb: 4, 
               borderRadius: 3,
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
+              boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
               overflow: 'hidden'
             }}>
               <CardContent sx={{ p: 4 }}>
@@ -94,7 +95,7 @@ function TrainingPageTemplate({
             {additionalContent && (
               <Card sx={{ 
                 borderRadius: 3,
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
+                boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
                 overflow: 'hidden'
               }}>
                 <CardContent sx={{ p: 4 }}>
@@ -107,7 +108,7 @@ function TrainingPageTemplate({
           <Grid item xs={12} md={4}>
             <Card sx={{ 
               borderRadius: 3,
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
+              boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
               overflow: 'hidden',
               mb: 4,
               position: 'sticky',
@@ -129,7 +130,11 @@ function TrainingPageTemplate({
                   sx={{ 
                     py: 1.5,
                     borderRadius: 2,
-                    fontWeight: 600
+                    fontWeight: 600,
+                    bgcolor: theme.palette.secondary.main,
+                    '&:hover': {
+                      bgcolor: theme.palette.secondary.dark
+                    }
                   }}
                 >
                   Aanmelden
@@ -139,7 +144,7 @@ function TrainingPageTemplate({
 
             <Card sx={{ 
               borderRadius: 3,
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
+              boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
               overflow: 'hidden',
               bgcolor: 'primary.main',
               color: 'white'
@@ -162,10 +167,10 @@ function TrainingPageTemplate({
                     py: 1.5,
                     borderRadius: 2,
                     fontWeight: 600,
-                    borderColor: 'rgba(255,255,255,0.5)',
+                    borderColor: `${theme.palette.common.white}80`,
                     '&:hover': {
-                      borderColor: 'white',
-                      bgcolor: 'rgba(255,255,255,0.1)'
+                      borderColor: theme.palette.common.white,
+                      bgcolor: `${theme.palette.common.white}1A`
                     }
                   }}
                 >

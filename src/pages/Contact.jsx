@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions, useTheme } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
@@ -8,6 +8,7 @@ import { SEO } from '../utils/seo.jsx';
 import emailjs from '@emailjs/browser';
 
 function Contact() {
+  const theme = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -222,7 +223,7 @@ Probeer het opnieuw of neem direct contact met ons op.`,
         image="/assets/logo-hofmans.png"
         url="https://hofmansautomotiveacademie.github.io/contact"
       />
-      <Box sx={{ background: 'linear-gradient(to right, #1e3a8a, #3b82f6)', color: 'white', padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <Box sx={{ background: `linear-gradient(to right, ${theme.palette.primary.dark}, ${theme.palette.primary.main})`, color: theme.palette.common.white, padding: '80px 0', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <Box sx={{ 
           position: 'absolute', 
           top: 0, 
@@ -261,7 +262,7 @@ Probeer het opnieuw of neem direct contact met ons op.`,
                     onChange={handleChange} 
                     required 
                     variant="outlined"
-                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: 1 }}
+                    sx={{ backgroundColor: `${theme.palette.background.paper}E6`, borderRadius: 1 }}
                   />
                   <TextField 
                     fullWidth 
@@ -273,7 +274,7 @@ Probeer het opnieuw of neem direct contact met ons op.`,
                     onChange={handleChange} 
                     required 
                     variant="outlined"
-                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: 1 }}
+                    sx={{ backgroundColor: `${theme.palette.background.paper}E6`, borderRadius: 1 }}
                   />
                   <TextField 
                     fullWidth 
@@ -284,14 +285,14 @@ Probeer het opnieuw of neem direct contact met ons op.`,
                     value={formData.phone} 
                     onChange={handleChange} 
                     variant="outlined"
-                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: 1 }}
+                    sx={{ backgroundColor: `${theme.palette.background.paper}E6`, borderRadius: 1 }}
                   />
                   <FormControl 
                     fullWidth 
                     margin="normal" 
                     variant="outlined"
                     sx={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                      backgroundColor: `${theme.palette.background.paper}E6`, 
                       borderRadius: 1,
                       minWidth: 200
                     }}
@@ -384,16 +385,23 @@ Probeer het opnieuw of neem direct contact met ons op.`,
                     onChange={handleChange} 
                     required 
                     variant="outlined"
-                    sx={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: 1 }}
+                    sx={{ backgroundColor: `${theme.palette.background.paper}E6`, borderRadius: 1 }}
                   />
                   <Button 
                     type="submit" 
                     variant="contained" 
-                    color="secondary" 
-                    size="large" 
-                    endIcon={<SendIcon />} 
-                    sx={{ marginTop: 3, width: '100%', padding: '14px 0', fontSize: '1.1rem' }}
+                    color="primary" 
+                    size="large"
+                    endIcon={<SendIcon />}
                     disabled={isSubmitting}
+                    sx={{ 
+                      mt: 2, 
+                      py: 1.5, 
+                      bgcolor: theme.palette.primary.main,
+                      '&:hover': {
+                        bgcolor: theme.palette.primary.dark
+                      }
+                    }}
                   >
                     {isSubmitting ? 'Verzenden...' : 'Verzenden'}
                   </Button>

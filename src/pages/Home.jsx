@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Container, Button, Chip, Divider } from '@mui/material';
+import { Box, Typography, Container, Button, Chip, Divider, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import TrainingCards from '../components/home/TrainingCards';
@@ -38,6 +38,8 @@ const heroImageVariants = {
 };
 
 function Home() {
+  const theme = useTheme();
+  
   return (
     <Box>
       <SEO 
@@ -50,13 +52,13 @@ function Home() {
       {/* Hero Section */}
       <Box 
         sx={{ 
-          background: 'linear-gradient(135deg, #1a4b8c, #2563eb)', 
-          color: 'white', 
+          background: `linear-gradient(135deg, ${theme.palette.primary.dark}, ${theme.palette.primary.main})`, 
+          color: theme.palette.common.white, 
           padding: { xs: '80px 0', md: '120px 0' }, 
           textAlign: 'center', 
           position: 'relative', 
           overflow: 'hidden',
-          borderBottom: '5px solid #ff6b35'
+          borderBottom: `5px solid ${theme.palette.secondary.main}`
         }}
       >
         {/* Animated background pattern */}
@@ -97,7 +99,7 @@ function Home() {
           left: 0, 
           width: '100%', 
           height: '100%', 
-          background: 'linear-gradient(135deg, rgba(46, 196, 182, 0.1), rgba(255, 107, 53, 0.1))',
+          background: `linear-gradient(135deg, ${theme.palette.tertiary.main}1A, ${theme.palette.secondary.main}1A)`,
           zIndex: 0
         }} />
         
@@ -141,7 +143,7 @@ function Home() {
                 marginBottom: 3, 
                 fontSize: { xs: '2.25rem', sm: '3rem', md: '3.75rem' },
                 textShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
-                background: 'linear-gradient(90deg, #ffffff, #e2e8f0)',
+                background: `linear-gradient(90deg, ${theme.palette.common.white}, ${theme.palette.background.default})`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 letterSpacing: '-0.02em'
@@ -169,7 +171,7 @@ function Home() {
               }}
             >
               Hoogwaardige trainingen en onderwijs voor de automotive sector. 
-              <Box component="span" sx={{ color: '#ff6b35', fontWeight: 600 }}>Van voertuigtechniek tot LLO-programma's</Box>, 
+              <Box component="span" sx={{ color: theme.palette.secondary.main, fontWeight: 600 }}>Van voertuigtechniek tot LLO-programma's</Box>, 
               wij helpen u vooruit met professionele kennis en vaardigheden.
             </Typography>
           </motion.div>
@@ -189,7 +191,11 @@ function Home() {
                 padding: '16px 42px', 
                 fontSize: '1.1rem',
                 borderRadius: '50px',
-                boxShadow: '0 10px 25px rgba(255, 107, 53, 0.4)'
+                bgcolor: theme.palette.secondary.main,
+                boxShadow: `0 10px 25px ${theme.palette.secondary.main}66`,
+                '&:hover': {
+                  bgcolor: theme.palette.secondary.dark
+                }
               }}
             >
               Meld Je Aan
@@ -205,10 +211,10 @@ function Home() {
                 icon={<EmojiObjectsIcon />} 
                 label="Ontdek onze trainingen" 
                 sx={{ 
-                  bgcolor: 'rgba(255, 255, 255, 0.15)', 
-                  color: 'white',
+                  bgcolor: `${theme.palette.common.white}26`, 
+                  color: theme.palette.common.white,
                   backdropFilter: 'blur(10px)',
-                  '& .MuiChip-icon': { color: '#ff6b35' }
+                  '& .MuiChip-icon': { color: theme.palette.secondary.main }
                 }}
               />
             </motion.div>

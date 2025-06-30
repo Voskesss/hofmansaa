@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem, IconButton, Drawer, List, ListItem, ListItemText, Divider } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem, IconButton, Drawer, List, ListItem, ListItemText, Divider, useTheme } from '@mui/material';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,6 +11,7 @@ import { getAssetPath } from '../utils/assetUtils';
 const logo = getAssetPath('/assets/logo-hofmans.png');
 
 function Navbar() {
+  const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -27,26 +28,31 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static" sx={{ background: 'rgba(30, 58, 138, 0.9)', backdropFilter: 'blur(10px)', boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)', borderBottom: '1px solid rgba(255, 255, 255, 0.2)' }}>
+    <AppBar position="static" sx={{ 
+        background: `${theme.palette.primary.dark}E6`, 
+        backdropFilter: 'blur(10px)', 
+        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)', 
+        borderBottom: `1px solid ${theme.palette.common.white}33` 
+      }}>
       <Toolbar sx={{ justifyContent: 'space-between', padding: { xs: '0 16px', md: '0 50px' } }}>
         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img src={logo} alt="Hofmans Automotive Logo" style={{ height: '40px', marginRight: '8px' }} />
-            <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', color: '#ffffff' }}>
+            <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold', color: theme.palette.common.white }}>
               Hofmans Automotive
             </Typography>
           </Box>
         </Link>
         {/* Desktop menu */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3 }}>
-          <Button color="primary" component={Link} to="/" sx={{ fontWeight: 'bold', color: '#ffffff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+          <Button color="primary" component={Link} to="/" sx={{ fontWeight: 'bold', color: theme.palette.common.white, '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
             Home
           </Button>
           <Box>
             <Button 
               color="primary" 
               onClick={handleClick} 
-              sx={{ fontWeight: 'bold', color: '#ffffff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}
+              sx={{ fontWeight: 'bold', color: theme.palette.common.white, '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}
               endIcon={<ArrowDropDownIcon />}
             >
               Trainingen
@@ -55,26 +61,26 @@ function Navbar() {
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleClose}
-              sx={{ '& .MuiPaper-root': { backgroundColor: 'rgba(30, 58, 138, 0.95)', color: '#ffffff', borderRadius: 2 } }}
+              sx={{ '& .MuiPaper-root': { backgroundColor: `${theme.palette.primary.dark}F2`, color: theme.palette.common.white, borderRadius: 2 } }}
             >
-              <MenuItem onClick={handleClose} component={Link} to="/trainingen" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+              <MenuItem onClick={handleClose} component={Link} to="/trainingen" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
                 Alle Trainingen
               </MenuItem>
-              <MenuItem onClick={handleClose} component={Link} to="/voertuigtechniek" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+              <MenuItem onClick={handleClose} component={Link} to="/voertuigtechniek" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
                 Voertuigtechniek
               </MenuItem>
-              <MenuItem onClick={handleClose} component={Link} to="/llo" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+              <MenuItem onClick={handleClose} component={Link} to="/llo" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
                 Leven Lang Ontwikkelen (LLO)
               </MenuItem>
-              <MenuItem onClick={handleClose} component={Link} to="/nederlands-rekenen" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+              <MenuItem onClick={handleClose} component={Link} to="/nederlands-rekenen" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
                 Nederlands & Rekenen
               </MenuItem>
-              <MenuItem onClick={handleClose} component={Link} to="/niet-technisch" sx={{ '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+              <MenuItem onClick={handleClose} component={Link} to="/niet-technisch" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
                 Niet-Technisch Personeel
               </MenuItem>
             </Menu>
           </Box>
-          <Button color="primary" component={Link} to="/contact" sx={{ fontWeight: 'bold', color: '#ffffff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}>
+          <Button color="primary" component={Link} to="/contact" sx={{ fontWeight: 'bold', color: theme.palette.common.white, '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
             Contact
           </Button>
           <Button 
@@ -84,10 +90,10 @@ function Navbar() {
             startIcon={<LoginIcon />}
             sx={{ 
               fontWeight: 'bold', 
-              backgroundColor: 'rgba(255, 255, 255, 0.15)', 
-              color: '#ffffff', 
+              backgroundColor: `${theme.palette.common.white}26`, 
+              color: theme.palette.common.white, 
               '&:hover': { 
-                backgroundColor: 'rgba(255, 255, 255, 0.25)' 
+                backgroundColor: `${theme.palette.common.white}40` 
               },
               borderRadius: '20px',
               padding: '6px 16px'
@@ -118,8 +124,8 @@ function Navbar() {
             '& .MuiDrawer-paper': { 
               boxSizing: 'border-box', 
               width: 240, 
-              backgroundColor: 'rgba(30, 58, 138, 0.95)', 
-              color: '#ffffff' 
+              backgroundColor: `${theme.palette.primary.dark}F2`, 
+              color: theme.palette.common.white 
             },
           }}
         >
@@ -128,7 +134,7 @@ function Navbar() {
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
               Hofmans Automotive
             </Typography>
-            <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', mb: 2 }} />
+            <Divider sx={{ backgroundColor: `${theme.palette.common.white}33`, mb: 2 }} />
             <List>
               <ListItem button component={Link} to="/">
                 <ListItemText primary="Home" />
@@ -151,14 +157,14 @@ function Navbar() {
               <ListItem button component={Link} to="/contact">
                 <ListItemText primary="Contact" />
               </ListItem>
-              <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', my: 1 }} />
+              <Divider sx={{ backgroundColor: `${theme.palette.common.white}33`, my: 1 }} />
               <ListItem 
                 button 
                 component="a" 
                 href="https://portal.hofmansautomotiveacademie.nl" 
                 target="_blank"
                 sx={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                  backgroundColor: `${theme.palette.secondary.main}`,
                   borderRadius: 1,
                   my: 1
                 }}
