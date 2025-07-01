@@ -48,7 +48,7 @@ function TrainingPageTemplate({
         url={url}
       />
       <Box sx={{ 
-        background: `linear-gradient(135deg, ${theme.palette.primary.dark}E6, ${theme.palette.primary.main}D9), url(${getAssetPath(imageUrl)})`, 
+        background: `linear-gradient(135deg, ${theme.palette.primary.dark}E6, ${theme.palette.tertiary.main}D9, ${theme.palette.secondary.main}CC), url(${getAssetPath(imageUrl)})`, 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: 'white', 
@@ -56,6 +56,21 @@ function TrainingPageTemplate({
         position: 'relative',
         overflow: 'hidden'
       }}>
+        {/* Decoratieve elementen met de drie hoofdkleuren */}
+        <Box sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+          opacity: 0.4,
+          background: `
+            radial-gradient(circle at 10% 20%, ${theme.palette.primary.main}40 0%, transparent 20%),
+            radial-gradient(circle at 90% 30%, ${theme.palette.secondary.main}40 0%, transparent 20%),
+            radial-gradient(circle at 50% 80%, ${theme.palette.tertiary.main}40 0%, transparent 20%)
+          `
+        }} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Typography variant="h1" sx={{ 
             fontWeight: 800, 
@@ -78,14 +93,55 @@ function TrainingPageTemplate({
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: 8, position: 'relative' }}>
+        {/* Decoratieve elementen */}
+        <Box sx={{
+          position: 'absolute',
+          top: '5%',
+          right: '2%',
+          width: '180px',
+          height: '180px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${theme.palette.primary.light}20 0%, transparent 70%)`,
+          zIndex: 0
+        }} />
+        <Box sx={{
+          position: 'absolute',
+          bottom: '10%',
+          left: '5%',
+          width: '150px',
+          height: '150px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${theme.palette.secondary.light}20 0%, transparent 70%)`,
+          zIndex: 0
+        }} />
+        <Box sx={{
+          position: 'absolute',
+          top: '40%',
+          left: '50%',
+          width: '200px',
+          height: '200px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${theme.palette.tertiary.light}15 0%, transparent 70%)`,
+          zIndex: 0
+        }} />
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <Card sx={{ 
               mb: 4, 
               borderRadius: 3,
               boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
-              overflow: 'hidden'
+              overflow: 'hidden',
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '5px',
+                background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.tertiary.main}, ${theme.palette.secondary.main})`,
+              }
             }}>
               <CardContent sx={{ p: 4 }}>
                 {mainContent}
@@ -96,9 +152,19 @@ function TrainingPageTemplate({
               <Card sx={{ 
                 borderRadius: 3,
                 boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                position: 'relative',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '5px',
+                  background: `linear-gradient(90deg, ${theme.palette.tertiary.main}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
+                }
               }}>
-                <CardContent sx={{ p: 4 }}>
+                <CardContent sx={{ p: 4, position: 'relative', zIndex: 1 }}>
                   {additionalContent}
                 </CardContent>
               </Card>
@@ -112,7 +178,9 @@ function TrainingPageTemplate({
               overflow: 'hidden',
               mb: 4,
               position: 'sticky',
-              top: 100
+              top: 100,
+              background: `linear-gradient(135deg, white, white, ${theme.palette.secondary.light}15)`,
+              border: `1px solid ${theme.palette.secondary.light}30`
             }}>
               <CardContent sx={{ p: 4 }}>
                 <Typography variant="h5" sx={{ mb: 3, color: 'primary.main', fontWeight: 700 }}>
@@ -146,8 +214,19 @@ function TrainingPageTemplate({
               borderRadius: 3,
               boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
               overflow: 'hidden',
-              bgcolor: 'primary.main',
-              color: 'white'
+              background: `linear-gradient(135deg, ${theme.palette.tertiary.main}, ${theme.palette.primary.main})`,
+              color: 'white',
+              position: 'relative',
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                width: '150px',
+                height: '150px',
+                background: `radial-gradient(circle at bottom right, ${theme.palette.secondary.main}30, transparent 70%)`,
+                zIndex: 0
+              }
             }}>
               <CardContent sx={{ p: 4 }}>
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: 700 }}>
