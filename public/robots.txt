@@ -1,4 +1,21 @@
+# Hofmans Automotive Academie robots.txt
+# Laatste update: 1 juli 2025
+
+# Alle robots toestaan
 User-agent: *
 Allow: /
 
-Sitemap: https://hofmansautomotiveacademie.github.io/sitemap.xml
+# Specifieke paden die niet geïndexeerd moeten worden
+Disallow: /assets/private/
+Disallow: /temp/
+Disallow: /admin/
+
+# Crawl-delay voor sommige bots om de server niet te overbelasten
+User-agent: AdsBot-Google
+Crawl-delay: 1
+
+User-agent: Googlebot-Image
+Crawl-delay: 1
+
+# Sitemap locatie
+Sitemap: https://hofmansautomotiveacademie.nl/sitemap.xml
