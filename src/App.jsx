@@ -7,6 +7,7 @@ import Voertuigtechniek from './pages/Voertuigtechniek';
 import LLO from './pages/LLO';
 import NederlandsRekenen from './pages/NederlandsRekenen';
 import NietTechnisch from './pages/NietTechnisch';
+import StudentPortal from './pages/StudentPortal';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -283,6 +284,7 @@ function App() {
         <Route path="/llo" element={<LLO />} />
         <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />
         <Route path="/niet-technisch" element={<NietTechnisch />} />
+        <Route path="/student-portal" element={<StudentPortal />} />
       </Routes>
       <Footer />
     </ThemeProvider>

@@ -85,8 +85,8 @@ function Navbar() {
           </Button>
           <Button 
             color="secondary" 
-            href="https://portal.hofmansautomotiveacademie.nl" 
-            target="_blank"
+            component={Link}
+            to="/student-portal"
             startIcon={<LoginIcon />}
             sx={{ 
               fontWeight: 'bold', 

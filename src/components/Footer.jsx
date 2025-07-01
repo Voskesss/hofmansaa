@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box, Typography, Link, Button, Card, CardContent, useTheme } from '@mui/material';
+import { Box, Typography, Button, Card, CardContent, useTheme } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import LoginIcon from '@mui/icons-material/Login';
 import { getAssetPath } from '../utils/assetUtils';
@@ -62,8 +64,8 @@ function Footer() {
                 variant="contained" 
                 color="secondary"
                 fullWidth
-                href="https://portal.hofmansautomotiveacademie.nl"
-                target="_blank"
+                component={RouterLink}
+                to="/student-portal"
                 sx={{ 
                   textTransform: 'none',
                   fontWeight: 'bold',
