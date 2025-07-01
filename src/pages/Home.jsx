@@ -1,11 +1,15 @@
 import React from 'react';
-import { Box, Typography, Container, Button, Chip, Divider, useTheme } from '@mui/material';
+import { Box, Typography, Container, Button, Chip, Divider, useTheme, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import TrainingCards from '../components/home/TrainingCards';
 import { SEO } from '../utils/seo.jsx';
 import { motion } from 'framer-motion';
 import { getAssetPath } from '../utils/assetUtils';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import BuildIcon from '@mui/icons-material/Build';
+import SchoolIcon from '@mui/icons-material/School';
+import SpeedIcon from '@mui/icons-material/Speed';
 
 // Gebruik de asset utility functie voor het logo pad
 const logo = getAssetPath('/assets/logo-hofmans.png');
@@ -103,6 +107,67 @@ function Home() {
           zIndex: 0
         }} />
         
+        {/* Animated car and tools */}
+        <Box sx={{ 
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          zIndex: 0
+        }}>
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 0.15 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+            style={{
+              position: 'absolute',
+              bottom: '15%',
+              left: '5%',
+            }}
+          >
+            <DirectionsCarIcon sx={{ fontSize: { xs: 60, md: 100 }, color: theme.palette.primary.main }} />
+          </motion.div>
+          
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 0.15 }}
+            transition={{ duration: 1.2, delay: 0.8 }}
+            style={{
+              position: 'absolute',
+              bottom: '25%',
+              right: '15%',
+            }}
+          >
+            <BuildIcon sx={{ fontSize: { xs: 50, md: 80 }, color: theme.palette.secondary.main }} />
+          </motion.div>
+          
+          <motion.div
+            initial={{ rotate: -45, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 0.15 }}
+            transition={{ duration: 1, delay: 1.2 }}
+            style={{
+              position: 'absolute',
+              top: '20%',
+              right: '10%',
+            }}
+          >
+            <SchoolIcon sx={{ fontSize: { xs: 40, md: 70 }, color: theme.palette.tertiary.main }} />
+          </motion.div>
+          
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.15 }}
+            transition={{ duration: 1.3, delay: 1 }}
+            style={{
+              position: 'absolute',
+              top: '30%',
+              left: '15%',
+            }}
+          >
+            <SpeedIcon sx={{ fontSize: { xs: 45, md: 75 }, color: theme.palette.primary.dark }} />
+          </motion.div>
+        </Box>
+        
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <motion.div 
             initial="hidden" 
@@ -177,29 +242,99 @@ function Home() {
           </motion.div>
           
           <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.9, duration: 0.5, type: 'spring' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
           >
-            <Button 
-              variant="contained" 
-              color="secondary" 
-              size="large" 
-              component={Link}
-              to="/contact" 
-              sx={{ 
-                padding: '16px 42px', 
-                fontSize: '1.1rem',
-                borderRadius: '50px',
-                bgcolor: theme.palette.secondary.main,
-                boxShadow: `0 10px 25px ${theme.palette.secondary.main}66`,
-                '&:hover': {
-                  bgcolor: theme.palette.secondary.dark
-                }
-              }}
+            <Grid container spacing={2} justifyContent="center" sx={{ mb: 4 }}>
+              <Grid item xs={12} sm={6} md={3}>
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.03 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center',
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: `${theme.palette.primary.main}15`,
+                    backdropFilter: 'blur(8px)',
+                    border: `1px solid ${theme.palette.primary.main}30`,
+                  }}>
+                    <DirectionsCarIcon sx={{ fontSize: 40, color: theme.palette.primary.main, mb: 1 }} />
+                    <Typography variant="body1" fontWeight={600} textAlign="center">Voertuigtechniek</Typography>
+                  </Box>
+                </motion.div>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.03 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center',
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: `${theme.palette.secondary.main}15`,
+                    backdropFilter: 'blur(8px)',
+                    border: `1px solid ${theme.palette.secondary.main}30`,
+                  }}>
+                    <BuildIcon sx={{ fontSize: 40, color: theme.palette.secondary.main, mb: 1 }} />
+                    <Typography variant="body1" fontWeight={600} textAlign="center">Praktijkgericht</Typography>
+                  </Box>
+                </motion.div>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.03 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Box sx={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center',
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: `${theme.palette.tertiary.main}15`,
+                    backdropFilter: 'blur(8px)',
+                    border: `1px solid ${theme.palette.tertiary.main}30`,
+                  }}>
+                    <SchoolIcon sx={{ fontSize: 40, color: theme.palette.tertiary.main, mb: 1 }} />
+                    <Typography variant="body1" fontWeight={600} textAlign="center">Professioneel</Typography>
+                  </Box>
+                </motion.div>
+              </Grid>
+            </Grid>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+              style={{ display: 'flex', justifyContent: 'center' }}
             >
-              Meld Je Aan
-            </Button>
+              <Button 
+                variant="contained" 
+                color="secondary" 
+                size="large" 
+                component={Link}
+                to="/contact" 
+                sx={{ 
+                  padding: '16px 42px', 
+                  fontSize: '1.1rem',
+                  borderRadius: '50px',
+                  bgcolor: theme.palette.secondary.main,
+                  boxShadow: `0 10px 25px ${theme.palette.secondary.main}66`,
+                  '&:hover': {
+                    bgcolor: theme.palette.secondary.dark
+                  }
+                }}
+              >
+                Meld Je Aan
+              </Button>
+            </motion.div>
           </motion.div>
           
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>

@@ -216,7 +216,7 @@ const TrainingCards = () => {
                     fontSize: '1.25rem',
                     lineHeight: 1.3
                   }}>
-                    LLO & APK Keuzedeel
+                    Leven Lang Ontwikkelen (LLO)
                   </Typography>
                 }
                 sx={{ paddingBottom: 0 }}
@@ -224,7 +224,7 @@ const TrainingCards = () => {
               <Box 
                 component="img" 
                 src={trainingImg} 
-                alt="LLO & APK Keuzedeel" 
+                alt="Leven Lang Ontwikkelen (LLO)" 
                 sx={{ 
                   width: '100%', 
                   height: '180px', 
@@ -239,7 +239,7 @@ const TrainingCards = () => {
               />
               <CardContent sx={{ flexGrow: 1, p: 3, height: '150px', display: 'flex', alignItems: 'center' }}>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                  Blijf leren met onze Leven Lang Ontwikkelen programma's en specialiseer je met het APK keuzedeel. Perfect voor professionals die up-to-date willen blijven.
+                  Blijf leren met onze Leven Lang Ontwikkelen programma's. Perfect voor professionals die up-to-date willen blijven in de automotive sector.
                 </Typography>
               </CardContent>
               <Box sx={{ p: 3, pt: 0 }}>
