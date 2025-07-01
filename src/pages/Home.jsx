@@ -356,6 +356,169 @@ function Home() {
           </Box>
         </Container>
       </Box>
+      
+      {/* Over onze trainingen sectie */}
+      <Box sx={{ 
+        py: 8, 
+        background: `linear-gradient(135deg, ${theme.palette.primary.main}08, ${theme.palette.tertiary.main}10, ${theme.palette.secondary.main}08)`,
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Decoratieve elementen */}
+        <Box sx={{
+          position: 'absolute',
+          top: '10%',
+          right: '-5%',
+          width: '300px',
+          height: '300px',
+          borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%',
+          background: `linear-gradient(135deg, ${theme.palette.primary.main}10, ${theme.palette.primary.main}01)`,
+          zIndex: 0
+        }} />
+        <Box sx={{
+          position: 'absolute',
+          bottom: '5%',
+          left: '-10%',
+          width: '400px',
+          height: '400px',
+          borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%',
+          background: `linear-gradient(135deg, ${theme.palette.secondary.main}08, ${theme.palette.secondary.main}01)`,
+          zIndex: 0
+        }} />
+        
+        <Container maxWidth="lg">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <Typography 
+              variant="h3" 
+              component="h2" 
+              align="center"
+              sx={{ 
+                fontWeight: 700, 
+                mb: 3,
+                color: theme.palette.primary.main,
+                position: 'relative',
+                display: 'inline-block',
+                width: '100%',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: '-10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '80px',
+                  height: '4px',
+                  background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  borderRadius: '2px'
+                }
+              }}
+            >
+              Trainingen binnen de automotive sector
+            </Typography>
+          </motion.div>
+          
+          <Grid container spacing={4} sx={{ mt: 4 }}>
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+              >
+                <Box sx={{ 
+                  p: 3, 
+                  borderRadius: 4, 
+                  boxShadow: `0 8px 32px ${theme.palette.primary.main}15`,
+                  height: '100%',
+                  background: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.primary.main}20`,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '5px',
+                    height: '100%',
+                    background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${theme.palette.tertiary.main})`,
+                  }
+                }}>
+                  <Typography variant="h5" sx={{ mb: 2, fontWeight: 600, color: theme.palette.primary.main }}>
+                    Breed scala aan trainingen
+                  </Typography>
+                  
+                  <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
+                    Bij HAMA bieden we een breed scala aan trainingen voor zowel technisch personeel in de automotive sector als voor ondersteunend personeel zoals receptionisten en administratief medewerkers. Of het nu gaat om specialistische voertuigtechniek of communicatieve vaardigheden, wij helpen u de juiste kennis en vaardigheden op te doen.
+                  </Typography>
+                </Box>
+              </motion.div>
+            </Grid>
+            
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                <Box sx={{ 
+                  p: 3, 
+                  borderRadius: 4, 
+                  boxShadow: `0 8px 32px ${theme.palette.secondary.main}15`,
+                  height: '100%',
+                  background: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.secondary.main}20`,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '5px',
+                    height: '100%',
+                    background: `linear-gradient(to bottom, ${theme.palette.secondary.main}, ${theme.palette.tertiary.main})`,
+                  }
+                }}>
+                  <Typography variant="h5" sx={{ mb: 2, fontWeight: 600, color: theme.palette.secondary.main }}>
+                    LLO en Nederlands & Rekenen
+                  </Typography>
+                  
+                  <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
+                    Daarnaast bieden we trainingen LLO aan voor het onderwijs waaronder het keuzedeel APK. En worden de training en toetsing Nederlands en rekenen verzorgd. Dit zijn essentiële basisvaardigheden voor het succesvol doorlopen van een EVC-traject (Erkenning van Verworven Competenties). Via HAMA kunt u oefenen en uw vaardigheden verbeteren met ons uitgebreide oefenmateriaal.
+                  </Typography>
+                </Box>
+              </motion.div>
+            </Grid>
+          </Grid>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            style={{ textAlign: 'center', marginTop: '40px' }}
+          >
+            <Typography variant="h5" sx={{ 
+              fontWeight: 600, 
+              color: theme.palette.text.primary,
+              p: 2,
+              borderRadius: 2,
+              display: 'inline-block',
+              background: `linear-gradient(135deg, ${theme.palette.primary.main}10, ${theme.palette.secondary.main}10)`,
+              boxShadow: `0 4px 20px ${theme.palette.primary.main}20`,
+            }}>
+              Kies voor HAMA en investeer in uw toekomst!
+            </Typography>
+          </motion.div>
+        </Container>
+      </Box>
+      
       {/* Trainingen Section */}
       <TrainingCards />
     </Box>
