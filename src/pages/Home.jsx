@@ -99,7 +99,7 @@ function Home() {
           left: 0, 
           width: '100%', 
           height: '100%', 
-          background: `linear-gradient(135deg, ${theme.palette.tertiary.main}1A, ${theme.palette.secondary.main}1A)`,
+          background: `linear-gradient(135deg, ${theme.palette.primary.main}33, ${theme.palette.tertiary.main}40, ${theme.palette.secondary.main}33)`,
           zIndex: 0
         }} />
         

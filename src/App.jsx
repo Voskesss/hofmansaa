@@ -16,19 +16,19 @@ import CssBaseline from '@mui/material/CssBaseline';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2e7d32', // Modern groen voor duurzaamheid en groei
-      light: '#4caf50', // Lichtere variant voor hover states
-      dark: '#1b5e20', // Donkerdere variant voor nadruk
+      main: '#006BB2', // Blauw als primaire kleur
+      light: '#3389C9', // Lichtere variant voor hover states
+      dark: '#00508A', // Donkerdere variant voor nadruk
     },
     secondary: {
-      main: '#ff6b35', // Levendig oranje voor speelse accenten (behouden)
-      light: '#ff9468', // Lichtere variant
-      dark: '#cc4a1a', // Donkerdere variant
+      main: '#59AF62', // Groen als secundaire kleur
+      light: '#7BC283', // Lichtere variant
+      dark: '#458B4D', // Donkerdere variant
     },
     tertiary: {
-      main: '#2ec4b6', // Turquoise als derde kleur voor speelse elementen (behouden)
-      light: '#5edbcf',
-      dark: '#1a9e92',
+      main: '#008494', // Turquoise als derde kleur
+      light: '#33A0AD', // Lichtere variant
+      dark: '#006570', // Donkerdere variant
     },
     background: {
       default: '#f9fafb', // Zeer lichte grijstint voor moderne uitstraling
