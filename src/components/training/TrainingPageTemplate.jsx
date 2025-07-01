@@ -52,9 +52,10 @@ function TrainingPageTemplate({
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: 'white', 
-        padding: '80px 0 60px', 
+        padding: '100px 0 80px', 
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)'
       }}>
         {/* Decoratieve elementen met de drie hoofdkleuren */}
         <Box sx={{

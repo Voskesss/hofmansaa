@@ -70,37 +70,100 @@ const StudentPortal = () => {
         <meta name="description" content="Log in op het studenten portal van Hofmans Automotive Academie voor toegang tot je leermateriaal en voortgang." />
       </Helmet>
       
-      <Box
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          pt: { xs: 8, sm: 10 },
-          pb: 6,
-          background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.tertiary.main}20, ${theme.palette.secondary.main}15)`,
-        }}
-      >
-        <Container maxWidth="md">
+      {/* Header met schuine bovenkant */}
+      <Box sx={{ 
+        background: `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 50%, ${theme.palette.secondary.main} 100%)`, 
+        color: theme.palette.common.white, 
+        padding: '100px 0 80px', 
+        textAlign: 'center', 
+        position: 'relative', 
+        overflow: 'hidden',
+        clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)'
+      }}>
+        {/* Decoratieve cirkels */}
+        <Box sx={{ 
+          position: 'absolute', 
+          top: '-15%', 
+          right: '-5%', 
+          width: '300px', 
+          height: '300px', 
+          borderRadius: '50%', 
+          background: `radial-gradient(circle, ${theme.palette.secondary.main}80 0%, ${theme.palette.secondary.main}00 70%)`, 
+          zIndex: 0 
+        }} />
+        <Box sx={{ 
+          position: 'absolute', 
+          bottom: '-10%', 
+          left: '5%', 
+          width: '250px', 
+          height: '250px', 
+          borderRadius: '50%', 
+          background: `radial-gradient(circle, ${theme.palette.tertiary.main}60 0%, ${theme.palette.tertiary.main}00 70%)`, 
+          zIndex: 0 
+        }} />
+        
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.8 }}
           >
             <Typography 
               variant="h2" 
               component="h1" 
-              align="center" 
-              gutterBottom
               sx={{ 
-                fontWeight: 700, 
-                color: theme.palette.primary.main,
-                mb: 4
+                fontWeight: 'bold', 
+                marginBottom: 3, 
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                position: 'relative',
+                display: 'inline-block',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: '-10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '80px',
+                  height: '4px',
+                  background: theme.palette.secondary.main,
+                  borderRadius: '2px'
+                }
               }}
             >
               Studenten Portal
             </Typography>
           </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <Typography variant="h5" sx={{ 
+              maxWidth: '800px', 
+              margin: '0 auto', 
+              lineHeight: 1.6,
+              mt: 4,
+              textShadow: '0 1px 5px rgba(0,0,0,0.2)'
+            }}>
+              Log in om toegang te krijgen tot je leermateriaal en voortgang
+            </Typography>
+          </motion.div>
+        </Container>
+      </Box>
+      
+      <Box
+        sx={{
+          minHeight: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          py: 6,
+          background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.tertiary.main}20, ${theme.palette.secondary.main}15)`,
+        }}
+      >
+        <Container maxWidth="md">
           
           <motion.div
             initial={{ opacity: 0, y: 30 }}

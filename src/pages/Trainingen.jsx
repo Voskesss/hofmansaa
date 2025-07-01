@@ -37,10 +37,11 @@ function Trainingen() {
       <Box sx={{ 
         background: `linear-gradient(135deg, ${theme.palette.primary.dark}E6, ${theme.palette.tertiary.main}D9, ${theme.palette.secondary.main}CC)`, 
         color: 'white', 
-        padding: '80px 0', 
+        padding: '100px 0 80px', 
         textAlign: 'center', 
         position: 'relative', 
-        overflow: 'hidden' 
+        overflow: 'hidden',
+        clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)' 
       }}>
         <Box sx={{ 
           position: 'absolute', 
