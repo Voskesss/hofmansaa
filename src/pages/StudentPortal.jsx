@@ -78,7 +78,8 @@ const StudentPortal = () => {
         textAlign: 'center', 
         position: 'relative', 
         overflow: 'hidden',
-        clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)'
+        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', // Aangepast naar rechthoekige vorm
+        marginTop: '-1px' // Voorkomt kleine witte lijn tussen navbar en header
       }}>
         {/* Decoratieve cirkels */}
         <Box sx={{ 
@@ -161,6 +162,8 @@ const StudentPortal = () => {
           position: 'relative',
           py: 6,
           background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.tertiary.main}20, ${theme.palette.secondary.main}15)`,
+          color: theme.palette.text.primary,
+          marginTop: '-1px', // Voorkomt kleine witte lijn tussen secties
         }}
       >
         <Container maxWidth="md">
@@ -186,7 +189,8 @@ const StudentPortal = () => {
                   borderRadius: 3,
                   width: { xs: '100%', md: '50%' },
                   background: 'white',
-                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.1)`,
+                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.2)`,
+                  color: theme.palette.text.primary, // Zorgt dat tekst donker is op witte achtergrond
                 }}
               >
                 <Box 
