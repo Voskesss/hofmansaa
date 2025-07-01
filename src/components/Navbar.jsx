@@ -212,8 +212,8 @@ function Navbar() {
         </Drawer>
       </Toolbar>
     </AppBar>
-    {/* Spacer div to prevent content from hiding behind the fixed navbar */}
-    <div style={{ height: '64px' }} />
+    {/* Spacer div aangepast om witte ruimte te verwijderen */}
+    <div style={{ height: '0px' }} />
     </>
   );
 }
