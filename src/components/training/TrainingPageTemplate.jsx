@@ -3,6 +3,7 @@ import { Box, Typography, Container, Card, CardContent, Button, Grid, useTheme }
 import { Link, useNavigate } from 'react-router-dom';
 import { SEO } from '../../utils/seo.jsx';
 import { getAssetPath } from '../../utils/assetUtils';
+import BackgroundIcons from '../decorative/BackgroundIcons';
 
 /**
  * Herbruikbare template voor trainingspagina's
@@ -94,38 +95,10 @@ function TrainingPageTemplate({
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ py: 8, position: 'relative' }}>
-        {/* Decoratieve elementen */}
-        <Box sx={{
-          position: 'absolute',
-          top: '5%',
-          right: '2%',
-          width: '180px',
-          height: '180px',
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${theme.palette.primary.light}20 0%, transparent 70%)`,
-          zIndex: 0
-        }} />
-        <Box sx={{
-          position: 'absolute',
-          bottom: '10%',
-          left: '5%',
-          width: '150px',
-          height: '150px',
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${theme.palette.secondary.light}20 0%, transparent 70%)`,
-          zIndex: 0
-        }} />
-        <Box sx={{
-          position: 'absolute',
-          top: '40%',
-          left: '50%',
-          width: '200px',
-          height: '200px',
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${theme.palette.tertiary.light}15 0%, transparent 70%)`,
-          zIndex: 0
-        }} />
+      <Box sx={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Decoratieve icoontjes op de achtergrond */}
+        <BackgroundIcons opacity={0.07} count={4} zIndex={0} />
+        <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <Card sx={{ 
@@ -261,6 +234,7 @@ function TrainingPageTemplate({
           </Grid>
         </Grid>
       </Container>
+      </Box>
     </Box>
   );
 }

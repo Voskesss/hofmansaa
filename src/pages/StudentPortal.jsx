@@ -20,6 +20,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
+import BackgroundIcons from '../components/decorative/BackgroundIcons';
 
 const StudentPortal = () => {
   const theme = useTheme();
@@ -164,8 +165,11 @@ const StudentPortal = () => {
           background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.tertiary.main}20, ${theme.palette.secondary.main}15)`,
           color: theme.palette.text.primary,
           marginTop: '-1px', // Voorkomt kleine witte lijn tussen secties
+          overflow: 'hidden'
         }}
       >
+        {/* Decoratieve icoontjes op de achtergrond */}
+        <BackgroundIcons opacity={0.08} count={4} zIndex={0} />
         <Container maxWidth="md">
           
           <motion.div

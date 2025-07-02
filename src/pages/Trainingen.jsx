@@ -8,6 +8,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
 import { getAssetPath } from '../utils/assetUtils';
+import BackgroundIcons from '../components/decorative/BackgroundIcons';
 
 function Trainingen() {
   const theme = useTheme();
@@ -79,7 +80,10 @@ function Trainingen() {
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ padding: '80px 0' }}>
+      <Box sx={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Decoratieve icoontjes op de achtergrond */}
+        <BackgroundIcons opacity={0.08} count={4} zIndex={0} />
+        <Container maxWidth="lg" sx={{ padding: '80px 0', position: 'relative', zIndex: 1 }}>
         <Typography variant="h4" sx={{ mb: 5, textAlign: 'center', fontWeight: 700, position: 'relative' }}>
           <Box 
             component="span" 
@@ -443,6 +447,7 @@ function Trainingen() {
           </motion.div>
         </Box>
       </Container>
+      </Box>
     </Box>
   );
 }
