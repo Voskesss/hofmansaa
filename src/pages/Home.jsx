@@ -86,7 +86,7 @@ function Home() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: 'url(https://hofmansautomotiveacademie.nl/wp-content/uploads/2023/11/Hofmans-Automotive-Academy-1024x683.jpg)',
+            backgroundImage: 'url(/assets/Hofmans-automotive-academie-home.jpg)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             opacity: 0.15,
