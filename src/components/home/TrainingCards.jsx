@@ -135,7 +135,7 @@ const TrainingCards = () => {
                   }
                 }} 
               />
-              <CardContent sx={{ flexGrow: 1, p: 3, height: '150px', display: 'flex', alignItems: 'center' }}>
+              <CardContent sx={{ flexGrow: 1, p: 3, height: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', overflow: 'hidden' }}>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                   Onze geavanceerde trainingen richten zich op de nieuwste technieken in voertuigonderhoud en -reparatie. Ideaal voor monteurs die hun expertise willen verdiepen.
                 </Typography>
@@ -238,7 +238,7 @@ const TrainingCards = () => {
                   }
                 }} 
               />
-              <CardContent sx={{ flexGrow: 1, p: 3, height: '150px', display: 'flex', alignItems: 'center' }}>
+              <CardContent sx={{ flexGrow: 1, p: 3, height: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', overflow: 'hidden' }}>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                   Blijf leren met onze Leven Lang Ontwikkelen programma's. Perfect voor professionals die up-to-date willen blijven in de automotive sector.
                 </Typography>
@@ -341,7 +341,7 @@ const TrainingCards = () => {
                   }
                 }} 
               />
-              <CardContent sx={{ flexGrow: 1, p: 3, height: '150px', display: 'flex', alignItems: 'center' }}>
+              <CardContent sx={{ flexGrow: 1, p: 3, height: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', overflow: 'hidden' }}>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                   Specialistische trainingen voor service adviseurs, receptionisten en andere niet-technische functies binnen de automotive sector.
                 </Typography>
@@ -444,7 +444,7 @@ const TrainingCards = () => {
                   }
                 }} 
               />
-              <CardContent sx={{ flexGrow: 1, p: 3, height: '150px', display: 'flex', alignItems: 'center' }}>
+              <CardContent sx={{ flexGrow: 1, p: 3, height: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', overflow: 'hidden' }}>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
                   Essentiële basisvaardigheden voor EVC-trajecten. Met onze trainingen en toetsingen behaal je het niveau dat nodig is voor de volgende stap in je carrière.
                 </Typography>
