@@ -7,6 +7,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BusinessIcon from '@mui/icons-material/Business';
 import { getAssetPath } from '../../utils/assetUtils';
+import BackgroundIcons from '../decorative/BackgroundIcons';
 
 // Gebruik de asset utility functie voor de afbeeldingspaden
 const automotiveImg = getAssetPath('/assets/voertuigtechniek.jpg');

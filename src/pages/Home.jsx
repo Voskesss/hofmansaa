@@ -10,6 +10,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import BuildIcon from '@mui/icons-material/Build';
 import SchoolIcon from '@mui/icons-material/School';
 import SpeedIcon from '@mui/icons-material/Speed';
+import BackgroundIcons from '../components/decorative/BackgroundIcons';
 
 // Gebruik de asset utility functie voor het logo pad
 const logo = getAssetPath('/assets/logo-hofmans.png');
@@ -107,66 +108,8 @@ function Home() {
           zIndex: 0
         }} />
         
-        {/* Animated car and tools */}
-        <Box sx={{ 
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          overflow: 'hidden',
-          zIndex: 0
-        }}>
-          <motion.div
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 0.15 }}
-            transition={{ duration: 1.5, delay: 0.5 }}
-            style={{
-              position: 'absolute',
-              bottom: '15%',
-              left: '5%',
-            }}
-          >
-            <DirectionsCarIcon sx={{ fontSize: { xs: 60, md: 100 }, color: theme.palette.primary.main }} />
-          </motion.div>
-          
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 0.15 }}
-            transition={{ duration: 1.2, delay: 0.8 }}
-            style={{
-              position: 'absolute',
-              bottom: '25%',
-              right: '15%',
-            }}
-          >
-            <BuildIcon sx={{ fontSize: { xs: 50, md: 80 }, color: theme.palette.secondary.main }} />
-          </motion.div>
-          
-          <motion.div
-            initial={{ rotate: -45, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 0.15 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            style={{
-              position: 'absolute',
-              top: '20%',
-              right: '10%',
-            }}
-          >
-            <SchoolIcon sx={{ fontSize: { xs: 40, md: 70 }, color: theme.palette.tertiary.main }} />
-          </motion.div>
-          
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.15 }}
-            transition={{ duration: 1.3, delay: 1 }}
-            style={{
-              position: 'absolute',
-              top: '30%',
-              left: '15%',
-            }}
-          >
-            <SpeedIcon sx={{ fontSize: { xs: 45, md: 75 }, color: theme.palette.primary.dark }} />
-          </motion.div>
-        </Box>
+        {/* Animated background icons */}
+        <BackgroundIcons opacity={0.15} count={4} />
         
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <motion.div 
@@ -364,6 +307,8 @@ function Home() {
         position: 'relative',
         overflow: 'hidden'
       }}>
+        {/* Decoratieve iconen met lagere opacity voor subtiel effect */}
+        <BackgroundIcons opacity={0.08} count={5} zIndex={0} />
         {/* Decoratieve elementen */}
         <Box sx={{
           position: 'absolute',
