@@ -217,7 +217,7 @@ const TrainingCards = () => {
                     fontSize: '1.25rem',
                     lineHeight: 1.3
                   }}>
-                    Leven Lang Ontwikkelen (LLO)
+                    Leven Lang Ontwikkelen
                   </Typography>
                 }
                 sx={{ paddingBottom: 0 }}
