@@ -86,7 +86,7 @@ function Home() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: 'url(/assets/Hofmans-automotive-academie-home.jpg)',
+            backgroundImage: `url(${getAssetPath('/assets/Hofmans-automotive-academie-home.jpg')})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             opacity: 0.15,
