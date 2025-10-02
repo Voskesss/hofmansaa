@@ -84,7 +84,7 @@ export const sendContactEmail = async (formData) => {
   // Email naar bedrijf (info@hofmansautomotiveacademie.nl)
   const companyEmailParams = {
     to_email: EMAIL_CONFIG.TO_EMAIL,
-    subject: `Nieuw contactbericht van ${formData.name}`,
+    email_subject: `Nieuw contactbericht van ${formData.name}`,
     html_content: createContactEmailHTML(formData)
   };
 
@@ -98,7 +98,7 @@ export const sendContactEmail = async (formData) => {
   // Auto-reply naar gebruiker
   const replyParams = {
     to_email: formData.email,
-    subject: 'Bedankt voor je bericht - Hofmans Automotive Academie',
+    email_subject: 'Bedankt voor je bericht - Hofmans Automotive Academie',
     html_content: createContactReplyHTML(formData.name)
   };
 
