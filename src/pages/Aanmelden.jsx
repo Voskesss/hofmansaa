@@ -66,14 +66,30 @@ function Aanmelden() {
     if (selectedTraining) {
       setFormData(prevState => ({
         ...prevState,
-        training: [...prevState.training, selectedTraining]
+        training: Array.isArray(prevState.training) 
+          ? [...prevState.training, selectedTraining]
+          : selectedTraining
       }));
       localStorage.removeItem('selectedTraining');
     }
   }, []);
 
+  // Reset training field wanneer session selection mode verandert
   useEffect(() => {
-    if (sessionSelectionEnabled && formData.training.length > 0) {
+    setFormData(prev => ({
+      ...prev,
+      training: sessionSelectionEnabled ? '' : [],
+      sessionId: null
+    }));
+  }, [sessionSelectionEnabled]);
+
+  useEffect(() => {
+    // Check: als single select (string) of multiple select (array met items)
+    const hasTraining = sessionSelectionEnabled 
+      ? (typeof formData.training === 'string' && formData.training !== '')
+      : (Array.isArray(formData.training) && formData.training.length > 0);
+    
+    if (sessionSelectionEnabled && hasTraining) {
       fetchAvailableSessions();
     } else {
       setAvailableSessions([]);
@@ -84,7 +100,11 @@ function Aanmelden() {
   const fetchAvailableSessions = async () => {
     setLoadingSessions(true);
     try {
-      const trainingType = formData.training[0]; // Neem eerste training
+      // Training type: als single select is het een string, als multiple een array
+      const trainingType = typeof formData.training === 'string' 
+        ? formData.training 
+        : formData.training[0];
+      
       const response = await fetch(`/api/sessions/available?training_type=${trainingType}`);
       const data = await response.json();
       if (data.success) {
@@ -154,9 +174,12 @@ function Aanmelden() {
         'nederlands-rekenen': 'Nederlands & Rekenen'
       };
       
-      const selectedTrainings = formData.training.length > 0 
-        ? formData.training.map(item => selectedOptions[item]).join(', ')
-        : 'Geen specifieke training geselecteerd';
+      // Handle both single (string) and multiple (array) training selection
+      const selectedTrainings = typeof formData.training === 'string'
+        ? selectedOptions[formData.training] || formData.training
+        : formData.training.length > 0 
+          ? formData.training.map(item => selectedOptions[item]).join(', ')
+          : 'Geen specifieke training geselecteerd';
 
       const fullName = `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim();
 
@@ -200,7 +223,9 @@ function Aanmelden() {
         email: '', phone: '',
         street: '', houseNumber: '', postalCode: '', city: '', country: 'Nederland',
         orgName: '', contactName: '', contactEmail: '',
-        training: [], message: '', sessionId: null
+        training: sessionSelectionEnabled ? '' : [], 
+        message: '', 
+        sessionId: null
       });
 
     } catch (error) {
@@ -453,14 +478,20 @@ function Aanmelden() {
                   </Box>
 
                   <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel>Interesse in Training</InputLabel>
+                    <InputLabel>
+                      {sessionSelectionEnabled 
+                        ? 'Kies Training *' 
+                        : 'Interesse in Training (meerdere mogelijk)'}
+                    </InputLabel>
                     <Select
                       name="training"
                       value={formData.training}
                       onChange={handleChange}
-                      label="Interesse in Training"
-                      multiple
-                      renderValue={(selected) => {
+                      label={sessionSelectionEnabled 
+                        ? 'Kies Training *' 
+                        : 'Interesse in Training (meerdere mogelijk)'}
+                      multiple={!sessionSelectionEnabled}
+                      renderValue={!sessionSelectionEnabled ? (selected) => {
                         const options = {
                           'voertuigtechniek': 'Voertuigtechniek Werkplaats',
                           'llo': 'Leven Lang Ontwikkelen (LLO)',
@@ -468,17 +499,23 @@ function Aanmelden() {
                           'nederlands-rekenen': 'Nederlands & Rekenen'
                         };
                         return selected.map(item => options[item]).join(', ');
-                      }}
+                      } : undefined}
+                      required
                     >
                       <MenuItem value="voertuigtechniek">Voertuigtechniek Werkplaats</MenuItem>
                       <MenuItem value="llo">Leven Lang Ontwikkelen (LLO)</MenuItem>
                       <MenuItem value="niet-technisch">Niet-Technisch Personeel</MenuItem>
                       <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
                     </Select>
+                    {sessionSelectionEnabled && (
+                      <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+                        Bij sessie selectie kun je 1 training per keer kiezen
+                      </Typography>
+                    )}
                   </FormControl>
 
                   {/* Sessie Selectie (conditionally shown) */}
-                  {sessionSelectionEnabled && formData.training.length > 0 && (
+                  {sessionSelectionEnabled && formData.training && (
                     <Box sx={{ mb: 2 }}>
                       <Typography variant="h6" sx={{ mb: 1, color: 'primary.main', fontWeight: 600 }}>
                         📅 Welke datum past jou het beste?
