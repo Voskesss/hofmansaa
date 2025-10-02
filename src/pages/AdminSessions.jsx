@@ -4,7 +4,7 @@ import {
   Box, Container, Typography, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Paper, Button, Dialog, DialogTitle, DialogContent,
   DialogActions, TextField, Select, MenuItem, FormControl, InputLabel,
-  Alert, Chip, IconButton, Grid
+  Alert, Chip, IconButton, Grid, Switch, FormControlLabel
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -27,6 +27,8 @@ function AdminSessions() {
   const [error, setError] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [editingSession, setEditingSession] = useState(null);
+  const [updatingStatus, setUpdatingStatus] = useState(null);
+  const [updatingRegistration, setUpdatingRegistration] = useState(null);
   
   const [formData, setFormData] = useState({
     training_type: '',
@@ -140,6 +142,66 @@ function AdminSessions() {
     }
   };
 
+  const handleStatusUpdate = async (id, newStatus) => {
+    setUpdatingStatus(id);
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/admin/sessions', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, status: newStatus })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Fout bij updaten status');
+      }
+
+      setSessions(prev => 
+        prev.map(session => 
+          session.id === id ? { ...session, status: newStatus } : session
+        )
+      );
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUpdatingStatus(null);
+    }
+  };
+
+  const handleRegistrationToggle = async (id, currentValue) => {
+    setUpdatingRegistration(id);
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/admin/sessions', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, allow_public_registration: !currentValue })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Fout bij updaten inschrijving');
+      }
+
+      setSessions(prev => 
+        prev.map(session => 
+          session.id === id ? { ...session, allow_public_registration: !currentValue } : session
+        )
+      );
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUpdatingRegistration(null);
+    }
+  };
+
   const handleDelete = async (id) => {
     if (!window.confirm('Weet je zeker dat je deze sessie wilt verwijderen?')) {
       return;
@@ -250,13 +312,14 @@ function AdminSessions() {
                 <TableCell><strong>Locatie</strong></TableCell>
                 <TableCell><strong>Deelnemers</strong></TableCell>
                 <TableCell><strong>Status</strong></TableCell>
+                <TableCell><strong>Inschrijving</strong></TableCell>
                 <TableCell align="right"><strong>Acties</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {sessions.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                  <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
                     <Typography color="text.secondary">
                       Geen sessies gevonden. Maak een nieuwe sessie aan.
                     </Typography>
@@ -289,18 +352,30 @@ function AdminSessions() {
                       />
                     </TableCell>
                     <TableCell>
-                      <Chip
-                        label={
-                          parseInt(session.registered_count) >= session.max_participants
-                            ? 'VOL'
-                            : 'Open'
+                      <FormControl size="small" sx={{ minWidth: 150 }}>
+                        <Select
+                          value={session.status}
+                          onChange={(e) => handleStatusUpdate(session.id, e.target.value)}
+                          disabled={updatingStatus === session.id}
+                        >
+                          <MenuItem value="open">Open</MenuItem>
+                          <MenuItem value="vol">Vol</MenuItem>
+                          <MenuItem value="geannuleerd">Geannuleerd</MenuItem>
+                          <MenuItem value="voltooid">Voltooid</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </TableCell>
+                    <TableCell>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={session.allow_public_registration !== false}
+                            onChange={() => handleRegistrationToggle(session.id, session.allow_public_registration)}
+                            disabled={updatingRegistration === session.id}
+                            color="primary"
+                          />
                         }
-                        color={
-                          parseInt(session.registered_count) >= session.max_participants
-                            ? 'error'
-                            : 'success'
-                        }
-                        size="small"
+                        label={session.allow_public_registration !== false ? 'Aan' : 'Uit'}
                       />
                     </TableCell>
                     <TableCell align="right">

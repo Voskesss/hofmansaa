@@ -28,7 +28,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "setup-db": "node scripts/setup-database.js",
-    "setup-sessions": "node scripts/create-sessions-table.js"
+    "setup-sessions": "node scripts/create-sessions-table.js",
+    "add-registration-toggle": "node scripts/add-session-registration-toggle.js"
   },
   "eslintConfig": {
     "extends": [

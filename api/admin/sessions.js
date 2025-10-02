@@ -107,7 +107,8 @@ export default async function handler(req, res) {
         location,
         max_participants,
         status,
-        description
+        description,
+        allow_public_registration
       } = req.body;
 
       if (!id) {
@@ -125,10 +126,11 @@ export default async function handler(req, res) {
           max_participants = COALESCE($6, max_participants),
           status = COALESCE($7, status),
           description = COALESCE($8, description),
+          allow_public_registration = COALESCE($9, allow_public_registration),
           updated_at = CURRENT_TIMESTAMP
-        WHERE id = $9
+        WHERE id = $10
         RETURNING *
-      `, [training_type, session_date, start_time, end_time, location, max_participants, status, description, id]);
+      `, [training_type, session_date, start_time, end_time, location, max_participants, status, description, allow_public_registration, id]);
 
       if (result.rows.length === 0) {
         return res.status(404).json({ error: 'Sessie niet gevonden' });

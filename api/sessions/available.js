@@ -45,6 +45,7 @@ export default async function handler(req, res) {
       LEFT JOIN aanmeldingen a ON s.id = a.session_id
       WHERE s.status = 'open'
         AND s.session_date >= CURRENT_DATE
+        AND s.allow_public_registration = true
     `;
 
     const params = [];
