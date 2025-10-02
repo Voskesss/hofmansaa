@@ -41,3 +41,4 @@ jspm_packages
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+.vercel
