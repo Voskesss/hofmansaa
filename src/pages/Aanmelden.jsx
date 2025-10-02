@@ -29,7 +29,8 @@ function Aanmelden() {
     contactName: '',
     contactEmail: '',
     training: [],
-    message: ''
+    message: '',
+    sessionId: null
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,10 +40,26 @@ function Aanmelden() {
     severity: 'success'
   });
   const [bsnError, setBsnError] = useState('');
+  const [sessionSelectionEnabled, setSessionSelectionEnabled] = useState(false);
+  const [availableSessions, setAvailableSessions] = useState([]);
+  const [loadingSessions, setLoadingSessions] = useState(false);
 
   useEffect(() => {
     initEmailJS();
+    fetchSettings();
   }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const response = await fetch('/api/settings?key=session_selection_enabled');
+      const data = await response.json();
+      if (data.success && data.data) {
+        setSessionSelectionEnabled(data.data.setting_value === 'true');
+      }
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+  };
 
   useEffect(() => {
     const selectedTraining = localStorage.getItem('selectedTraining');
@@ -54,6 +71,31 @@ function Aanmelden() {
       localStorage.removeItem('selectedTraining');
     }
   }, []);
+
+  useEffect(() => {
+    if (sessionSelectionEnabled && formData.training.length > 0) {
+      fetchAvailableSessions();
+    } else {
+      setAvailableSessions([]);
+      setFormData(prev => ({ ...prev, sessionId: null }));
+    }
+  }, [sessionSelectionEnabled, formData.training]);
+
+  const fetchAvailableSessions = async () => {
+    setLoadingSessions(true);
+    try {
+      const trainingType = formData.training[0]; // Neem eerste training
+      const response = await fetch(`/api/sessions/available?training_type=${trainingType}`);
+      const data = await response.json();
+      if (data.success) {
+        setAvailableSessions(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching sessions:', error);
+    } finally {
+      setLoadingSessions(false);
+    }
+  };
 
   const validateBSN = (bsn) => {
     // Verwijder spaties en streepjes
@@ -158,7 +200,7 @@ function Aanmelden() {
         email: '', phone: '',
         street: '', houseNumber: '', postalCode: '', city: '', country: 'Nederland',
         orgName: '', contactName: '', contactEmail: '',
-        training: [], message: ''
+        training: [], message: '', sessionId: null
       });
 
     } catch (error) {
@@ -434,6 +476,45 @@ function Aanmelden() {
                       <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
                     </Select>
                   </FormControl>
+
+                  {/* Sessie Selectie (conditionally shown) */}
+                  {sessionSelectionEnabled && formData.training.length > 0 && (
+                    <FormControl fullWidth sx={{ mb: 2 }}>
+                      <InputLabel>Kies een Sessie *</InputLabel>
+                      <Select
+                        name="sessionId"
+                        value={formData.sessionId || ''}
+                        onChange={handleChange}
+                        label="Kies een Sessie *"
+                        required
+                        disabled={loadingSessions || availableSessions.length === 0}
+                      >
+                        {loadingSessions ? (
+                          <MenuItem disabled>Sessies laden...</MenuItem>
+                        ) : availableSessions.length === 0 ? (
+                          <MenuItem disabled>Geen beschikbare sessies voor deze training</MenuItem>
+                        ) : (
+                          availableSessions.map((session) => (
+                            <MenuItem key={session.id} value={session.id}>
+                              {new Date(session.session_date).toLocaleDateString('nl-NL', { 
+                                weekday: 'short', 
+                                day: 'numeric', 
+                                month: 'short',
+                                year: 'numeric'
+                              })} - {session.start_time.substring(0,5)} tot {session.end_time.substring(0,5)} 
+                              {session.location && ` | ${session.location}`}
+                              {session.available_spots !== undefined && ` (${session.available_spots} plekken beschikbaar)`}
+                            </MenuItem>
+                          ))
+                        )}
+                      </Select>
+                      {!loadingSessions && availableSessions.length === 0 && (
+                        <Typography variant="caption" color="error" sx={{ mt: 1 }}>
+                          Er zijn momenteel geen beschikbare sessies. Neem contact met ons op voor meer informatie.
+                        </Typography>
+                      )}
+                    </FormControl>
+                  )}
                   
                   <TextField 
                     fullWidth 

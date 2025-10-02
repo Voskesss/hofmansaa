@@ -62,6 +62,7 @@ export default async function handler(req, res) {
         street, house_number, postal_code, city, country,
         org_name, contact_name, contact_email,
         trainings, message,
+        session_id,
         status
       ) VALUES (
         ${formData.firstName},
@@ -82,6 +83,7 @@ export default async function handler(req, res) {
         ${formData.contactEmail || null},
         ${trainingsArray},
         ${formData.message || null},
+        ${formData.sessionId || null},
         'nieuw'
       )
       RETURNING id, created_at
