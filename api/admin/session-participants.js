@@ -163,6 +163,9 @@ export default async function handler(req, res) {
         postalCode,
         city,
         country,
+        orgName,
+        contactName,
+        contactEmail,
         training,
         message
       } = req.body;
@@ -173,19 +176,24 @@ export default async function handler(req, res) {
         });
       }
 
+      // trainings moet een array zijn voor de database
+      const trainingsArray = training ? [training] : ['Niet opgegeven'];
+
       const result = await client.query(`
         INSERT INTO aanmeldingen (
           first_name, middle_name, last_name,
           birth_date, birth_place, bsn,
           email, phone,
           street, house_number, postal_code, city, country,
+          org_name, contact_name, contact_email,
           trainings, session_id, status, message
         ) VALUES (
           $1, $2, $3,
           $4, $5, $6,
           $7, $8,
           $9, $10, $11, $12, $13,
-          $14, $15, 'nieuw', $16
+          $14, $15, $16,
+          $17, $18, 'nieuw', $19
         )
         RETURNING id, created_at
       `, [
@@ -202,7 +210,10 @@ export default async function handler(req, res) {
         postalCode || '0000AA', 
         city || 'Onbekend', 
         country || 'Nederland',
-        training || 'Niet opgegeven', 
+        orgName || null,
+        contactName || null,
+        contactEmail || null,
+        trainingsArray, 
         sessionId, 
         message || 'Handmatig toegevoegd door admin'
       ]);

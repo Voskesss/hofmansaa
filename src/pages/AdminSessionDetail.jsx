@@ -43,6 +43,9 @@ function AdminSessionDetail() {
     postalCode: '',
     city: '',
     country: 'Nederland',
+    orgName: '',
+    contactName: '',
+    contactEmail: '',
     message: ''
   });
 
@@ -231,6 +234,9 @@ function AdminSessionDetail() {
         postalCode: '',
         city: '',
         country: 'Nederland',
+        orgName: '',
+        contactName: '',
+        contactEmail: '',
         message: ''
       });
       fetchSessionDetails();
@@ -623,6 +629,37 @@ function AdminSessionDetail() {
                   <MenuItem value="Anders">Anders</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+          </Grid>
+
+          <Typography variant="h6" sx={{ mt: 3, mb: 1, color: 'primary.main' }}>
+            🏢 Organisatie (optioneel)
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Naam bedrijf/organisatie"
+                value={newParticipant.orgName}
+                onChange={(e) => setNewParticipant({...newParticipant, orgName: e.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Naam contactpersoon"
+                value={newParticipant.contactName}
+                onChange={(e) => setNewParticipant({...newParticipant, contactName: e.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Email contactpersoon"
+                type="email"
+                value={newParticipant.contactEmail}
+                onChange={(e) => setNewParticipant({...newParticipant, contactEmail: e.target.value})}
+              />
             </Grid>
           </Grid>
 
