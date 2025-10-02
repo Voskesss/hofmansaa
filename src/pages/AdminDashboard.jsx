@@ -259,7 +259,7 @@ function AdminDashboard() {
         noindex={true}
       />
 
-      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mb: 4 }}>
+      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 8, mb: 4 }}>
         <Container maxWidth="xl">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Box>
@@ -301,7 +301,7 @@ function AdminDashboard() {
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ py: 4, pb: 6 }}>
+      <Container maxWidth="xl" sx={{ py: 3, pb: 8 }}>
         {error && (
           <Alert severity="error" sx={{ mb: 3 }}>
             {error}
