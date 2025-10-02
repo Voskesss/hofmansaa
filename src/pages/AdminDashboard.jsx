@@ -272,6 +272,15 @@ function AdminDashboard() {
             </Box>
             <Box>
               <Button
+                startIcon={<FileDownloadIcon />}
+                onClick={handleExportToExcel}
+                disabled={selectedIds.length === 0}
+                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                variant="outlined"
+              >
+                Export Excel ({selectedIds.length})
+              </Button>
+              <Button
                 startIcon={<RefreshIcon />}
                 onClick={fetchAanmeldingen}
                 sx={{ mr: 2, color: 'white', borderColor: 'white' }}
@@ -292,7 +301,7 @@ function AdminDashboard() {
         </Container>
       </Box>
 
-      <Container maxWidth="xl" sx={{ py: 6, pb: 10 }}>
+      <Container maxWidth="xl" sx={{ py: 4, pb: 6 }}>
         {error && (
           <Alert severity="error" sx={{ mb: 3 }}>
             {error}
@@ -368,6 +377,13 @@ function AdminDashboard() {
           <Table>
             <TableHead sx={{ bgcolor: 'grey.100' }}>
               <TableRow>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    checked={selectedIds.length === aanmeldingen.length && aanmeldingen.length > 0}
+                    indeterminate={selectedIds.length > 0 && selectedIds.length < aanmeldingen.length}
+                    onChange={handleSelectAll}
+                  />
+                </TableCell>
                 <TableCell><strong>ID</strong></TableCell>
                 <TableCell><strong>Naam</strong></TableCell>
                 <TableCell><strong>Email</strong></TableCell>
@@ -381,7 +397,7 @@ function AdminDashboard() {
             <TableBody>
               {aanmeldingen.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
+                  <TableCell colSpan={9} align="center" sx={{ py: 4 }}>
                     <Typography color="text.secondary">
                       Geen aanmeldingen gevonden
                     </Typography>
@@ -390,6 +406,12 @@ function AdminDashboard() {
               ) : (
                 aanmeldingen.map((item) => (
                   <TableRow key={item.id} hover>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={selectedIds.includes(item.id)}
+                        onChange={() => handleSelectOne(item.id)}
+                      />
+                    </TableCell>
                     <TableCell>{item.id}</TableCell>
                     <TableCell>
                       {[item.first_name, item.middle_name, item.last_name]
