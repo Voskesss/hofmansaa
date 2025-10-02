@@ -203,7 +203,8 @@ function AdminSessionDetail() {
         },
         body: JSON.stringify({
           sessionId: parseInt(id),
-          ...newParticipant
+          ...newParticipant,
+          training: session?.training_type || 'Niet opgegeven' // Auto-fill training
         })
       });
 
@@ -215,7 +216,23 @@ function AdminSessionDetail() {
 
       alert(data.message);
       setAddDialogOpen(false);
-      setNewParticipant({ firstName: '', lastName: '', email: '', phone: '', training: '' });
+      // Reset form
+      setNewParticipant({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        birthDate: '',
+        birthPlace: '',
+        bsn: '',
+        email: '',
+        phone: '',
+        street: '',
+        houseNumber: '',
+        postalCode: '',
+        city: '',
+        country: 'Nederland',
+        message: ''
+      });
       fetchSessionDetails();
 
     } catch (err) {
@@ -466,14 +483,20 @@ function AdminSessionDetail() {
       </Dialog>
 
       {/* Add Participant Dialog */}
-      <Dialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Nieuwe Deelnemer Toevoegen</DialogTitle>
+      <Dialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)} maxWidth="md" fullWidth>
+        <DialogTitle>Nieuwe Deelnemer Toevoegen aan Sessie</DialogTitle>
         <DialogContent>
-          <Typography variant="body2" sx={{ mb: 2 }}>
-            Voeg handmatig een deelnemer toe aan deze sessie.
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Training: <strong>{session?.training_type}</strong> | 
+            Datum: <strong>{session && formatDate(session.session_date)}</strong> | 
+            Locatie: <strong>{session?.location}</strong>
+          </Alert>
+          
+          <Typography variant="h6" sx={{ mt: 2, mb: 1, color: 'primary.main' }}>
+            👤 Persoonlijke Gegevens
           </Typography>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
                 label="Voornaam *"
@@ -481,7 +504,15 @@ function AdminSessionDetail() {
                 onChange={(e) => setNewParticipant({...newParticipant, firstName: e.target.value})}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="Tussenvoegsel"
+                value={newParticipant.middleName}
+                onChange={(e) => setNewParticipant({...newParticipant, middleName: e.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
                 label="Achternaam *"
@@ -489,7 +520,40 @@ function AdminSessionDetail() {
                 onChange={(e) => setNewParticipant({...newParticipant, lastName: e.target.value})}
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Geboortedatum *"
+                type="date"
+                value={newParticipant.birthDate}
+                onChange={(e) => setNewParticipant({...newParticipant, birthDate: e.target.value})}
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Geboorteplaats *"
+                value={newParticipant.birthPlace}
+                onChange={(e) => setNewParticipant({...newParticipant, birthPlace: e.target.value})}
+              />
+            </Grid>
             <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="BSN *"
+                value={newParticipant.bsn}
+                onChange={(e) => setNewParticipant({...newParticipant, bsn: e.target.value})}
+                helperText="9 cijfers"
+              />
+            </Grid>
+          </Grid>
+
+          <Typography variant="h6" sx={{ mt: 3, mb: 1, color: 'primary.main' }}>
+            📧 Contact
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Email *"
@@ -498,32 +562,102 @@ function AdminSessionDetail() {
                 onChange={(e) => setNewParticipant({...newParticipant, email: e.target.value})}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Telefoon"
+                label="Telefoon *"
                 value={newParticipant.phone}
                 onChange={(e) => setNewParticipant({...newParticipant, phone: e.target.value})}
               />
             </Grid>
-            <Grid item xs={12}>
+          </Grid>
+
+          <Typography variant="h6" sx={{ mt: 3, mb: 1, color: 'primary.main' }}>
+            📍 Adres
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={8}>
               <TextField
                 fullWidth
-                label="Training"
-                value={newParticipant.training}
-                onChange={(e) => setNewParticipant({...newParticipant, training: e.target.value})}
+                label="Straat *"
+                value={newParticipant.street}
+                onChange={(e) => setNewParticipant({...newParticipant, street: e.target.value})}
               />
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="Huisnummer *"
+                value={newParticipant.houseNumber}
+                onChange={(e) => setNewParticipant({...newParticipant, houseNumber: e.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                label="Postcode *"
+                value={newParticipant.postalCode}
+                onChange={(e) => setNewParticipant({...newParticipant, postalCode: e.target.value})}
+                placeholder="1234AB"
+              />
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <TextField
+                fullWidth
+                label="Plaats *"
+                value={newParticipant.city}
+                onChange={(e) => setNewParticipant({...newParticipant, city: e.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>Land</InputLabel>
+                <Select
+                  value={newParticipant.country}
+                  onChange={(e) => setNewParticipant({...newParticipant, country: e.target.value})}
+                  label="Land"
+                >
+                  <MenuItem value="Nederland">Nederland</MenuItem>
+                  <MenuItem value="België">België</MenuItem>
+                  <MenuItem value="Duitsland">Duitsland</MenuItem>
+                  <MenuItem value="Anders">Anders</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
+
+          <Typography variant="h6" sx={{ mt: 3, mb: 1, color: 'primary.main' }}>
+            💬 Bericht
+          </Typography>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            label="Opmerkingen"
+            value={newParticipant.message}
+            onChange={(e) => setNewParticipant({...newParticipant, message: e.target.value})}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAddDialogOpen(false)}>Annuleren</Button>
           <Button 
             onClick={handleAddParticipant} 
             variant="contained"
-            disabled={!newParticipant.firstName || !newParticipant.lastName || !newParticipant.email}
+            disabled={
+              !newParticipant.firstName || 
+              !newParticipant.lastName || 
+              !newParticipant.email ||
+              !newParticipant.birthDate ||
+              !newParticipant.birthPlace ||
+              !newParticipant.bsn ||
+              !newParticipant.phone ||
+              !newParticipant.street ||
+              !newParticipant.houseNumber ||
+              !newParticipant.postalCode ||
+              !newParticipant.city
+            }
           >
-            Toevoegen
+            Deelnemer Toevoegen
           </Button>
         </DialogActions>
       </Dialog>
