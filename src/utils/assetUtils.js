@@ -1,16 +1,18 @@
 /**
- * Utility functie om asset URLs correct te genereren voor zowel lokale ontwikkeling als GitHub Pages
+ * Utility functie om asset URLs correct te genereren voor lokaal, GitHub Pages en Vercel
  * @param {string} assetPath - Het pad naar de asset, beginnend met een forward slash, bijv. '/assets/image.png'
  * @returns {string} - De volledige URL naar de asset
  */
 export function getAssetPath(assetPath) {
-  // Controleer of we in productie draaien (GitHub Pages)
-  const isProduction = import.meta.env.PROD;
+  // Vite's import.meta.env.BASE_URL wordt automatisch gezet door vite.config.js
+  // Op Vercel: '/', op GitHub Pages: '/hofmansaa/', lokaal: '/'
+  const basePath = import.meta.env.BASE_URL;
   
-  // Voeg de base URL toe in productie
-  const fullPath = isProduction 
-    ? `/hofmansaa${assetPath}` 
-    : assetPath;
-  console.log(`Asset path: ${fullPath} (PROD: ${import.meta.env.PROD})`); // Debug log
+  // Verwijder leading slash van assetPath als die er is
+  const cleanPath = assetPath.startsWith('/') ? assetPath.slice(1) : assetPath;
+  
+  // Combineer base met asset path
+  const fullPath = `${basePath}${cleanPath}`;
+  
   return fullPath;
 }
