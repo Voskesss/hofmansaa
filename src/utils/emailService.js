@@ -6,7 +6,7 @@ export const EMAIL_CONFIG = {
   TEMPLATE_TO_COMPANY: 'template_hhpbyg3', // Contact Us template (naar bedrijf)
   TEMPLATE_AUTOREPLY: 'template_wcmhqto',  // Auto-Reply template (naar gebruiker)
   PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rEq2RCCaocFAkpk72',
-  TO_EMAIL: 'website@hofmansautomotiveacademie.nl'
+  TO_EMAIL: 'support@hofmansautomotiveacademie.nl'
 }; 
 
 // Initialiseer EmailJS (roep dit aan in useEffect)
@@ -200,7 +200,7 @@ const createAanmeldReplyHTML = (name, selectedTrainings) => `
   <div style="background-color: #f0f9ff; padding: 16px; border-left: 4px solid #006BB2; margin: 20px 0; border-radius: 4px;">
     <p style="margin: 0; color: #1e293b;">
       <strong>💡 Vragen over je aanmelding?</strong><br/>
-      Neem gerust contact met ons op via <a href="mailto:website@hofmansautomotiveacademie.nl" style="color: #006BB2;">website@hofmansautomotiveacademie.nl</a>
+      Neem gerust contact met ons op via <a href="mailto:support@hofmansautomotiveacademie.nl" style="color: #006BB2;">support@hofmansautomotiveacademie.nl</a>
     </p>
   </div>
   
@@ -211,7 +211,7 @@ const createAanmeldReplyHTML = (name, selectedTrainings) => `
   
   <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #eaeaea; color: #64748b; font-size: 14px;">
     <p style="margin: 4px 0;">📍 Boskantse Broekstraat 3, 6603 LD Wijchen</p>
-    <p style="margin: 4px 0;">📧 <a href="mailto:website@hofmansautomotiveacademie.nl" style="color: #006BB2;">website@hofmansautomotiveacademie.nl</a></p>
+    <p style="margin: 4px 0;">📧 <a href="mailto:support@hofmansautomotiveacademie.nl" style="color: #006BB2;">support@hofmansautomotiveacademie.nl</a></p>
     <p style="margin: 4px 0;">🌐 <a href="https://hofmansautomotiveacademie.nl" style="color: #006BB2;">hofmansautomotiveacademie.nl</a></p>
   </div>
 </div>
