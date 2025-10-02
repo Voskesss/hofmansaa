@@ -6,7 +6,7 @@ export const EMAIL_CONFIG = {
   TEMPLATE_TO_COMPANY: 'template_hhpbyg3', // Contact Us template (naar bedrijf)
   TEMPLATE_AUTOREPLY: 'template_wcmhqto',  // Auto-Reply template (naar gebruiker)
   PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rBcqZk3mmSP0xkpQh',
-  TO_EMAIL: 'info@hofmansautomotiveacademie.nl'
+  TO_EMAIL: 'website@hofmansautomotiveacademie.nl'
 };
 
 // Initialiseer EmailJS (roep dit aan in useEffect)
