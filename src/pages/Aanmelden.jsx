@@ -7,7 +7,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
-import emailjs from '@emailjs/browser';
+import { initEmailJS, sendAanmeldEmail } from '../utils/emailService';
 
 function Aanmelden() {
   const theme = useTheme();
@@ -35,13 +35,8 @@ function Aanmelden() {
   });
   const [bsnError, setBsnError] = useState('');
 
-  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_jyo37pp';
-  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_37a1ftj';
-  const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID || 'template_06x3cuo';
-  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rBcqZk3mmSP0xkpQh';
-
   useEffect(() => {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
+    initEmailJS();
   }, []);
 
   useEffect(() => {
@@ -118,45 +113,8 @@ function Aanmelden() {
 
       const fullName = `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim();
 
-      const templateParams = {
-        from_name: fullName,
-        first_name: formData.firstName,
-        middle_name: formData.middleName,
-        last_name: formData.lastName,
-        from_email: formData.email,
-        phone: formData.phone,
-        birth_date: formData.birthDate,
-        birth_place: formData.birthPlace,
-        bsn: formData.bsn,
-        org_name: formData.orgName,
-        contact_name: formData.contactName,
-        contact_email: formData.contactEmail,
-        selected_trainings: selectedTrainings,
-        message: formData.message,
-        to_email: 'info@hofmansautomotiveacademie.nl'
-      };
-
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
-
-      const autoReplyTemplateParams = {
-        to_name: fullName,
-        to_email: formData.email,
-        phone: formData.phone,
-        selected_trainings: selectedTrainings,
-        message: formData.message
-      };
-      
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_AUTOREPLY_TEMPLATE_ID,
-        autoReplyTemplateParams,
-        EMAILJS_PUBLIC_KEY
-      );
+      // Verstuur aanmelding via emailService
+      await sendAanmeldEmail(formData, selectedTrainings);
 
       setNotification({
         open: true,

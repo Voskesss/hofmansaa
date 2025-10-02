@@ -9,7 +9,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
-import emailjs from '@emailjs/browser';
+import { initEmailJS, sendContactEmail } from '../utils/emailService';
 
 function Contact() {
   const theme = useTheme();
@@ -28,12 +28,8 @@ function Contact() {
     severity: 'success'
   });
 
-  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_jyo37pp';
-  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_37a1ftj';
-  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rBcqZk3mmSP0xkpQh';
-
   useEffect(() => {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
+    initEmailJS();
   }, []);
 
   const handleChange = (e) => {
@@ -46,20 +42,7 @@ function Contact() {
     setIsSubmitting(true);
 
     try {
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        phone: formData.phone || 'Niet opgegeven',
-        message: formData.message,
-        to_email: 'info@hofmansautomotiveacademie.nl'
-      };
-
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
+      await sendContactEmail(formData);
 
       setNotification({
         open: true,
