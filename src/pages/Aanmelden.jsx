@@ -479,15 +479,19 @@ function Aanmelden() {
 
                   {/* Sessie Selectie (conditionally shown) */}
                   {sessionSelectionEnabled && formData.training.length > 0 && (
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                      <InputLabel>Kies een Sessie *</InputLabel>
-                      <Select
-                        name="sessionId"
-                        value={formData.sessionId || ''}
-                        onChange={handleChange}
-                        label="Kies een Sessie *"
-                        required
-                        disabled={loadingSessions || availableSessions.length === 0}
+                    <Box sx={{ mb: 2 }}>
+                      <Typography variant="h6" sx={{ mb: 1, color: 'primary.main', fontWeight: 600 }}>
+                        📅 Welke datum past jou het beste?
+                      </Typography>
+                      <FormControl fullWidth>
+                        <InputLabel>Kies je voorkeursmoment *</InputLabel>
+                        <Select
+                          name="sessionId"
+                          value={formData.sessionId || ''}
+                          onChange={handleChange}
+                          label="Kies je voorkeursmoment *"
+                          required
+                          disabled={loadingSessions || availableSessions.length === 0}
                       >
                         {loadingSessions ? (
                           <MenuItem disabled>Sessies laden...</MenuItem>
@@ -513,7 +517,8 @@ function Aanmelden() {
                           Er zijn momenteel geen beschikbare sessies. Neem contact met ons op voor meer informatie.
                         </Typography>
                       )}
-                    </FormControl>
+                      </FormControl>
+                    </Box>
                   )}
                   
                   <TextField 
