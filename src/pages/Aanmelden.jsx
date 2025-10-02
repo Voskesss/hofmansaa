@@ -527,7 +527,7 @@ function Aanmelden() {
                           value={formData.sessionId || ''}
                           onChange={handleChange}
                           label="Kies je voorkeursmoment *"
-                          required
+                          required={availableSessions.length > 0}
                           disabled={loadingSessions || availableSessions.length === 0}
                       >
                         {loadingSessions ? (
@@ -550,9 +550,15 @@ function Aanmelden() {
                         )}
                       </Select>
                       {!loadingSessions && availableSessions.length === 0 && (
-                        <Typography variant="caption" color="error" sx={{ mt: 1 }}>
-                          Er zijn momenteel geen beschikbare sessies. Neem contact met ons op voor meer informatie.
-                        </Typography>
+                        <Box sx={{ mt: 2, p: 2, bgcolor: 'info.light', borderRadius: 1 }}>
+                          <Typography variant="body2" color="info.dark" fontWeight="bold" gutterBottom>
+                            📅 Geen beschikbare sessies
+                          </Typography>
+                          <Typography variant="body2" color="info.dark">
+                            Er zijn momenteel geen openbare sessies voor deze training. 
+                            Vul het formulier in en wij nemen contact met je op om een datum in te plannen!
+                          </Typography>
+                        </Box>
                       )}
                       </FormControl>
                     </Box>
