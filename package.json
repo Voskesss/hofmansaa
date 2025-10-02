@@ -21,12 +21,11 @@
     "react-router-dom": "^6.11.2"
   },
   "scripts": {
+    "dev": "vite",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "setup-db": "node scripts/setup-database.js",
-    "dev": "mv vercel.json vercel.json.bak 2>/dev/null || true && vercel dev",
-    "dev:stop": "mv vercel.json.bak vercel.json 2>/dev/null || true"
+    "setup-db": "node scripts/setup-database.js"
   },
   "eslintConfig": {
     "extends": [
