@@ -20,6 +20,11 @@ function Aanmelden() {
     bsn: '',
     email: '',
     phone: '',
+    street: '',
+    houseNumber: '',
+    postalCode: '',
+    city: '',
+    country: 'Nederland',
     orgName: '',
     contactName: '',
     contactEmail: '',
@@ -126,6 +131,7 @@ function Aanmelden() {
         firstName: '', middleName: '', lastName: '',
         birthDate: '', birthPlace: '', bsn: '',
         email: '', phone: '',
+        street: '', houseNumber: '', postalCode: '', city: '', country: 'Nederland',
         orgName: '', contactName: '', contactEmail: '',
         training: [], message: ''
       });
@@ -285,6 +291,71 @@ function Aanmelden() {
                     helperText={bsnError || 'Moet voldoen aan 11-proef (8 of 9 cijfers)'}
                     sx={{ mb: 2 }}
                   />
+
+                  <Typography variant="h6" sx={{ mt: 3, mb: 2, color: 'primary.main', fontWeight: 600 }}>
+                    📍 Adresgegevens
+                  </Typography>
+
+                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '2fr 1fr' }, gap: 2 }}>
+                    <TextField 
+                      label="Straatnaam"
+                      name="street"
+                      value={formData.street}
+                      onChange={handleChange}
+                      required
+                      autoComplete="street-address"
+                    />
+                    <TextField 
+                      label="Huisnummer"
+                      name="houseNumber"
+                      value={formData.houseNumber}
+                      onChange={handleChange}
+                      required
+                      autoComplete="off"
+                    />
+                  </Box>
+
+                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 2fr' }, gap: 2 }}>
+                    <TextField 
+                      label="Postcode"
+                      name="postalCode"
+                      value={formData.postalCode}
+                      onChange={handleChange}
+                      required
+                      autoComplete="postal-code"
+                      placeholder="1234 AB"
+                    />
+                    <TextField 
+                      label="Plaats"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      required
+                      autoComplete="address-level2"
+                    />
+                  </Box>
+
+                  <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Land</InputLabel>
+                    <Select
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      label="Land"
+                      required
+                    >
+                      <MenuItem value="Nederland">Nederland</MenuItem>
+                      <MenuItem value="België">België</MenuItem>
+                      <MenuItem value="Duitsland">Duitsland</MenuItem>
+                      <MenuItem value="Frankrijk">Frankrijk</MenuItem>
+                      <MenuItem value="Luxemburg">Luxemburg</MenuItem>
+                      <MenuItem value="Anders">Anders</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  <Typography variant="h6" sx={{ mt: 3, mb: 2, color: 'primary.main', fontWeight: 600 }}>
+                    🏢 Organisatiegegevens (optioneel)
+                  </Typography>
 
                   <TextField 
                     fullWidth

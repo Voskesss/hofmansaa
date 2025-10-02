@@ -153,6 +153,14 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
     <p style="margin: 8px 0;"><strong>Telefoon:</strong> ${formData.phone}</p>
   </div>
 
+  <div style="background-color: #fff7ed; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin-top: 0; color: #ff6b35;">Adresgegevens</h3>
+    <p style="margin: 8px 0;"><strong>Straat + Huisnummer:</strong> ${formData.street} ${formData.houseNumber}</p>
+    <p style="margin: 8px 0;"><strong>Postcode:</strong> ${formData.postalCode}</p>
+    <p style="margin: 8px 0;"><strong>Plaats:</strong> ${formData.city}</p>
+    <p style="margin: 8px 0;"><strong>Land:</strong> ${formData.country}</p>
+  </div>
+
   <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
     <h3 style="margin-top: 0; color: #006BB2;">Organisatie</h3>
     <p style="margin: 8px 0;"><strong>Organisatie:</strong> ${formData.orgName || 'Niet opgegeven'}</p>
@@ -177,7 +185,7 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
   <h3 style="color: #006BB2;">📊 Excel Copy-Paste Data:</h3>
   <p style="color: #64748b; font-size: 14px; margin-bottom: 10px;">Selecteer de onderstaande tabel en kopieer/plak in Excel. Elke kolom komt automatisch in een aparte cel.</p>
   
-  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 12px; background-color: #f9fafb;">
+  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 11px; background-color: #f9fafb;">
     <thead>
       <tr style="background-color: #006BB2; color: white;">
         <th>Voornaam</th>
@@ -188,6 +196,11 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
         <th>BSN</th>
         <th>Email</th>
         <th>Telefoon</th>
+        <th>Straat</th>
+        <th>Huisnr</th>
+        <th>Postcode</th>
+        <th>Plaats</th>
+        <th>Land</th>
         <th>Organisatie</th>
         <th>Contactpersoon</th>
         <th>Contact Email</th>
@@ -205,6 +218,11 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
         <td>${formData.bsn}</td>
         <td>${formData.email}</td>
         <td>${formData.phone}</td>
+        <td>${formData.street}</td>
+        <td>${formData.houseNumber}</td>
+        <td>${formData.postalCode}</td>
+        <td>${formData.city}</td>
+        <td>${formData.country}</td>
         <td>${formData.orgName || ''}</td>
         <td>${formData.contactName || ''}</td>
         <td>${formData.contactEmail || ''}</td>
