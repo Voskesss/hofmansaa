@@ -63,7 +63,7 @@ const TrainingCards = () => {
         </Typography>
       </motion.div>
 
-      <Grid container spacing={4} sx={{ alignItems: 'stretch' }}>
+      <Grid container spacing={5} sx={{ alignItems: 'stretch' }}>
         {/* Trainingen voertuigtechniek werkplaats */}
         <Grid item xs={12} sm={6} md={3}>
           <motion.div

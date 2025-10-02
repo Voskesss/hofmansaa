@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Trainingen from './pages/Trainingen';
 import Contact from './pages/Contact';
+import Aanmelden from './pages/Aanmelden';
 import Voertuigtechniek from './pages/Voertuigtechniek';
 import LLO from './pages/LLO';
 import NederlandsRekenen from './pages/NederlandsRekenen';
@@ -280,6 +281,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/trainingen" element={<Trainingen />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/aanmelden" element={<Aanmelden />} />
         <Route path="/voertuigtechniek" element={<Voertuigtechniek />} />
         <Route path="/llo" element={<LLO />} />
         <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />

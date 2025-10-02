@@ -1,29 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions, useTheme, alpha } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Dialog, DialogContent, DialogActions, useTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
 import emailjs from '@emailjs/browser';
 
 function Contact() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    birthDate: '',
-    birthPlace: '',
-    bsn: '',
+    name: '',
     email: '',
     phone: '',
-    orgName: '',
-    contactName: '',
-    contactEmail: '',
-    training: [],
     message: ''
   });
 
@@ -33,105 +27,29 @@ function Contact() {
     message: '',
     severity: 'success'
   });
-  const [bsnError, setBsnError] = useState('');
 
   const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_jyo37pp';
   const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_37a1ftj';
-  const EMAILJS_AUTOREPLY_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID || 'template_06x3cuo';
   const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rBcqZk3mmSP0xkpQh';
 
   useEffect(() => {
     emailjs.init(EMAILJS_PUBLIC_KEY);
   }, []);
 
-  useEffect(() => {
-    const selectedTraining = localStorage.getItem('selectedTraining');
-    if (selectedTraining) {
-      setFormData(prevState => ({
-        ...prevState,
-        training: [...prevState.training, selectedTraining]
-      }));
-      localStorage.removeItem('selectedTraining');
-    }
-  }, []);
-
-  const validateBSN = (bsn) => {
-    // Verwijder spaties en streepjes
-    const cleaned = bsn.replace(/[\s-]/g, '');
-    
-    // Moet 8 of 9 cijfers zijn
-    if (!/^\d{8,9}$/.test(cleaned)) {
-      return false;
-    }
-    
-    // Pad met 0 als het 8 cijfers zijn
-    const bsnNumber = cleaned.padStart(9, '0');
-    
-    // 11-proef: vermenigvuldig elk cijfer met zijn positie (9,8,7,6,5,4,3,2,-1)
-    let sum = 0;
-    for (let i = 0; i < 9; i++) {
-      const multiplier = i === 8 ? -1 : 9 - i;
-      sum += parseInt(bsnNumber[i]) * multiplier;
-    }
-    
-    // Som moet deelbaar zijn door 11
-    return sum % 11 === 0;
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    // BSN validatie tijdens typen
-    if (name === 'bsn') {
-      if (value && !validateBSN(value)) {
-        setBsnError('Ongeldig BSN nummer (moet voldoen aan 11-proef)');
-      } else {
-        setBsnError('');
-      }
-    }
-    
     setFormData(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Controleer BSN voor verzending
-    if (formData.bsn && !validateBSN(formData.bsn)) {
-      setBsnError('Ongeldig BSN nummer. Controleer het nummer en probeer opnieuw.');
-      return;
-    }
-    
     setIsSubmitting(true);
 
     try {
-      const selectedOptions = {
-        'voertuigtechniek': 'Voertuigtechniek Werkplaats',
-        'llo': 'Leven Lang Ontwikkelen (LLO)',
-        'niet-technisch': 'Niet-Technisch Personeel',
-        'nederlands-rekenen': 'Nederlands & Rekenen'
-      };
-      
-      const selectedTrainings = formData.training.length > 0 
-        ? formData.training.map(item => selectedOptions[item]).join(', ')
-        : 'Geen specifieke training geselecteerd';
-
-      const fullName = `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim();
-
       const templateParams = {
-        from_name: fullName,
-        first_name: formData.firstName,
-        middle_name: formData.middleName,
-        last_name: formData.lastName,
+        from_name: formData.name,
         from_email: formData.email,
-        phone: formData.phone,
-        birth_date: formData.birthDate,
-        birth_place: formData.birthPlace,
-        bsn: formData.bsn,
-        org_name: formData.orgName,
-        contact_name: formData.contactName,
-        contact_email: formData.contactEmail,
-        selected_trainings: selectedTrainings,
+        phone: formData.phone || 'Niet opgegeven',
         message: formData.message,
         to_email: 'info@hofmansautomotiveacademie.nl'
       };
@@ -143,33 +61,17 @@ function Contact() {
         EMAILJS_PUBLIC_KEY
       );
 
-      const autoReplyTemplateParams = {
-        to_name: fullName,
-        to_email: formData.email,
-        phone: formData.phone,
-        selected_trainings: selectedTrainings,
-        message: formData.message
-      };
-      
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_AUTOREPLY_TEMPLATE_ID,
-        autoReplyTemplateParams,
-        EMAILJS_PUBLIC_KEY
-      );
-
       setNotification({
         open: true,
-        message: `🎉 Fantastisch ${fullName}!\n\nWat leuk dat je ons een bericht hebt gestuurd! We hebben je aanmelding voor "${selectedTrainings}" ontvangen.\n\nWe nemen zo spoedig mogelijk contact met je op voor verdere informatie. Tot snel! 🚀`,
+        message: `🎉 Bedankt ${formData.name}!\n\nWe hebben je bericht ontvangen en nemen zo spoedig mogelijk contact met je op. Tot snel! 🚀`,
         severity: 'success'
       });
 
       setFormData({ 
-        firstName: '', middleName: '', lastName: '',
-        birthDate: '', birthPlace: '', bsn: '',
-        email: '', phone: '',
-        orgName: '', contactName: '', contactEmail: '',
-        training: [], message: ''
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
       });
 
     } catch (error) {
@@ -191,9 +93,9 @@ function Contact() {
   return (
     <Box>
       <SEO 
-        title="Contact & Aanmelden | Hofmans Automotive Academie"
-        description="Meld je aan voor een training of neem contact op met Hofmans Automotive Academie voor meer informatie over onze automotive opleidingen."
-        keywords="contact Hofmans, aanmelden training, automotive opleiding, Hofmans Automotive Academie"
+        title="Contact | Hofmans Automotive Academie"
+        description="Neem contact op met Hofmans Automotive Academie voor meer informatie over onze automotive opleidingen."
+        keywords="contact Hofmans, automotive opleiding, Hofmans Automotive Academie"
         image="/assets/logo-hofmans.png"
         url="https://hofmansautomotiveacademie.github.io/contact"
       />
@@ -214,10 +116,10 @@ function Contact() {
             transition={{ duration: 0.8 }}
           >
             <Typography variant="h2" sx={{ fontWeight: 'bold', marginBottom: 3 }}>
-              Neem Contact Op & Meld Je Aan
+              Neem Contact Op
             </Typography>
             <Typography variant="h5" sx={{ maxWidth: '800px', margin: '0 auto', mt: 4 }}>
-              Ben je klaar voor de volgende stap in je carrière? Vul het formulier in en wij nemen zo snel mogelijk contact met je op.
+              Heb je een vraag of wil je meer informatie? Vul het formulier in en wij nemen zo snel mogelijk contact met je op.
             </Typography>
           </motion.div>
         </Container>
@@ -229,33 +131,15 @@ function Contact() {
             <Card sx={{ borderRadius: 4 }}>
               <CardContent sx={{ padding: 5 }}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3, color: 'primary.main' }}>
-                  Aanmeldformulier
+                  Contactformulier
                 </Typography>
                 
                 <form onSubmit={handleSubmit} autoComplete="off">
-                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 0.6fr' }, gap: 2 }}>
-                    <TextField 
-                      label="Voornaam" 
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      required
-                      autoComplete="off"
-                    />
-                    <TextField 
-                      label="Tussenvoegsel" 
-                      name="middleName"
-                      value={formData.middleName}
-                      onChange={handleChange}
-                      autoComplete="off"
-                    />
-                  </Box>
-                  
                   <TextField 
                     fullWidth
-                    label="Achternaam" 
-                    name="lastName"
-                    value={formData.lastName}
+                    label="Naam" 
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
                     autoComplete="off"
@@ -276,117 +160,20 @@ function Contact() {
                   
                   <TextField 
                     fullWidth 
-                    label="Telefoonnummer" 
+                    label="Telefoonnummer (optioneel)" 
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    required
                     autoComplete="off"
                     sx={{ mb: 2 }}
                   />
-
-                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
-                    <TextField 
-                      label="Geboortedatum"
-                      type="date"
-                      InputLabelProps={{ shrink: true }}
-                      name="birthDate"
-                      value={formData.birthDate}
-                      onChange={handleChange}
-                      required
-                      autoComplete="off"
-                      inputProps={{
-                        'data-lpignore': 'true',
-                        'data-form-type': 'other',
-                        'data-1p-ignore': 'true'
-                      }}
-                    />
-                    <TextField 
-                      label="Geboorteplaats"
-                      name="birthPlace"
-                      value={formData.birthPlace}
-                      onChange={handleChange}
-                      required
-                      autoComplete="off"
-                      inputProps={{
-                        'data-lpignore': 'true',
-                        'data-form-type': 'other'
-                      }}
-                    />
-                  </Box>
-
-                  <TextField 
-                    fullWidth
-                    label="BurgerServiceNummer"
-                    name="bsn"
-                    value={formData.bsn}
-                    onChange={handleChange}
-                    required
-                    autoComplete="off"
-                    error={!!bsnError}
-                    helperText={bsnError || 'Moet voldoen aan 11-proef (8 of 9 cijfers)'}
-                    sx={{ mb: 2 }}
-                  />
-
-                  <TextField 
-                    fullWidth
-                    label="Naam bedrijf/organisatie"
-                    name="orgName"
-                    value={formData.orgName}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    sx={{ mb: 2 }}
-                  />
-                  
-                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
-                    <TextField 
-                      label="Naam contactpersoon"
-                      name="contactName"
-                      value={formData.contactName}
-                      onChange={handleChange}
-                      autoComplete="off"
-                    />
-                    <TextField 
-                      label="E-mailadres contactpersoon"
-                      type="email"
-                      name="contactEmail"
-                      value={formData.contactEmail}
-                      onChange={handleChange}
-                      autoComplete="off"
-                    />
-                  </Box>
-
-                  <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel>Interesse in Training</InputLabel>
-                    <Select
-                      name="training"
-                      value={formData.training}
-                      onChange={handleChange}
-                      label="Interesse in Training"
-                      multiple
-                      renderValue={(selected) => {
-                        const options = {
-                          'voertuigtechniek': 'Voertuigtechniek Werkplaats',
-                          'llo': 'Leven Lang Ontwikkelen (LLO)',
-                          'niet-technisch': 'Niet-Technisch Personeel',
-                          'nederlands-rekenen': 'Nederlands & Rekenen'
-                        };
-                        return selected.map(item => options[item]).join(', ');
-                      }}
-                    >
-                      <MenuItem value="voertuigtechniek">Voertuigtechniek Werkplaats</MenuItem>
-                      <MenuItem value="llo">Leven Lang Ontwikkelen (LLO)</MenuItem>
-                      <MenuItem value="niet-technisch">Niet-Technisch Personeel</MenuItem>
-                      <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
-                    </Select>
-                  </FormControl>
                   
                   <TextField 
                     fullWidth 
                     label="Bericht" 
                     name="message"
                     multiline
-                    rows={4}
+                    rows={6}
                     value={formData.message}
                     onChange={handleChange}
                     required
@@ -401,7 +188,7 @@ function Contact() {
                     endIcon={<SendIcon />}
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Verzenden...' : 'Verstuur Aanmelding'}
+                    {isSubmitting ? 'Verzenden...' : 'Verstuur Bericht'}
                   </Button>
                 </form>
               </CardContent>
@@ -416,38 +203,87 @@ function Contact() {
                 </Typography>
                 
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 3 }}>
-                  <LocationOnIcon sx={{ marginRight: 2, color: 'primary.main' }} />
+                  <LocationOnIcon sx={{ marginRight: 2, color: 'primary.main', mt: 0.5 }} />
                   <Box>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Adres</Typography>
-                    <Typography>Boskantse Broekstraat 3, 6603 LD Wijchen</Typography>
+                    <Typography>Boskantse Broekstraat 3</Typography>
+                    <Typography>6603 LD Wijchen</Typography>
                   </Box>
                 </Box>
                 
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 3 }}>
-                  <EmailIcon sx={{ marginRight: 2, color: 'secondary.main' }} />
+                  <EmailIcon sx={{ marginRight: 2, color: 'secondary.main', mt: 0.5 }} />
                   <Box>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>E-mail</Typography>
-                    <Typography>support@hofmansautomotiveacademie.nl</Typography>
-                    <Typography>h.lombarts@hofmansautomotiveacademie.nl</Typography>
+                    <Typography>
+                      <a href="mailto:support@hofmansautomotiveacademie.nl" style={{ color: theme.palette.primary.main, textDecoration: 'none' }}>
+                        support@hofmansautomotiveacademie.nl
+                      </a>
+                    </Typography>
+                    <Typography>
+                      <a href="mailto:h.lombarts@hofmansautomotiveacademie.nl" style={{ color: theme.palette.primary.main, textDecoration: 'none' }}>
+                        h.lombarts@hofmansautomotiveacademie.nl
+                      </a>
+                    </Typography>
                   </Box>
                 </Box>
                 
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 3 }}>
-                  <PhoneIcon sx={{ marginRight: 2 }} />
+                  <PhoneIcon sx={{ marginRight: 2, color: '#008494', mt: 0.5 }} />
                   <Box>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Telefoon</Typography>
-                    <Typography>+31 (0)24 641 32 22</Typography>
+                    <Typography>
+                      <a href="tel:+31246413222" style={{ color: theme.palette.text.primary, textDecoration: 'none' }}>
+                        +31 (0)24 641 32 22
+                      </a>
+                    </Typography>
                   </Box>
                 </Box>
                 
-                <Box sx={{ marginTop: 5, padding: 2, borderRadius: 2, backgroundColor: alpha(theme.palette.grey[100], 0.5) }}>
-                  <Typography variant="body2">
+                <Box sx={{ marginTop: 5, padding: 3, borderRadius: 2, backgroundColor: 'rgba(0,0,0,0.03)', border: `1px solid ${theme.palette.grey[200]}` }}>
+                  <Typography variant="body2" sx={{ mb: 1 }}>
                     <strong>KVK-nummer:</strong> 97469785
                   </Typography>
-                  <Typography variant="body2">
-                    © 2024 Hofmans Automotive Academie. Alle rechten voorbehouden.
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    © {new Date().getFullYear()} Hofmans Automotive Academie. Alle rechten voorbehouden.
                   </Typography>
                 </Box>
+              </CardContent>
+            </Card>
+
+            {/* Button naar aanmeldpagina - onder contactgegevens */}
+            <Card sx={{ borderRadius: 4, mt: 3 }}>
+              <CardContent sx={{ padding: 5, textAlign: 'center' }}>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'primary.main', mb: 3 }}>
+                  Wil je je aanmelden voor een training?
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'text.primary', mb: 4, fontSize: '1.1rem' }}>
+                  Klik hier om naar het aanmeldformulier te gaan en je in te schrijven voor een training.
+                </Typography>
+                <Button 
+                  variant="contained" 
+                  size="large"
+                  fullWidth
+                  onClick={() => navigate('/aanmelden')}
+                  sx={{
+                    background: 'linear-gradient(45deg, #ff6b35, #ff9468)',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: '1.2rem',
+                    py: 2,
+                    borderRadius: '50px',
+                    textTransform: 'none',
+                    boxShadow: '0 4px 20px rgba(255, 107, 53, 0.4)',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #cc4a1a, #ff6b35)',
+                      boxShadow: '0 6px 25px rgba(255, 107, 53, 0.5)',
+                      transform: 'translateY(-2px)'
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  Aanmelden
+                </Button>
               </CardContent>
             </Card>
           </Grid>
@@ -457,7 +293,7 @@ function Contact() {
       <Dialog open={notification.open} onClose={handleCloseNotification} maxWidth="sm" fullWidth>
         <DialogContent sx={{ padding: 6, textAlign: 'center' }}>
           <CheckCircleIcon sx={{ fontSize: 80, color: '#4ade80', marginBottom: 3 }} />
-          <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3 }}>
+          <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3, whiteSpace: 'pre-line' }}>
             {notification.message}
           </Typography>
         </DialogContent>

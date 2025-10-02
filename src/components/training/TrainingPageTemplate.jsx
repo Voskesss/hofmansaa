@@ -32,11 +32,11 @@ function TrainingPageTemplate({
   const navigate = useNavigate();
   const theme = useTheme();
 
-  // Functie om naar contactpagina te navigeren met voorgeselecteerde training
+  // Functie om naar aanmeldpagina te navigeren met voorgeselecteerde training
   const handleAanmelden = () => {
     // Gebruik localStorage om de geselecteerde training op te slaan
     localStorage.setItem('selectedTraining', trainingId);
-    navigate('/contact');
+    navigate('/aanmelden');
   };
 
   return (
@@ -150,7 +150,7 @@ function TrainingPageTemplate({
               borderRadius: 3,
               boxShadow: `0 10px 30px ${theme.palette.common.black}14`,
               overflow: 'hidden',
-              mb: 4,
+              mb: 6,
               position: 'sticky',
               top: 100,
               background: `linear-gradient(135deg, white, white, ${theme.palette.secondary.light}15)`,
