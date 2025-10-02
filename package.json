@@ -9,6 +9,8 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.16",
+    "@neondatabase/serverless": "^0.9.0",
+    "dotenv": "^17.2.3",
     "framer-motion": "^12.19.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -19,7 +21,9 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup-db": "node scripts/setup-database.js",
+    "dev:api": "vercel dev"
   },
   "eslintConfig": {
     "extends": [

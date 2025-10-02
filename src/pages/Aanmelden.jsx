@@ -118,7 +118,32 @@ function Aanmelden() {
 
       const fullName = `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim();
 
-      // Verstuur aanmelding via emailService
+      let savedToDatabase = false;
+
+      // Probeer eerst backend API (als we op Vercel draaien of lokaal met vercel dev)
+      try {
+        const apiResponse = await fetch('/api/aanmelden', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const apiResult = await apiResponse.json();
+        
+        if (apiResult.success && apiResult.savedToDatabase) {
+          savedToDatabase = true;
+          console.log('✅ Aanmelding opgeslagen in database:', apiResult.data);
+        } else {
+          console.warn('⚠️ Database opslag mislukt, gebruik EmailJS fallback');
+        }
+      } catch (apiError) {
+        // API niet beschikbaar (bijv. op GitHub Pages) - gebruik EmailJS
+        console.warn('⚠️ Backend API niet bereikbaar, gebruik EmailJS:', apiError.message);
+      }
+
+      // Verstuur email via EmailJS (altijd, ook als database werkt)
       await sendAanmeldEmail(formData, selectedTrainings);
 
       setNotification({
@@ -137,7 +162,7 @@ function Aanmelden() {
       });
 
     } catch (error) {
-      console.error('EmailJS Error:', error);
+      console.error('Aanmelding Error:', error);
       setNotification({
         open: true,
         message: `Er is een fout opgetreden bij het verzenden van je bericht.\n\nProbeer het opnieuw of neem direct contact met ons op.`,
