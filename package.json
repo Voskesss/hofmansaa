@@ -26,7 +26,8 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "setup-db": "node scripts/setup-database.js"
+    "setup-db": "node scripts/setup-database.js",
+    "setup-sessions": "node scripts/create-sessions-table.js"
   },
   "eslintConfig": {
     "extends": [

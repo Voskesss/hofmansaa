@@ -11,6 +11,7 @@ import NietTechnisch from './pages/NietTechnisch';
 import StudentPortal from './pages/StudentPortal';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminSessions from './pages/AdminSessions';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -287,6 +288,7 @@ function App() {
         {/* Admin routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/sessions" element={<AdminSessions />} />
         
         {/* Normale routes */}
         <Route path="/" element={<Home />} />

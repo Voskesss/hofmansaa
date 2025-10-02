@@ -8,6 +8,7 @@ import {
 import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 
@@ -271,6 +272,14 @@ function AdminDashboard() {
               </Typography>
             </Box>
             <Box>
+              <Button
+                startIcon={<CalendarMonthIcon />}
+                onClick={() => navigate('/admin/sessions')}
+                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                variant="outlined"
+              >
+                Sessies
+              </Button>
               <Button
                 startIcon={<FileDownloadIcon />}
                 onClick={handleExportToExcel}
