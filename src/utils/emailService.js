@@ -175,9 +175,44 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
   <hr style="margin: 30px 0; border: none; border-top: 1px solid #eaeaea;">
   
   <h3 style="color: #006BB2;">📊 Excel Copy-Paste Data:</h3>
-  <pre style="background-color: #f9fafb; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px;">${formData.firstName}\t${formData.middleName || ''}\t${formData.lastName}\t${formData.birthDate}\t${formData.birthPlace}\t${formData.bsn}\t${formData.email}\t${formData.phone}\t${formData.orgName || ''}\t${formData.contactName || ''}\t${formData.contactEmail || ''}\t${selectedTrainings}\t${formData.message || ''}</pre>
+  <p style="color: #64748b; font-size: 14px; margin-bottom: 10px;">Selecteer de onderstaande tabel en kopieer/plak in Excel. Elke kolom komt automatisch in een aparte cel.</p>
   
-  <p style="color: #64748b; font-size: 14px;">Kopieer de bovenstaande regel en plak in Excel voor directe import.</p>
+  <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-size: 12px; background-color: #f9fafb;">
+    <thead>
+      <tr style="background-color: #006BB2; color: white;">
+        <th>Voornaam</th>
+        <th>Tussenvoegsel</th>
+        <th>Achternaam</th>
+        <th>Geboortedatum</th>
+        <th>Geboorteplaats</th>
+        <th>BSN</th>
+        <th>Email</th>
+        <th>Telefoon</th>
+        <th>Organisatie</th>
+        <th>Contactpersoon</th>
+        <th>Contact Email</th>
+        <th>Training</th>
+        <th>Bericht</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background-color: white;">
+        <td>${formData.firstName}</td>
+        <td>${formData.middleName || ''}</td>
+        <td>${formData.lastName}</td>
+        <td>${formData.birthDate}</td>
+        <td>${formData.birthPlace}</td>
+        <td>${formData.bsn}</td>
+        <td>${formData.email}</td>
+        <td>${formData.phone}</td>
+        <td>${formData.orgName || ''}</td>
+        <td>${formData.contactName || ''}</td>
+        <td>${formData.contactEmail || ''}</td>
+        <td>${selectedTrainings}</td>
+        <td>${formData.message || ''}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 `;
 };
