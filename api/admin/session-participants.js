@@ -151,10 +151,20 @@ export default async function handler(req, res) {
       const {
         sessionId,
         firstName,
+        middleName,
         lastName,
+        birthDate,
+        birthPlace,
+        bsn,
         email,
         phone,
-        training
+        street,
+        houseNumber,
+        postalCode,
+        city,
+        country,
+        training,
+        message
       } = req.body;
 
       if (!sessionId || !firstName || !lastName || !email) {
@@ -165,18 +175,37 @@ export default async function handler(req, res) {
 
       const result = await client.query(`
         INSERT INTO aanmeldingen (
-          first_name, last_name, email, phone,
+          first_name, middle_name, last_name,
           birth_date, birth_place, bsn,
+          email, phone,
           street, house_number, postal_code, city, country,
           trainings, session_id, status, message
         ) VALUES (
-          $1, $2, $3, $4,
-          '2000-01-01', 'Onbekend', '000000000',
-          'n.v.t.', '0', '0000AA', 'Onbekend', 'Nederland',
-          $5, $6, 'nieuw', 'Handmatig toegevoegd door admin'
+          $1, $2, $3,
+          $4, $5, $6,
+          $7, $8,
+          $9, $10, $11, $12, $13,
+          $14, $15, 'nieuw', $16
         )
         RETURNING id, created_at
-      `, [firstName, lastName, email, phone || '', training || 'Niet opgegeven', sessionId]);
+      `, [
+        firstName, 
+        middleName || '', 
+        lastName,
+        birthDate || '2000-01-01', 
+        birthPlace || 'Onbekend', 
+        bsn || '000000000',
+        email, 
+        phone || '',
+        street || 'n.v.t.', 
+        houseNumber || '0', 
+        postalCode || '0000AA', 
+        city || 'Onbekend', 
+        country || 'Nederland',
+        training || 'Niet opgegeven', 
+        sessionId, 
+        message || 'Handmatig toegevoegd door admin'
+      ]);
 
       return res.status(201).json({
         success: true,

@@ -28,13 +28,22 @@ function AdminSessionDetail() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [targetSessionId, setTargetSessionId] = useState('');
   
-  // Add participant form
+  // Add participant form - volledig zoals aanmeldformulier
   const [newParticipant, setNewParticipant] = useState({
     firstName: '',
+    middleName: '',
     lastName: '',
+    birthDate: '',
+    birthPlace: '',
+    bsn: '',
     email: '',
     phone: '',
-    training: ''
+    street: '',
+    houseNumber: '',
+    postalCode: '',
+    city: '',
+    country: 'Nederland',
+    message: ''
   });
 
   useEffect(() => {
