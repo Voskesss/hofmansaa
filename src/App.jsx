@@ -264,7 +264,7 @@ function App() {
   const location = useLocation();
 
   // Check of we op een admin route zijn
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminRoute = location?.pathname?.startsWith('/admin') || false;
 
   // Verwerk de omleiding van 404.html
   useEffect(() => {
