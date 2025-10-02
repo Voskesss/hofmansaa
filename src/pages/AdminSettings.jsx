@@ -140,7 +140,7 @@ function AdminSettings() {
                 sx={{ color: 'white', borderColor: 'white' }}
                 variant="outlined"
               >
-                Terug
+                Dashboard
               </Button>
             </Box>
           </Box>

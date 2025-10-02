@@ -281,7 +281,7 @@ function AdminSessions() {
                 sx={{ mr: 2, color: 'white', borderColor: 'white' }}
                 variant="outlined"
               >
-                Terug
+                Dashboard
               </Button>
               <Button
                 startIcon={<AddIcon />}

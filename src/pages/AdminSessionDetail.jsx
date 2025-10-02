@@ -7,6 +7,7 @@ import {
   Alert, Chip, Checkbox, IconButton, Grid, Card, CardContent, Divider
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import HomeIcon from '@mui/icons-material/Home';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -292,12 +293,20 @@ function AdminSessionDetail() {
             </Box>
             <Box>
               <Button
+                startIcon={<HomeIcon />}
+                onClick={() => navigate('/admin/dashboard')}
+                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                variant="outlined"
+              >
+                Dashboard
+              </Button>
+              <Button
                 startIcon={<ArrowBackIcon />}
                 onClick={() => navigate('/admin/sessions')}
                 sx={{ color: 'white', borderColor: 'white' }}
                 variant="outlined"
               >
-                Terug
+                Terug naar Sessies
               </Button>
             </Box>
           </Box>
