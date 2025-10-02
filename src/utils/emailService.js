@@ -130,6 +130,93 @@ export const sendContactEmail = async (formData) => {
   return response2;
 };
 
+// HTML template voor aanmelding naar bedrijf (Excel-vriendelijk)
+const createAanmeldEmailHTML = (formData, selectedTrainings) => {
+  const fullName = [formData.firstName, formData.middleName, formData.lastName].filter(Boolean).join(' ');
+  
+  return `
+<div style="font-family: system-ui, sans-serif, Arial; font-size: 16px; max-width: 600px;">
+  <h2 style="color: #006BB2; margin-bottom: 10px;">📝 Nieuwe Trainingsaanmelding</h2>
+  <p style="padding-top: 16px; border-top: 2px solid #006BB2; color: #1e293b;">
+    Er is een nieuwe aanmelding ontvangen via de website.
+  </p>
+  
+  <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin-top: 0; color: #006BB2;">Persoonlijke Gegevens</h3>
+    <p style="margin: 8px 0;"><strong>Voornaam:</strong> ${formData.firstName}</p>
+    <p style="margin: 8px 0;"><strong>Tussenvoegsel:</strong> ${formData.middleName || '-'}</p>
+    <p style="margin: 8px 0;"><strong>Achternaam:</strong> ${formData.lastName}</p>
+    <p style="margin: 8px 0;"><strong>Geboortedatum:</strong> ${formData.birthDate}</p>
+    <p style="margin: 8px 0;"><strong>Geboorteplaats:</strong> ${formData.birthPlace}</p>
+    <p style="margin: 8px 0;"><strong>BSN:</strong> ${formData.bsn}</p>
+    <p style="margin: 8px 0;"><strong>Email:</strong> <a href="mailto:${formData.email}">${formData.email}</a></p>
+    <p style="margin: 8px 0;"><strong>Telefoon:</strong> ${formData.phone}</p>
+  </div>
+
+  <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin-top: 0; color: #006BB2;">Organisatie</h3>
+    <p style="margin: 8px 0;"><strong>Organisatie:</strong> ${formData.orgName || 'Niet opgegeven'}</p>
+    <p style="margin: 8px 0;"><strong>Contactpersoon:</strong> ${formData.contactName || 'Niet opgegeven'}</p>
+    <p style="margin: 8px 0;"><strong>Contact Email:</strong> ${formData.contactEmail || 'Niet opgegeven'}</p>
+  </div>
+
+  <div style="background-color: #fff7ed; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin-top: 0; color: #ff6b35;">Geselecteerde Training(en)</h3>
+    <p style="margin: 8px 0; font-size: 18px;"><strong>${selectedTrainings}</strong></p>
+  </div>
+
+  ${formData.message ? `
+  <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin-top: 0; color: #006BB2;">Aanvullend Bericht</h3>
+    <p style="margin: 8px 0; white-space: pre-wrap;">${formData.message}</p>
+  </div>
+  ` : ''}
+
+  <hr style="margin: 30px 0; border: none; border-top: 1px solid #eaeaea;">
+  
+  <h3 style="color: #006BB2;">📊 Excel Copy-Paste Data:</h3>
+  <pre style="background-color: #f9fafb; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px;">${formData.firstName}\t${formData.middleName || ''}\t${formData.lastName}\t${formData.birthDate}\t${formData.birthPlace}\t${formData.bsn}\t${formData.email}\t${formData.phone}\t${formData.orgName || ''}\t${formData.contactName || ''}\t${formData.contactEmail || ''}\t${selectedTrainings}\t${formData.message || ''}</pre>
+  
+  <p style="color: #64748b; font-size: 14px;">Kopieer de bovenstaande regel en plak in Excel voor directe import.</p>
+</div>
+`;
+};
+
+// HTML template voor aanmelding auto-reply
+const createAanmeldReplyHTML = (name, selectedTrainings) => `
+<div style="font-family: system-ui, sans-serif, Arial; font-size: 16px; max-width: 600px;">
+  <h2 style="color: #006BB2; margin-bottom: 10px;">Bedankt voor je aanmelding! 🎉</h2>
+  
+  <p style="padding-top: 16px; border-top: 2px solid #006BB2;">Beste ${name},</p>
+  
+  <p>
+    Hartelijk dank voor je aanmelding voor <strong>${selectedTrainings}</strong>!
+  </p>
+  
+  <p>
+    We hebben je aanmelding goed ontvangen en zullen deze beoordelen. Je ontvangt binnen <strong>3 werkdagen</strong> een bevestiging van ons met verdere informatie over de training.
+  </p>
+  
+  <div style="background-color: #f0f9ff; padding: 16px; border-left: 4px solid #006BB2; margin: 20px 0; border-radius: 4px;">
+    <p style="margin: 0; color: #1e293b;">
+      <strong>💡 Vragen over je aanmelding?</strong><br/>
+      Neem gerust contact met ons op via <a href="mailto:website@hofmansautomotiveacademie.nl" style="color: #006BB2;">website@hofmansautomotiveacademie.nl</a>
+    </p>
+  </div>
+  
+  <p style="padding-top: 16px; border-top: 1px solid #eaeaea;">
+    Met vriendelijke groet,<br />
+    <strong>Het Hofmans Automotive Academie Team</strong>
+  </p>
+  
+  <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #eaeaea; color: #64748b; font-size: 14px;">
+    <p style="margin: 4px 0;">📍 Boskantse Broekstraat 3, 6603 LD Wijchen</p>
+    <p style="margin: 4px 0;">📧 <a href="mailto:website@hofmansautomotiveacademie.nl" style="color: #006BB2;">website@hofmansautomotiveacademie.nl</a></p>
+    <p style="margin: 4px 0;">🌐 <a href="https://hofmansautomotiveacademie.nl" style="color: #006BB2;">hofmansautomotiveacademie.nl</a></p>
+  </div>
+</div>
+`;
+
 // Verstuur aanmeld formulier
 export const sendAanmeldEmail = async (formData, selectedTrainings) => {
   const fullName = [
@@ -138,28 +225,31 @@ export const sendAanmeldEmail = async (formData, selectedTrainings) => {
     formData.lastName
   ].filter(Boolean).join(' ');
 
-  const templateParams = {
-    from_name: fullName,
-    first_name: formData.firstName,
-    middle_name: formData.middleName || '-',
-    last_name: formData.lastName,
-    birth_date: formData.birthDate,
-    birth_place: formData.birthPlace,
-    bsn: formData.bsn,
-    from_email: formData.email,
-    phone: formData.phone,
-    org_name: formData.orgName || 'Niet opgegeven',
-    contact_name: formData.contactName || 'Niet opgegeven',
-    contact_email: formData.contactEmail || 'Niet opgegeven',
-    training: selectedTrainings,
-    message: formData.message || 'Geen aanvullend bericht',
-    to_email: EMAIL_CONFIG.TO_EMAIL
+  // Email naar bedrijf
+  const companyEmailParams = {
+    to_email: EMAIL_CONFIG.TO_EMAIL,
+    email_subject: `Nieuwe trainingsaanmelding: ${fullName} - ${selectedTrainings}`,
+    html_content: createAanmeldEmailHTML(formData, selectedTrainings)
+  };
+
+  await emailjs.send(
+    EMAIL_CONFIG.SERVICE_ID,
+    EMAIL_CONFIG.TEMPLATE_TO_COMPANY,
+    companyEmailParams,
+    EMAIL_CONFIG.PUBLIC_KEY
+  );
+
+  // Auto-reply naar aanmelder
+  const replyParams = {
+    to_email: formData.email,
+    email_subject: 'Bevestiging aanmelding - Hofmans Automotive Academie',
+    html_content: createAanmeldReplyHTML(fullName, selectedTrainings)
   };
 
   return await emailjs.send(
     EMAIL_CONFIG.SERVICE_ID,
-    EMAIL_CONFIG.TEMPLATE_AANMELDEN,
-    templateParams,
+    EMAIL_CONFIG.TEMPLATE_AUTOREPLY,
+    replyParams,
     EMAIL_CONFIG.PUBLIC_KEY
   );
 };
