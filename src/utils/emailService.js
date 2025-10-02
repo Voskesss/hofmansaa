@@ -83,6 +83,8 @@ const createContactReplyHTML = (name) => `
 export const sendContactEmail = async (formData) => {
   console.log('=== EMAILJS DEBUG ===');
   console.log('Service ID:', EMAIL_CONFIG.SERVICE_ID);
+  console.log('Template Company:', EMAIL_CONFIG.TEMPLATE_TO_COMPANY);
+  console.log('Template Reply:', EMAIL_CONFIG.TEMPLATE_AUTOREPLY);
   console.log('Public Key:', EMAIL_CONFIG.PUBLIC_KEY);
   console.log('Form Data:', formData);
   
