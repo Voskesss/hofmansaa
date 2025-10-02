@@ -33,6 +33,7 @@ function Contact() {
     message: '',
     severity: 'success'
   });
+  const [bsnError, setBsnError] = useState('');
 
   const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_jyo37pp';
   const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_37a1ftj';
@@ -54,13 +55,53 @@ function Contact() {
     }
   }, []);
 
+  const validateBSN = (bsn) => {
+    // Verwijder spaties en streepjes
+    const cleaned = bsn.replace(/[\s-]/g, '');
+    
+    // Moet 8 of 9 cijfers zijn
+    if (!/^\d{8,9}$/.test(cleaned)) {
+      return false;
+    }
+    
+    // Pad met 0 als het 8 cijfers zijn
+    const bsnNumber = cleaned.padStart(9, '0');
+    
+    // 11-proef: vermenigvuldig elk cijfer met zijn positie (9,8,7,6,5,4,3,2,-1)
+    let sum = 0;
+    for (let i = 0; i < 9; i++) {
+      const multiplier = i === 8 ? -1 : 9 - i;
+      sum += parseInt(bsnNumber[i]) * multiplier;
+    }
+    
+    // Som moet deelbaar zijn door 11
+    return sum % 11 === 0;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    
+    // BSN validatie tijdens typen
+    if (name === 'bsn') {
+      if (value && !validateBSN(value)) {
+        setBsnError('Ongeldig BSN nummer (moet voldoen aan 11-proef)');
+      } else {
+        setBsnError('');
+      }
+    }
+    
     setFormData(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Controleer BSN voor verzending
+    if (formData.bsn && !validateBSN(formData.bsn)) {
+      setBsnError('Ongeldig BSN nummer. Controleer het nummer en probeer opnieuw.');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
@@ -282,6 +323,8 @@ function Contact() {
                     onChange={handleChange}
                     required
                     autoComplete="off"
+                    error={!!bsnError}
+                    helperText={bsnError || 'Moet voldoen aan 11-proef (8 of 9 cijfers)'}
                     sx={{ mb: 2 }}
                   />
 
