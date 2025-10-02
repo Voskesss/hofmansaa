@@ -1,68 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Container, 
   Box, 
   Typography, 
-  TextField, 
-  Button, 
   Paper, 
   useTheme, 
   Alert,
-  InputAdornment,
-  IconButton,
-  Divider,
   Link
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import LockIcon from '@mui/icons-material/Lock';
-import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
+import InfoIcon from '@mui/icons-material/Info';
 import BackgroundIcons from '../components/decorative/BackgroundIcons';
 
 const StudentPortal = () => {
   const theme = useTheme();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (!username || !password) {
-      setError('Vul alstublieft alle velden in');
-      return;
-    }
-    
-    // Redirect naar extraas.nl met de inloggegevens
-    // We gebruiken hier een POST form submit om de gegevens veilig door te sturen
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://extraas.nl/inloggen';
-    form.target = '_blank'; // Open in een nieuw tabblad
-    
-    // Gebruikersnaam veld
-    const usernameInput = document.createElement('input');
-    usernameInput.type = 'hidden';
-    usernameInput.name = 'username'; // Dit moet overeenkomen met het veldnaam op extraas.nl
-    usernameInput.value = username;
-    form.appendChild(usernameInput);
-    
-    // Wachtwoord veld
-    const passwordInput = document.createElement('input');
-    passwordInput.type = 'hidden';
-    passwordInput.name = 'password'; // Dit moet overeenkomen met het veldnaam op extraas.nl
-    passwordInput.value = password;
-    form.appendChild(passwordInput);
-    
-    // Voeg het formulier toe aan de pagina en verstuur het
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-  };
 
   return (
     <>
@@ -157,157 +110,112 @@ const StudentPortal = () => {
       
       <Box
         sx={{
-          minHeight: '60vh',
+          minHeight: '80vh',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
-          py: 6,
+          py: 4,
           background: `linear-gradient(135deg, ${theme.palette.primary.main}15, ${theme.palette.tertiary.main}20, ${theme.palette.secondary.main}15)`,
           color: theme.palette.text.primary,
-          marginTop: '-1px', // Voorkomt kleine witte lijn tussen secties
+          marginTop: '-1px',
           overflow: 'hidden'
         }}
       >
         {/* Decoratieve icoontjes op de achtergrond */}
         <BackgroundIcons opacity={0.08} count={4} zIndex={0} />
-        <Container maxWidth="md">
+        <Container maxWidth="xl">
           
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.7 }}
           >
-            <Box 
+            {/* Info alert boven de iframe */}
+            <Alert 
+              severity="info" 
+              icon={<InfoIcon />}
               sx={{ 
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: { xs: 'column', md: 'row' },
-                gap: 4
+                mb: 3,
+                maxWidth: '1200px',
+                mx: 'auto',
+                borderRadius: 2,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
               }}
             >
-              <Paper 
-                elevation={4} 
+              <Typography variant="body2">
+                Je wordt nu doorgestuurd naar het EXTRAAS leerplatform. Log in met je persoonlijke inloggegevens. 
+                Heb je nog geen account? Neem contact op met je docent of onze administratie.
+              </Typography>
+            </Alert>
+
+            {/* iframe container */}
+            <Paper 
+              elevation={6} 
+              sx={{ 
+                borderRadius: 3,
+                overflow: 'hidden',
+                maxWidth: '1200px',
+                mx: 'auto',
+                boxShadow: `0 8px 32px rgba(0, 0, 0, 0.2)`,
+                background: 'white',
+              }}
+            >
+              <Box 
                 sx={{ 
-                  p: 4, 
-                  borderRadius: 3,
-                  width: { xs: '100%', md: '50%' },
-                  background: 'white',
-                  boxShadow: `0 8px 32px rgba(0, 0, 0, 0.2)`,
-                  color: theme.palette.text.primary, // Zorgt dat tekst donker is op witte achtergrond
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  p: 2,
+                  gap: 1.5,
+                  background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
+                  color: 'white'
                 }}
               >
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    mb: 3,
-                    gap: 1.5
-                  }}
-                >
-                  <SchoolIcon sx={{ fontSize: 36, color: theme.palette.primary.main }} />
-                  <Typography variant="h5" component="h2" fontWeight={600}>
-                    Inloggen bij EXTRAAS
-                  </Typography>
-                </Box>
-                
-                <Divider sx={{ mb: 3 }} />
-                
-                {error && (
-                  <Alert severity="error" sx={{ mb: 3 }}>
-                    {error}
-                  </Alert>
-                )}
-                
-                <form onSubmit={handleSubmit}>
-                  <TextField
-                    label="Gebruikersnaam"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <PersonIcon color="primary" />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  
-                  <TextField
-                    label="Wachtwoord"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LockIcon color="primary" />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                  
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    fullWidth
-                    size="large"
-                    sx={{ 
-                      mt: 3,
-                      py: 1.5,
-                      bgcolor: theme.palette.primary.main,
-                      '&:hover': {
-                        bgcolor: theme.palette.primary.dark
-                      }
-                    }}
-                  >
-                    Inloggen
-                  </Button>
-                </form>
-                
-                <Box sx={{ mt: 3, textAlign: 'center' }}>
-                  <Link 
-                    href="https://extraas.nl/lostpassword" 
-                    target="_blank" 
-                    underline="hover"
-                    sx={{ color: theme.palette.primary.main }}
-                  >
-                    Wachtwoord vergeten?
-                  </Link>
-                </Box>
-              </Paper>
-              
-              <Box sx={{ width: { xs: '100%', md: '40%' } }}>
-                <Typography variant="h6" gutterBottom fontWeight={600} color={theme.palette.primary.main}>
-                  Welkom bij het Studenten Portal
-                </Typography>
-                <Typography paragraph>
-                  Via dit portal krijg je toegang tot al je leermateriaal, oefeningen en toetsen van EXTRAAS. Log in met je persoonlijke gegevens om je voortgang te bekijken en verder te gaan met je studie.
-                </Typography>
-                <Typography paragraph>
-                  Heb je nog geen account? Neem dan contact op met je docent of met onze administratie voor het verkrijgen van inloggegevens.
-                </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 4 }}>
-                  Let op: Na het inloggen word je doorgestuurd naar het EXTRAAS leerplatform.
+                <SchoolIcon sx={{ fontSize: 32 }} />
+                <Typography variant="h6" fontWeight={600}>
+                  EXTRAAS Studenten Portal
                 </Typography>
               </Box>
+              
+              {/* iframe voor extraas.nl */}
+              <Box
+                component="iframe"
+                src="https://extraas.nl/inloggen"
+                title="EXTRAAS Studenten Portal"
+                sx={{
+                  width: '100%',
+                  height: { xs: '600px', md: '700px' },
+                  border: 'none',
+                  display: 'block'
+                }}
+              />
+            </Paper>
+
+            {/* Hulp sectie onder de iframe */}
+            <Box 
+              sx={{ 
+                mt: 4, 
+                textAlign: 'center',
+                maxWidth: '800px',
+                mx: 'auto'
+              }}
+            >
+              <Typography variant="body2" color="text.secondary" paragraph>
+                <strong>Let op:</strong> Het kan zijn dat je na het inloggen wordt doorgestuurd naar een nieuwe pagina. 
+                Dit is normaal en betekent dat de login succesvol was.
+              </Typography>
+              <Link 
+                href="https://extraas.nl/lostpassword" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                underline="hover"
+                sx={{ 
+                  color: theme.palette.primary.main,
+                  fontWeight: 600,
+                  fontSize: '0.95rem'
+                }}
+              >
+                Wachtwoord vergeten? Klik hier
+              </Link>
             </Box>
           </motion.div>
         </Container>
