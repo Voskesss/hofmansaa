@@ -111,6 +111,9 @@ function Navbar() {
           <Button color="primary" component={Link} to="/contact" sx={{ fontWeight: 'bold', color: scrolled ? theme.palette.primary.dark : theme.palette.common.white, '&:hover': { backgroundColor: scrolled ? `${theme.palette.primary.main}1A` : `${theme.palette.common.white}1A` }, transition: 'color 0.3s ease-in-out' }}>
             Contact
           </Button>
+          <Button color="primary" component={Link} to="/aanmelden" sx={{ fontWeight: 'bold', color: scrolled ? theme.palette.primary.dark : theme.palette.common.white, '&:hover': { backgroundColor: scrolled ? `${theme.palette.primary.main}1A` : `${theme.palette.common.white}1A` }, transition: 'color 0.3s ease-in-out' }}>
+            Aanmelden
+          </Button>
           <Button 
             color="secondary" 
             component={Link}
@@ -186,12 +189,14 @@ function Navbar() {
               <ListItem button component={Link} to="/contact">
                 <ListItemText primary="Contact" />
               </ListItem>
+              <ListItem button component={Link} to="/aanmelden">
+                <ListItemText primary="Aanmelden" />
+              </ListItem>
               <Divider sx={{ backgroundColor: `${theme.palette.common.white}33`, my: 1 }} />
               <ListItem 
                 button 
-                component="a" 
-                href="https://portal.hofmansautomotiveacademie.nl" 
-                target="_blank"
+                component={Link}
+                to="/student-portal"
                 sx={{ 
                   backgroundColor: `${theme.palette.secondary.main}`,
                   borderRadius: 1,
@@ -202,7 +207,7 @@ function Navbar() {
                   primary={
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <LoginIcon sx={{ mr: 1, fontSize: '0.9rem' }} />
-                      <Typography>Portal Inloggen</Typography>
+                      <Typography>Studentenportal</Typography>
                     </Box>
                   } 
                 />
