@@ -11,6 +11,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 
 function AdminSessionDetail() {
@@ -196,6 +198,74 @@ function AdminSessionDetail() {
     }
   };
 
+  const formatBirthDate = (dateString) => {
+    if (!dateString) return 'Niet opgegeven';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  const handleExportToExcel = () => {
+    const selectedParticipants = participants.filter(p => selectedIds.includes(p.id));
+    
+    if (selectedParticipants.length === 0) {
+      alert('Selecteer minimaal één deelnemer om te exporteren');
+      return;
+    }
+
+    // Maak data voor Excel
+    const excelData = selectedParticipants.map(item => ({
+      'ID': item.id,
+      'Voornaam': item.first_name,
+      'Tussenvoegsel': item.middle_name || '',
+      'Achternaam': item.last_name,
+      'Email': item.email,
+      'Telefoon': item.phone,
+      'Training(s)': Array.isArray(item.trainings) ? item.trainings.join(', ') : item.trainings,
+      'Status': item.status,
+      'Aangemeld op': new Date(item.created_at).toLocaleDateString('nl-NL'),
+      // Sessie info (vast ingevuld want we zijn in sessie)
+      'Sessie Datum': session ? new Date(session.session_date).toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '',
+      'Sessie Tijd': session ? `${session.start_time?.substring(0,5)} - ${session.end_time?.substring(0,5)}` : '',
+      'Sessie Locatie': session ? session.location : '',
+      'Sessie Training': session ? session.training_type : '',
+      'Opmerkingen': ''
+    }));
+
+    // Maak Excel workbook
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(excelData);
+
+    // Kolom breedtes
+    ws['!cols'] = [
+      { wch: 5 },  // ID
+      { wch: 15 }, // Voornaam
+      { wch: 12 }, // Tussenvoegsel
+      { wch: 15 }, // Achternaam
+      { wch: 25 }, // Email
+      { wch: 15 }, // Telefoon
+      { wch: 30 }, // Training(s)
+      { wch: 12 }, // Status
+      { wch: 15 }, // Aangemeld op
+      { wch: 12 }, // Sessie Datum
+      { wch: 15 }, // Sessie Tijd
+      { wch: 20 }, // Sessie Locatie
+      { wch: 15 }, // Sessie Training
+      { wch: 30 }  // Opmerkingen
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Deelnemers');
+
+    // Download
+    const sessieNaam = session ? `${session.training_type}_${new Date(session.session_date).toLocaleDateString('nl-NL').replace(/\//g, '-')}` : 'sessie';
+    const filename = `deelnemers_${sessieNaam}.xlsx`;
+    XLSX.writeFile(wb, filename);
+
+    console.log(`✅ ${selectedParticipants.length} deelnemers geëxporteerd naar ${filename}`);
+  };
+
   const handleAddParticipant = async () => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -354,6 +424,15 @@ function AdminSessionDetail() {
             onClick={() => setAddDialogOpen(true)}
           >
             Nieuwe Deelnemer
+          </Button>
+          <Button
+            startIcon={<FileDownloadIcon />}
+            variant="contained"
+            color="success"
+            onClick={handleExportToExcel}
+            disabled={selectedIds.length === 0}
+          >
+            Export Excel ({selectedIds.length})
           </Button>
           <Button
             startIcon={<SwapHorizIcon />}
