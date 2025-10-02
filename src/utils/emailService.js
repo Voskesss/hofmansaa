@@ -81,6 +81,11 @@ const createContactReplyHTML = (name) => `
 
 // Verstuur contact formulier
 export const sendContactEmail = async (formData) => {
+  console.log('=== EMAILJS DEBUG ===');
+  console.log('Service ID:', EMAIL_CONFIG.SERVICE_ID);
+  console.log('Public Key:', EMAIL_CONFIG.PUBLIC_KEY);
+  console.log('Form Data:', formData);
+  
   // Email naar bedrijf (info@hofmansautomotiveacademie.nl)
   const companyEmailParams = {
     to_email: EMAIL_CONFIG.TO_EMAIL,
@@ -88,12 +93,17 @@ export const sendContactEmail = async (formData) => {
     html_content: createContactEmailHTML(formData)
   };
 
-  await emailjs.send(
+  console.log('Versturen naar bedrijf:', companyEmailParams.to_email);
+  console.log('Template:', EMAIL_CONFIG.TEMPLATE_TO_COMPANY);
+  
+  const response1 = await emailjs.send(
     EMAIL_CONFIG.SERVICE_ID,
     EMAIL_CONFIG.TEMPLATE_TO_COMPANY,
     companyEmailParams,
     EMAIL_CONFIG.PUBLIC_KEY
   );
+  
+  console.log('Response bedrijf:', response1);
 
   // Auto-reply naar gebruiker
   const replyParams = {
@@ -102,12 +112,20 @@ export const sendContactEmail = async (formData) => {
     html_content: createContactReplyHTML(formData.name)
   };
 
-  return await emailjs.send(
+  console.log('Versturen auto-reply naar:', replyParams.to_email);
+  console.log('Template:', EMAIL_CONFIG.TEMPLATE_AUTOREPLY);
+  
+  const response2 = await emailjs.send(
     EMAIL_CONFIG.SERVICE_ID,
     EMAIL_CONFIG.TEMPLATE_AUTOREPLY,
     replyParams,
     EMAIL_CONFIG.PUBLIC_KEY
   );
+  
+  console.log('Response auto-reply:', response2);
+  console.log('=== EMAILJS DEBUG END ===');
+  
+  return response2;
 };
 
 // Verstuur aanmeld formulier
