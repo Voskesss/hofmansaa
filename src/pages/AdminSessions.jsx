@@ -10,6 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PeopleIcon from '@mui/icons-material/People';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { SEO } from '../utils/seo.jsx';
 
@@ -381,8 +382,17 @@ function AdminSessions() {
                     <TableCell align="right">
                       <IconButton
                         size="small"
+                        onClick={() => navigate(`/admin/sessions/${session.id}`)}
+                        color="primary"
+                        title="Bekijk deelnemers"
+                      >
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton
+                        size="small"
                         onClick={() => handleOpenDialog(session)}
                         color="primary"
+                        title="Bewerk sessie"
                       >
                         <EditIcon />
                       </IconButton>
@@ -391,6 +401,7 @@ function AdminSessions() {
                         onClick={() => handleDelete(session.id)}
                         color="error"
                         disabled={parseInt(session.registered_count) > 0}
+                        title="Verwijder sessie"
                       >
                         <DeleteIcon />
                       </IconButton>

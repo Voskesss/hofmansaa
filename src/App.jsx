@@ -12,6 +12,7 @@ import StudentPortal from './pages/StudentPortal';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminSessions from './pages/AdminSessions';
+import AdminSessionDetail from './pages/AdminSessionDetail';
 import AdminSettings from './pages/AdminSettings';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -290,6 +291,7 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/sessions" element={<AdminSessions />} />
+        <Route path="/admin/sessions/:id" element={<AdminSessionDetail />} />
         <Route path="/admin/settings" element={<AdminSettings />} />
         
         {/* Normale routes */}
