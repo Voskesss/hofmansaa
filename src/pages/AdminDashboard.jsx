@@ -30,6 +30,8 @@ function AdminDashboard() {
   const [allSessions, setAllSessions] = useState([]);
   const [selectedSessions, setSelectedSessions] = useState([]);
   const [duplicateMode, setDuplicateMode] = useState(false);
+  const [trainingFilter, setTrainingFilter] = useState('all');
+  const [filteredAanmeldingen, setFilteredAanmeldingen] = useState([]);
 
   useEffect(() => {
     // Check of admin ingelogd is
@@ -88,6 +90,7 @@ function AdminDashboard() {
 
       setAanmeldingen(data.data);
       setStats(data.stats);
+      setFilteredAanmeldingen(data.data); // Initial filter
 
     } catch (err) {
       setError(err.message || 'Er is een fout opgetreden');
@@ -95,6 +98,21 @@ function AdminDashboard() {
       setLoading(false);
     }
   };
+
+  // Filter aanmeldingen when training filter changes
+  useEffect(() => {
+    if (trainingFilter === 'all') {
+      setFilteredAanmeldingen(aanmeldingen);
+    } else {
+      setFilteredAanmeldingen(
+        aanmeldingen.filter(item => 
+          Array.isArray(item.trainings) 
+            ? item.trainings.includes(trainingFilter)
+            : item.trainings === trainingFilter
+        )
+      );
+    }
+  }, [trainingFilter, aanmeldingen]);
 
   const handleStatusChange = async (id, newStatus) => {
     setUpdating(id);
@@ -273,6 +291,15 @@ function AdminDashboard() {
     });
   };
 
+  const formatBirthDate = (dateString) => {
+    if (!dateString) return 'Niet opgegeven';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   const toggleRowExpand = (id) => {
     setExpandedRows(prev => 
       prev.includes(id) 
@@ -418,6 +445,27 @@ function AdminDashboard() {
           </Alert>
         )}
 
+        {/* Filter */}
+        <Box sx={{ mb: 3 }}>
+          <FormControl sx={{ minWidth: 250 }}>
+            <InputLabel>Filter op Training</InputLabel>
+            <Select
+              value={trainingFilter}
+              onChange={(e) => setTrainingFilter(e.target.value)}
+              label="Filter op Training"
+            >
+              <MenuItem value="all">Alle Trainingen ({aanmeldingen.length})</MenuItem>
+              <MenuItem value="llo">LLO</MenuItem>
+              <MenuItem value="voertuigtechniek">Voertuigtechniek</MenuItem>
+              <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
+              <MenuItem value="niet-technisch">Niet-technisch</MenuItem>
+            </Select>
+          </FormControl>
+          <Typography variant="caption" sx={{ ml: 2, color: 'text.secondary' }}>
+            {trainingFilter !== 'all' && `${filteredAanmeldingen.length} resultaten`}
+          </Typography>
+        </Box>
+
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid item xs={12} sm={6} md={2.4}>
@@ -500,22 +548,23 @@ function AdminDashboard() {
                 <TableCell><strong>Email</strong></TableCell>
                 <TableCell><strong>Telefoon</strong></TableCell>
                 <TableCell><strong>Training(s)</strong></TableCell>
+                <TableCell><strong>Sessie</strong></TableCell>
                 <TableCell><strong>Aangemeld op</strong></TableCell>
                 <TableCell><strong>Status</strong></TableCell>
                 <TableCell><strong>Acties</strong></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {aanmeldingen.length === 0 ? (
+              {filteredAanmeldingen.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={10} align="center" sx={{ py: 4 }}>
+                  <TableCell colSpan={11} align="center" sx={{ py: 4 }}>
                     <Typography color="text.secondary">
                       Geen aanmeldingen gevonden
                     </Typography>
                   </TableCell>
                 </TableRow>
               ) : (
-                aanmeldingen.map((item) => {
+                filteredAanmeldingen.map((item) => {
                   const isExpanded = expandedRows.includes(item.id);
                   return (
                     <React.Fragment key={item.id}>
@@ -550,6 +599,13 @@ function AdminDashboard() {
                       </Typography>
                     </TableCell>
                     <TableCell>
+                      {item.session_id ? (
+                        <Chip label="Gepland" color="success" size="small" />
+                      ) : (
+                        <Chip label="Niet ingepland" color="warning" size="small" />
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <Typography variant="body2">
                         {formatDate(item.created_at)}
                       </Typography>
@@ -578,16 +634,38 @@ function AdminDashboard() {
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={11}>
                       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 2 }}>
                           <Typography variant="h6" gutterBottom>
                             Volledige Gegevens
                           </Typography>
                           <Grid container spacing={2}>
+                            {item.session_id && (
+                              <Grid item xs={12}>
+                                <Alert severity="success">
+                                  <Typography variant="subtitle2">Sessie Planning</Typography>
+                                  <Typography><strong>Status:</strong> Deelnemer is ingepland voor een sessie</Typography>
+                                  <Button 
+                                    size="small" 
+                                    onClick={() => navigate(`/admin/sessions/${item.session_id}`)}
+                                    sx={{ mt: 1 }}
+                                  >
+                                    Bekijk Sessie Details →
+                                  </Button>
+                                </Alert>
+                              </Grid>
+                            )}
+                            {!item.session_id && (
+                              <Grid item xs={12}>
+                                <Alert severity="warning">
+                                  <Typography><strong>Niet ingepland:</strong> Deze deelnemer is nog niet gekoppeld aan een sessie</Typography>
+                                </Alert>
+                              </Grid>
+                            )}
                             <Grid item xs={12} md={6}>
                               <Typography variant="subtitle2" color="text.secondary">Persoonlijke Gegevens</Typography>
-                              <Typography><strong>Geboortedatum:</strong> {item.birth_date}</Typography>
+                              <Typography><strong>Geboortedatum:</strong> {formatBirthDate(item.birth_date)}</Typography>
                               <Typography><strong>Geboorteplaats:</strong> {item.birth_place}</Typography>
                               <Typography><strong>BSN:</strong> {item.bsn}</Typography>
                             </Grid>
