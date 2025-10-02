@@ -12,6 +12,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LinkIcon from '@mui/icons-material/Link';
+import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import * as XLSX from 'xlsx';
@@ -314,6 +315,34 @@ function AdminDashboard() {
         ? prev.filter(id => id !== sessionId)
         : [...prev, sessionId]
     );
+  };
+
+  const handleDeleteRegistration = async (id, naam) => {
+    if (!window.confirm(`Weet je zeker dat je de aanmelding van ${naam} wilt verwijderen?\n\nDit kan niet ongedaan worden gemaakt!`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`/api/admin/delete-registration?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Fout bij verwijderen');
+      }
+
+      alert(data.message);
+      fetchAanmeldingen();
+
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const handleLinkToSessions = async () => {
@@ -690,6 +719,20 @@ function AdminDashboard() {
                                 <Typography>{item.message}</Typography>
                               </Grid>
                             )}
+                            <Grid item xs={12}>
+                              <Button
+                                variant="outlined"
+                                color="error"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => handleDeleteRegistration(
+                                  item.id, 
+                                  [item.first_name, item.middle_name, item.last_name].filter(Boolean).join(' ')
+                                )}
+                                sx={{ mt: 2 }}
+                              >
+                                Aanmelding Verwijderen
+                              </Button>
+                            </Grid>
                           </Grid>
                         </Box>
                       </Collapse>
