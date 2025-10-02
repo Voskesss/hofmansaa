@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Trainingen from './pages/Trainingen';
 import Contact from './pages/Contact';
@@ -9,6 +9,8 @@ import LLO from './pages/LLO';
 import NederlandsRekenen from './pages/NederlandsRekenen';
 import NietTechnisch from './pages/NietTechnisch';
 import StudentPortal from './pages/StudentPortal';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -259,6 +261,10 @@ const theme = createTheme({
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check of we op een admin route zijn
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   // Verwerk de omleiding van 404.html
   useEffect(() => {
@@ -276,19 +282,30 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ScrollToTop />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/trainingen" element={<Trainingen />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/aanmelden" element={<Aanmelden />} />
-        <Route path="/voertuigtechniek" element={<Voertuigtechniek />} />
-        <Route path="/llo" element={<LLO />} />
-        <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />
-        <Route path="/niet-technisch" element={<NietTechnisch />} />
-        <Route path="/student-portal" element={<StudentPortal />} />
-      </Routes>
-      <Footer />
+      
+      {/* Admin routes zonder Navbar/Footer */}
+      {isAdminRoute ? (
+        <Routes>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Routes>
+      ) : (
+        <>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/trainingen" element={<Trainingen />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/aanmelden" element={<Aanmelden />} />
+            <Route path="/voertuigtechniek" element={<Voertuigtechniek />} />
+            <Route path="/llo" element={<LLO />} />
+            <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />
+            <Route path="/niet-technisch" element={<NietTechnisch />} />
+            <Route path="/student-portal" element={<StudentPortal />} />
+          </Routes>
+          <Footer />
+        </>
+      )}
     </ThemeProvider>
   );
 }
