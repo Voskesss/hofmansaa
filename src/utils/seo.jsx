@@ -17,16 +17,16 @@ export const SEO = ({
   description, 
   keywords, 
   image, 
-  url,
+  url = '/',
   noindex = false,
   type = 'WebPage',
   schemaData = {}
- }) => {
+}) => {
   // Basis domein voor absolute URL's
   const baseDomain = "https://hofmansautomotiveacademie.nl";
   
   // Volledige URL voor canonical en schema data
-  const fullUrl = url.startsWith('http') ? url : `${baseDomain}${url.startsWith('/') ? url : `/${url}`}`;
+  const fullUrl = url?.startsWith('http') ? url : `${baseDomain}${url?.startsWith('/') ? url : `/${url}`}`;
   
   // Basis schema data voor alle pagina's
   const baseSchemaData = {
@@ -34,8 +34,8 @@ export const SEO = ({
     "@type": type,
     "name": title,
     "description": description,
-    "url": url.startsWith('http') ? url : `${baseDomain}${url.startsWith('/') ? url : `/${url}`}`,
-    "image": image.startsWith('http') ? image : `${baseDomain}${image.startsWith('/') ? image : `/${image}`}`,
+    "url": url?.startsWith('http') ? url : `${baseDomain}${url?.startsWith('/') ? url : `/${url}`}`,
+    "image": image?.startsWith('http') ? image : `${baseDomain}${image?.startsWith('/') ? image : `/${image}`}`,
   };
 
   // Combineer basis schema met eventuele extra schema data
