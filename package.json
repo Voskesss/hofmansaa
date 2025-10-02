@@ -25,7 +25,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "setup-db": "node scripts/setup-database.js",
-    "dev:api": "vercel dev"
+    "dev": "mv vercel.json vercel.json.bak 2>/dev/null || true && vercel dev",
+    "dev:stop": "mv vercel.json.bak vercel.json 2>/dev/null || true"
   },
   "eslintConfig": {
     "extends": [
