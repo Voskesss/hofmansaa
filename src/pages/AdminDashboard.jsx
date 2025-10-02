@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Box, Container, Typography, Table, TableBody, TableCell, TableContainer, 
   TableHead, TableRow, Paper, Chip, Button, Select, MenuItem, FormControl,
-  Alert, CircularProgress, Card, CardContent, Grid, Checkbox
+  Alert, CircularProgress, Card, CardContent, Grid, Checkbox, Collapse, IconButton
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 
@@ -20,6 +22,7 @@ function AdminDashboard() {
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [expandedRows, setExpandedRows] = useState([]);
 
   useEffect(() => {
     // Check of admin ingelogd is
@@ -244,6 +247,14 @@ function AdminDashboard() {
     });
   };
 
+  const toggleRowExpand = (id) => {
+    setExpandedRows(prev => 
+      prev.includes(id) 
+        ? prev.filter(rowId => rowId !== id)
+        : [...prev, id]
+    );
+  };
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
@@ -386,6 +397,7 @@ function AdminDashboard() {
           <Table>
             <TableHead sx={{ bgcolor: 'grey.100' }}>
               <TableRow>
+                <TableCell />
                 <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedIds.length === aanmeldingen.length && aanmeldingen.length > 0}
@@ -406,16 +418,27 @@ function AdminDashboard() {
             <TableBody>
               {aanmeldingen.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} align="center" sx={{ py: 4 }}>
+                  <TableCell colSpan={10} align="center" sx={{ py: 4 }}>
                     <Typography color="text.secondary">
                       Geen aanmeldingen gevonden
                     </Typography>
                   </TableCell>
                 </TableRow>
               ) : (
-                aanmeldingen.map((item) => (
-                  <TableRow key={item.id} hover>
-                    <TableCell padding="checkbox">
+                aanmeldingen.map((item) => {
+                  const isExpanded = expandedRows.includes(item.id);
+                  return (
+                    <React.Fragment key={item.id}>
+                      <TableRow hover>
+                        <TableCell>
+                          <IconButton
+                            size="small"
+                            onClick={() => toggleRowExpand(item.id)}
+                          >
+                            {isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                          </IconButton>
+                        </TableCell>
+                        <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedIds.includes(item.id)}
                         onChange={() => handleSelectOne(item.id)}
@@ -464,7 +487,49 @@ function AdminDashboard() {
                       </FormControl>
                     </TableCell>
                   </TableRow>
-                ))
+                  <TableRow>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+                      <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 2 }}>
+                          <Typography variant="h6" gutterBottom>
+                            Volledige Gegevens
+                          </Typography>
+                          <Grid container spacing={2}>
+                            <Grid item xs={12} md={6}>
+                              <Typography variant="subtitle2" color="text.secondary">Persoonlijke Gegevens</Typography>
+                              <Typography><strong>Geboortedatum:</strong> {item.birth_date}</Typography>
+                              <Typography><strong>Geboorteplaats:</strong> {item.birth_place}</Typography>
+                              <Typography><strong>BSN:</strong> {item.bsn}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                              <Typography variant="subtitle2" color="text.secondary">Adresgegevens</Typography>
+                              <Typography><strong>Straat:</strong> {item.street} {item.house_number}</Typography>
+                              <Typography><strong>Postcode:</strong> {item.postal_code}</Typography>
+                              <Typography><strong>Plaats:</strong> {item.city}</Typography>
+                              <Typography><strong>Land:</strong> {item.country}</Typography>
+                            </Grid>
+                            {(item.org_name || item.contact_name) && (
+                              <Grid item xs={12} md={6}>
+                                <Typography variant="subtitle2" color="text.secondary">Organisatie</Typography>
+                                {item.org_name && <Typography><strong>Naam:</strong> {item.org_name}</Typography>}
+                                {item.contact_name && <Typography><strong>Contactpersoon:</strong> {item.contact_name}</Typography>}
+                                {item.contact_email && <Typography><strong>Contact Email:</strong> {item.contact_email}</Typography>}
+                              </Grid>
+                            )}
+                            {item.message && (
+                              <Grid item xs={12}>
+                                <Typography variant="subtitle2" color="text.secondary">Bericht</Typography>
+                                <Typography>{item.message}</Typography>
+                              </Grid>
+                            )}
+                          </Grid>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
+                  );
+                })
               )}
             </TableBody>
           </Table>
