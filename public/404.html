@@ -11,8 +11,11 @@
       const path = window.location.pathname;
       const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
       
-      // Bepaal de base URL op basis van de omgeving
-      const baseUrl = isProduction ? '/hofmans-automotive-academie' : '';
+      // Bepaal de base URL dynamisch voor GitHub Pages (repo naam als eerste padsegment)
+      const isGhPages = /github\.io$/.test(window.location.hostname);
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const repoBase = parts.length > 0 ? `/${parts[0]}` : '';
+      const baseUrl = isProduction ? (isGhPages ? repoBase : '') : '';
       
       // Verwijder de base URL van het pad om de echte route te krijgen
       let route = path;
