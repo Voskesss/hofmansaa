@@ -5,7 +5,7 @@ export const EMAIL_CONFIG = {
   SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_m87ypy9',
   TEMPLATE_TO_COMPANY: 'template_hhpbyg3', // Contact Us template (naar bedrijf)
   TEMPLATE_AUTOREPLY: 'template_wcmhqto',  // Auto-Reply template (naar gebruiker)
-  PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rBcqZk3mmSP0xkpQh',
+  PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'rEq2RCCaocFAkpk72',
   TO_EMAIL: 'website@hofmansautomotiveacademie.nl'
 };
 
