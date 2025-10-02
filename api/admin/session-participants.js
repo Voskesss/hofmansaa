@@ -66,11 +66,15 @@ export default async function handler(req, res) {
         return res.status(404).json({ error: 'Sessie niet gevonden' });
       }
 
-      // Haal deelnemers op
+      // Haal deelnemers op (ALLE velden voor Excel export)
       const participantsResult = await client.query(`
         SELECT 
-          id, first_name, middle_name, last_name, email, phone,
-          trainings, status, created_at, session_id
+          id, first_name, middle_name, last_name,
+          birth_date, birth_place, bsn,
+          email, phone,
+          street, house_number, postal_code, city, country,
+          org_name, contact_name, contact_email,
+          trainings, message, status, session_id, created_at
         FROM aanmeldingen
         WHERE session_id = $1
         ORDER BY created_at DESC
