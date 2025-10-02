@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Trainingen from './pages/Trainingen';
 import Contact from './pages/Contact';
@@ -261,6 +261,10 @@ const theme = createTheme({
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Check of we op een admin route zijn (veilig met optional chaining)
+  const isAdminRoute = location?.pathname?.startsWith('/admin') ?? false;
 
   // Verwerk de omleiding van 404.html
   useEffect(() => {
@@ -295,7 +299,8 @@ function App() {
         <Route path="/niet-technisch" element={<NietTechnisch />} />
         <Route path="/student-portal" element={<StudentPortal />} />
       </Routes>
-      <Footer />
+      {/* Footer alleen tonen op niet-admin pagina's */}
+      {!isAdminRoute && <Footer />}
     </ThemeProvider>
   );
 }

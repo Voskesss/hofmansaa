@@ -193,7 +193,7 @@ function AdminDashboard() {
         </Container>
       </Box>
 
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ py: 6, pb: 10 }}>
         {error && (
           <Alert severity="error" sx={{ mb: 3 }}>
             {error}
