@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Trainingen from './pages/Trainingen';
 import Contact from './pages/Contact';
@@ -261,10 +261,6 @@ const theme = createTheme({
 
 function App() {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Check of we op een admin route zijn
-  const isAdminRoute = location?.pathname?.startsWith('/admin') || false;
 
   // Verwerk de omleiding van 404.html
   useEffect(() => {
@@ -282,30 +278,24 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ScrollToTop />
-      
-      {/* Admin routes zonder Navbar/Footer */}
-      {isAdminRoute ? (
-        <Routes>
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        </Routes>
-      ) : (
-        <>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/trainingen" element={<Trainingen />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/aanmelden" element={<Aanmelden />} />
-            <Route path="/voertuigtechniek" element={<Voertuigtechniek />} />
-            <Route path="/llo" element={<LLO />} />
-            <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />
-            <Route path="/niet-technisch" element={<NietTechnisch />} />
-            <Route path="/student-portal" element={<StudentPortal />} />
-          </Routes>
-          <Footer />
-        </>
-      )}
+      <Navbar />
+      <Routes>
+        {/* Admin routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        
+        {/* Normale routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/trainingen" element={<Trainingen />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/aanmelden" element={<Aanmelden />} />
+        <Route path="/voertuigtechniek" element={<Voertuigtechniek />} />
+        <Route path="/llo" element={<LLO />} />
+        <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />
+        <Route path="/niet-technisch" element={<NietTechnisch />} />
+        <Route path="/student-portal" element={<StudentPortal />} />
+      </Routes>
+      <Footer />
     </ThemeProvider>
   );
 }
