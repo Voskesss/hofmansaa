@@ -54,6 +54,7 @@ export default async function handler(req, res) {
         trainings,
         message,
         status,
+        session_id,
         created_at,
         updated_at
       FROM aanmeldingen
