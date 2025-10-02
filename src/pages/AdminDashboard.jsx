@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Box, Container, Typography, Table, TableBody, TableCell, TableContainer, 
   TableHead, TableRow, Paper, Chip, Button, Select, MenuItem, FormControl,
-  Alert, CircularProgress, Card, CardContent, Grid
+  Alert, CircularProgress, Card, CardContent, Grid, Checkbox
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 
 function AdminDashboard() {
@@ -16,6 +18,7 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   useEffect(() => {
     // Check of admin ingelogd is
@@ -110,6 +113,102 @@ function AdminDashboard() {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
     navigate('/admin/login');
+  };
+
+  const handleSelectAll = (event) => {
+    if (event.target.checked) {
+      setSelectedIds(aanmeldingen.map(item => item.id));
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const handleSelectOne = (id) => {
+    setSelectedIds(prev => 
+      prev.includes(id) 
+        ? prev.filter(item => item !== id)
+        : [...prev, id]
+    );
+  };
+
+  const handleExportToExcel = () => {
+    const selectedAanmeldingen = aanmeldingen.filter(item => selectedIds.includes(item.id));
+    
+    if (selectedAanmeldingen.length === 0) {
+      alert('Selecteer minimaal één aanmelding om te exporteren');
+      return;
+    }
+
+    // Maak data voor Excel met planning kolommen
+    const excelData = selectedAanmeldingen.map(item => ({
+      'ID': item.id,
+      'Voornaam': item.first_name,
+      'Tussenvoegsel': item.middle_name || '',
+      'Achternaam': item.last_name,
+      'Geboortedatum': item.birth_date,
+      'Geboorteplaats': item.birth_place,
+      'BSN': item.bsn,
+      'Email': item.email,
+      'Telefoon': item.phone,
+      'Straat': item.street,
+      'Huisnummer': item.house_number,
+      'Postcode': item.postal_code,
+      'Plaats': item.city,
+      'Land': item.country,
+      'Organisatie': item.org_name || '',
+      'Contactpersoon': item.contact_name || '',
+      'Contact Email': item.contact_email || '',
+      'Training(s)': Array.isArray(item.trainings) ? item.trainings.join(', ') : item.trainings,
+      'Bericht': item.message || '',
+      'Status': getStatusLabel(item.status),
+      'Aangemeld op': formatDate(item.created_at),
+      // Planning velden (leeg voor invullen)
+      'Geplande Datum': '',
+      'Locatie': '',
+      'Tijd': '',
+      'Opmerkingen': ''
+    }));
+
+    // Maak Excel workbook
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(excelData);
+
+    // Kolom breedtes instellen
+    ws['!cols'] = [
+      { wch: 5 },  // ID
+      { wch: 15 }, // Voornaam
+      { wch: 12 }, // Tussenvoegsel
+      { wch: 15 }, // Achternaam
+      { wch: 15 }, // Geboortedatum
+      { wch: 15 }, // Geboorteplaats
+      { wch: 10 }, // BSN
+      { wch: 25 }, // Email
+      { wch: 15 }, // Telefoon
+      { wch: 20 }, // Straat
+      { wch: 10 }, // Huisnummer
+      { wch: 10 }, // Postcode
+      { wch: 15 }, // Plaats
+      { wch: 12 }, // Land
+      { wch: 20 }, // Organisatie
+      { wch: 20 }, // Contactpersoon
+      { wch: 25 }, // Contact Email
+      { wch: 30 }, // Training(s)
+      { wch: 30 }, // Bericht
+      { wch: 15 }, // Status
+      { wch: 18 }, // Aangemeld op
+      { wch: 15 }, // Geplande Datum
+      { wch: 20 }, // Locatie
+      { wch: 10 }, // Tijd
+      { wch: 30 }  // Opmerkingen
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Aanmeldingen');
+
+    // Download Excel file
+    const filename = `aanmeldingen_${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(wb, filename);
+
+    console.log(`✅ ${selectedAanmeldingen.length} aanmeldingen geëxporteerd naar ${filename}`);
   };
 
   const getStatusColor = (status) => {
