@@ -263,7 +263,7 @@ function Home() {
                 color="secondary" 
                 size="large" 
                 component={Link}
-                to="/contact" 
+                to="/aanmelden" 
                 sx={{ 
                   padding: '16px 42px', 
                   fontSize: '1.1rem',
@@ -398,7 +398,7 @@ function Home() {
                   </Typography>
                   
                   <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
-                    Bij HAMA bieden we een breed scala aan trainingen voor zowel technisch personeel in de automotive sector als voor ondersteunend personeel zoals receptionisten en administratief medewerkers. Of het nu gaat om specialistische voertuigtechniek of communicatieve vaardigheden, wij helpen u de juiste kennis en vaardigheden op te doen.
+                    Bij Hofmans Automotive bieden we een breed scala aan trainingen voor zowel technisch personeel in de automotive sector als voor ondersteunend personeel zoals receptionisten en administratief medewerkers. Of het nu gaat om specialistische voertuigtechniek of communicatieve vaardigheden, wij helpen u de juiste kennis en vaardigheden op te doen.
                   </Typography>
                 </Box>
               </motion.div>
@@ -435,7 +435,7 @@ function Home() {
                   </Typography>
                   
                   <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
-                    Daarnaast bieden we trainingen LLO aan voor het onderwijs waaronder het keuzedeel APK. En worden de training en toetsing Nederlands en rekenen verzorgd. Dit zijn essentiële basisvaardigheden voor het succesvol doorlopen van een EVC-traject (Erkenning van Verworven Competenties). Via HAMA kunt u oefenen en uw vaardigheden verbeteren met ons uitgebreide oefenmateriaal.
+                    Daarnaast bieden we trainingen LLO aan voor het onderwijs waaronder het keuzedeel APK. En worden de training en toetsing Nederlands en rekenen verzorgd. Dit zijn essentiële basisvaardigheden voor het succesvol doorlopen van een EVC-traject (Erkenning van Verworven Competenties). Via Hofmans Automotive kunt u oefenen en uw vaardigheden verbeteren met ons uitgebreide oefenmateriaal.
                   </Typography>
                 </Box>
               </motion.div>
@@ -458,7 +458,7 @@ function Home() {
               background: `linear-gradient(135deg, ${theme.palette.primary.main}10, ${theme.palette.secondary.main}10)`,
               boxShadow: `0 4px 20px ${theme.palette.primary.main}20`,
             }}>
-              Kies voor HAMA en investeer in uw toekomst!
+              Kies voor Hofmans Automotive en investeer in uw toekomst!
             </Typography>
           </motion.div>
         </Container>
