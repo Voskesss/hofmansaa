@@ -9,6 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import SettingsIcon from '@mui/icons-material/Settings';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import * as XLSX from 'xlsx';
@@ -290,6 +291,14 @@ function AdminDashboard() {
                 variant="outlined"
               >
                 Sessies
+              </Button>
+              <Button
+                startIcon={<SettingsIcon />}
+                onClick={() => navigate('/admin/settings')}
+                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                variant="outlined"
+              >
+                Instellingen
               </Button>
               <Button
                 startIcon={<FileDownloadIcon />}
