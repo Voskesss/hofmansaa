@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Box, Container, Typography, Table, TableBody, TableCell, TableContainer, 
   TableHead, TableRow, Paper, Chip, Button, Select, MenuItem, FormControl,
-  Alert, CircularProgress, Card, CardContent, Grid, Checkbox, Collapse, IconButton
+  Alert, CircularProgress, Card, CardContent, Grid, Checkbox, Collapse, IconButton,
+  Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SettingsIcon from '@mui/icons-material/Settings';
+import LinkIcon from '@mui/icons-material/Link';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import * as XLSX from 'xlsx';
@@ -24,6 +26,10 @@ function AdminDashboard() {
   const [updating, setUpdating] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [expandedRows, setExpandedRows] = useState([]);
+  const [linkDialogOpen, setLinkDialogOpen] = useState(false);
+  const [allSessions, setAllSessions] = useState([]);
+  const [selectedSessions, setSelectedSessions] = useState([]);
+  const [duplicateMode, setDuplicateMode] = useState(false);
 
   useEffect(() => {
     // Check of admin ingelogd is
@@ -34,7 +40,26 @@ function AdminDashboard() {
     }
 
     fetchAanmeldingen();
+    fetchAllSessions();
   }, [navigate]);
+
+  const fetchAllSessions = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/admin/sessions', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setAllSessions(data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching sessions:', err);
+    }
+  };
 
   const fetchAanmeldingen = async () => {
     setLoading(true);
@@ -256,6 +281,53 @@ function AdminDashboard() {
     );
   };
 
+  const handleToggleSession = (sessionId) => {
+    setSelectedSessions(prev =>
+      prev.includes(sessionId)
+        ? prev.filter(id => id !== sessionId)
+        : [...prev, sessionId]
+    );
+  };
+
+  const handleLinkToSessions = async () => {
+    if (selectedIds.length === 0 || selectedSessions.length === 0) {
+      alert('Selecteer minimaal 1 aanmelding en 1 sessie');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/admin/link-to-session', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          registrationIds: selectedIds,
+          sessionIds: selectedSessions,
+          duplicateForMultiple: duplicateMode
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Fout bij koppelen');
+      }
+
+      alert(data.message);
+      setLinkDialogOpen(false);
+      setSelectedIds([]);
+      setSelectedSessions([]);
+      setDuplicateMode(false);
+      fetchAanmeldingen();
+
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
@@ -299,6 +371,15 @@ function AdminDashboard() {
                 variant="outlined"
               >
                 Instellingen
+              </Button>
+              <Button
+                startIcon={<LinkIcon />}
+                onClick={() => setLinkDialogOpen(true)}
+                disabled={selectedIds.length === 0}
+                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                variant="outlined"
+              >
+                Koppel aan Sessie ({selectedIds.length})
               </Button>
               <Button
                 startIcon={<FileDownloadIcon />}
@@ -544,6 +625,76 @@ function AdminDashboard() {
           </Table>
         </TableContainer>
       </Container>
+
+      {/* Koppel aan Sessie Dialog */}
+      <Dialog open={linkDialogOpen} onClose={() => setLinkDialogOpen(false)} maxWidth="md" fullWidth>
+        <DialogTitle>Koppel Aanmeldingen aan Sessie(s)</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            Koppel {selectedIds.length} geselecteerde aanmelding(en) aan één of meerdere sessies.
+          </Typography>
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={duplicateMode}
+                onChange={(e) => setDuplicateMode(e.target.checked)}
+                color="primary"
+              />
+            }
+            label="Meerdere sessies mogelijk (dupliceer inschrijving)"
+            sx={{ mb: 2, display: 'block' }}
+          />
+
+          <Typography variant="subtitle2" gutterBottom>
+            Selecteer sessie(s):
+          </Typography>
+
+          <Box sx={{ maxHeight: 400, overflow: 'auto' }}>
+            {allSessions.length === 0 ? (
+              <Typography color="text.secondary">Geen sessies beschikbaar</Typography>
+            ) : (
+              allSessions.map((session) => (
+                <Paper key={session.id} sx={{ p: 2, mb: 1 }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={selectedSessions.includes(session.id)}
+                        onChange={() => handleToggleSession(session.id)}
+                        disabled={!duplicateMode && selectedSessions.length >= 1 && !selectedSessions.includes(session.id)}
+                      />
+                    }
+                    label={
+                      <Box>
+                        <Typography variant="body2" fontWeight="bold">
+                          {session.training_type} - {new Date(session.session_date).toLocaleDateString('nl-NL', { 
+                            day: 'numeric', 
+                            month: 'short', 
+                            year: 'numeric' 
+                          })}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {session.start_time?.substring(0,5)} - {session.end_time?.substring(0,5)} | {session.location} | {session.registered_count || 0}/{session.max_participants} deelnemers
+                        </Typography>
+                      </Box>
+                    }
+                  />
+                </Paper>
+              ))
+            )}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setLinkDialogOpen(false)}>Annuleren</Button>
+          <Button 
+            onClick={handleLinkToSessions} 
+            variant="contained"
+            disabled={selectedSessions.length === 0}
+          >
+            Koppelen
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
