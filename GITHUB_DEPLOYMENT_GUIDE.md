@@ -44,9 +44,9 @@ Deze handleiding bevat stap-voor-stap instructies voor het deployen van een Reac
 2. Voeg een Email Service toe (Gmail, Outlook, etc.)
 3. Maak een Email Template aan
 4. Noteer de volgende gegevens:
-   - Service ID (bijv. `service_jyo37pp`)
-   - Template ID (bijv. `template_37a1ftj`)
-   - Public Key (bijv. `rBcqZk3mmSP0xkpQh`)
+   - Service ID (bijv. `service_m87ypy9`)
+   - Template ID (bijv. `template_hhpbyg3`)
+   - Public Key (bijv. `rEq2RCCaocFAkpk72`)
 
 ## 4. Environment Variables
 
@@ -63,9 +63,8 @@ VITE_EMAILJS_PUBLIC_KEY=jouw_public_key
 Maak een `.env.production` bestand in de root van je project:
 
 ```
-VITE_EMAILJS_SERVICE_ID=jouw_service_id
-VITE_EMAILJS_TEMPLATE_ID=jouw_template_id
-VITE_EMAILJS_PUBLIC_KEY=jouw_public_key
+VITE_EMAILJS_SERVICE_ID=service_m87ypy9
+VITE_EMAILJS_PUBLIC_KEY=rEq2RCCaocFAkpk72
 ```
 
 > **BELANGRIJK:** Het `.env.production` bestand moet in je repository staan. Voor publieke keys is dit veilig. Voor geheime keys, gebruik GitHub Secrets.
