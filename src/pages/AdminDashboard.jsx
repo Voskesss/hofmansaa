@@ -188,35 +188,44 @@ function AdminDashboard() {
       return;
     }
 
-    // Maak data voor Excel met planning kolommen
-    const excelData = selectedAanmeldingen.map(item => ({
-      'ID': item.id,
-      'Voornaam': item.first_name,
-      'Tussenvoegsel': item.middle_name || '',
-      'Achternaam': item.last_name,
-      'Geboortedatum': item.birth_date,
-      'Geboorteplaats': item.birth_place,
-      'BSN': item.bsn,
-      'Email': item.email,
-      'Telefoon': item.phone,
-      'Straat': item.street,
-      'Huisnummer': item.house_number,
-      'Postcode': item.postal_code,
-      'Plaats': item.city,
-      'Land': item.country,
-      'Organisatie': item.org_name || '',
-      'Contactpersoon': item.contact_name || '',
-      'Contact Email': item.contact_email || '',
-      'Training(s)': Array.isArray(item.trainings) ? item.trainings.join(', ') : item.trainings,
-      'Bericht': item.message || '',
-      'Status': getStatusLabel(item.status),
-      'Aangemeld op': formatDate(item.created_at),
-      // Planning velden (leeg voor invullen)
-      'Geplande Datum': '',
-      'Locatie': '',
-      'Tijd': '',
-      'Opmerkingen': ''
-    }));
+    // Maak data voor Excel met sessie info
+    const excelData = selectedAanmeldingen.map(item => {
+      // Zoek sessie info als session_id bestaat
+      const sessie = item.session_id 
+        ? allSessions.find(s => s.id === item.session_id)
+        : null;
+
+      return {
+        'ID': item.id,
+        'Voornaam': item.first_name,
+        'Tussenvoegsel': item.middle_name || '',
+        'Achternaam': item.last_name,
+        'Geboortedatum': formatBirthDate(item.birth_date),
+        'Geboorteplaats': item.birth_place,
+        'BSN': item.bsn,
+        'Email': item.email,
+        'Telefoon': item.phone,
+        'Straat': item.street,
+        'Huisnummer': item.house_number,
+        'Postcode': item.postal_code,
+        'Plaats': item.city,
+        'Land': item.country,
+        'Organisatie': item.org_name || '',
+        'Contactpersoon': item.contact_name || '',
+        'Contact Email': item.contact_email || '',
+        'Training(s)': Array.isArray(item.trainings) ? item.trainings.join(', ') : item.trainings,
+        'Status': getStatusLabel(item.status),
+        'Aangemeld op': formatDate(item.created_at),
+        // Sessie planning (gevuld als gekoppeld)
+        'Sessie Status': sessie ? 'Ingepland' : 'Nog niet ingepland',
+        'Sessie Datum': sessie ? new Date(sessie.session_date).toLocaleDateString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '',
+        'Sessie Tijd': sessie ? `${sessie.start_time?.substring(0,5)} - ${sessie.end_time?.substring(0,5)}` : '',
+        'Sessie Locatie': sessie ? sessie.location : '',
+        'Sessie Training': sessie ? sessie.training_type : '',
+        'Bericht': item.message || '',
+        'Opmerkingen Planning': ''
+      };
+    });
 
     // Maak Excel workbook
     const wb = XLSX.utils.book_new();
@@ -228,7 +237,7 @@ function AdminDashboard() {
       { wch: 15 }, // Voornaam
       { wch: 12 }, // Tussenvoegsel
       { wch: 15 }, // Achternaam
-      { wch: 15 }, // Geboortedatum
+      { wch: 12 }, // Geboortedatum (dd-mm-jjjj)
       { wch: 15 }, // Geboorteplaats
       { wch: 10 }, // BSN
       { wch: 25 }, // Email
@@ -242,13 +251,15 @@ function AdminDashboard() {
       { wch: 20 }, // Contactpersoon
       { wch: 25 }, // Contact Email
       { wch: 30 }, // Training(s)
-      { wch: 30 }, // Bericht
       { wch: 15 }, // Status
       { wch: 18 }, // Aangemeld op
-      { wch: 15 }, // Geplande Datum
-      { wch: 20 }, // Locatie
-      { wch: 10 }, // Tijd
-      { wch: 30 }  // Opmerkingen
+      { wch: 18 }, // Sessie Status
+      { wch: 12 }, // Sessie Datum
+      { wch: 15 }, // Sessie Tijd
+      { wch: 20 }, // Sessie Locatie
+      { wch: 15 }, // Sessie Training
+      { wch: 30 }, // Bericht
+      { wch: 30 }  // Opmerkingen Planning
     ];
 
     XLSX.utils.book_append_sheet(wb, ws, 'Aanmeldingen');
