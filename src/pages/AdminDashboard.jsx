@@ -4,7 +4,7 @@ import {
   Box, Container, Typography, Table, TableBody, TableCell, TableContainer, 
   TableHead, TableRow, Paper, Chip, Button, Select, MenuItem, FormControl, InputLabel,
   Alert, CircularProgress, Card, CardContent, Grid, Checkbox, Collapse, IconButton,
-  Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch
+  Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch, Tooltip
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -705,9 +705,42 @@ function AdminDashboard() {
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      {item.session_id ? (
-                        <Chip label="Gepland" color="success" size="small" />
-                      ) : (
+                      {item.session_id ? (() => {
+                        const sessie = allSessions.find(s => s.id === item.session_id);
+                        return sessie ? (
+                          <Tooltip 
+                            title={
+                              <Box sx={{ p: 0.5 }}>
+                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                  📅 {new Date(sessie.session_date).toLocaleDateString('nl-NL', { 
+                                    weekday: 'short', 
+                                    day: 'numeric', 
+                                    month: 'short', 
+                                    year: 'numeric'
+                                  })}
+                                </Typography>
+                                <Typography variant="caption">
+                                  ⏰ {sessie.start_time?.substring(0,5)} - {sessie.end_time?.substring(0,5)}
+                                </Typography>
+                                <br />
+                                <Typography variant="caption">
+                                  📍 {sessie.location}
+                                </Typography>
+                              </Box>
+                            }
+                            arrow
+                          >
+                            <Chip 
+                              label="Gepland" 
+                              color="success" 
+                              size="small" 
+                              sx={{ cursor: 'pointer' }}
+                            />
+                          </Tooltip>
+                        ) : (
+                          <Chip label="Gepland" color="success" size="small" />
+                        );
+                      })() : (
                         <Chip label="Niet ingepland" color="warning" size="small" />
                       )}
                     </TableCell>
@@ -747,21 +780,42 @@ function AdminDashboard() {
                             Volledige Gegevens
                           </Typography>
                           <Grid container spacing={2}>
-                            {item.session_id && (
-                              <Grid item xs={12}>
-                                <Alert severity="success">
-                                  <Typography variant="subtitle2">Sessie Planning</Typography>
-                                  <Typography><strong>Status:</strong> Deelnemer is ingepland voor een sessie</Typography>
-                                  <Button 
-                                    size="small" 
-                                    onClick={() => navigate(`/admin/sessions/${item.session_id}`)}
-                                    sx={{ mt: 1 }}
-                                  >
-                                    Bekijk Sessie Details →
-                                  </Button>
-                                </Alert>
-                              </Grid>
-                            )}
+                            {item.session_id && (() => {
+                              const sessie = allSessions.find(s => s.id === item.session_id);
+                              return (
+                                <Grid item xs={12}>
+                                  <Alert severity="success">
+                                    <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                                      📅 Sessie Planning
+                                    </Typography>
+                                    {sessie ? (
+                                      <>
+                                        <Typography><strong>Datum:</strong> {new Date(sessie.session_date).toLocaleDateString('nl-NL', { 
+                                          weekday: 'long', 
+                                          day: 'numeric', 
+                                          month: 'long', 
+                                          year: 'numeric'
+                                        })}</Typography>
+                                        <Typography><strong>Tijd:</strong> {sessie.start_time?.substring(0,5)} - {sessie.end_time?.substring(0,5)}</Typography>
+                                        <Typography><strong>Locatie:</strong> {sessie.location}</Typography>
+                                        <Typography><strong>Training:</strong> {sessie.training_type}</Typography>
+                                        <Typography><strong>Max deelnemers:</strong> {sessie.max_participants}</Typography>
+                                        <Typography><strong>Status:</strong> {sessie.status}</Typography>
+                                      </>
+                                    ) : (
+                                      <Typography>Sessie #{item.session_id} (details niet gevonden)</Typography>
+                                    )}
+                                    <Button 
+                                      size="small" 
+                                      onClick={() => navigate(`/admin/sessions/${item.session_id}`)}
+                                      sx={{ mt: 1 }}
+                                    >
+                                      Bekijk Sessie Details →
+                                    </Button>
+                                  </Alert>
+                                </Grid>
+                              );
+                            })()}
                             {!item.session_id && (
                               <Grid item xs={12}>
                                 <Alert severity="warning">
