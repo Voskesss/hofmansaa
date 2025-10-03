@@ -1,6 +1,35 @@
 // POST /api/aanmelden - Aanmelding opslaan in database + email versturen
 import { neon } from '@neondatabase/serverless';
 
+// Server-side input sanitization
+function sanitizeString(str) {
+  if (typeof str !== 'string') return str;
+  return str
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;')
+    .trim()
+    .substring(0, 1000); // Max length voor security
+}
+
+function sanitizeFormData(data) {
+  const sanitized = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (typeof value === 'string') {
+      sanitized[key] = sanitizeString(value);
+    } else if (Array.isArray(value)) {
+      sanitized[key] = value.map(item => 
+        typeof item === 'string' ? sanitizeString(item) : item
+      );
+    } else {
+      sanitized[key] = value;
+    }
+  }
+  return sanitized;
+}
+
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,7 +45,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    const formData = req.body;
+    // Sanitize input eerst (server-side bescherming)
+    const formData = sanitizeFormData(req.body);
+    
+    // Anti-bot check: honeypot field moet leeg zijn of niet bestaan
+    if (formData.honeypot && formData.honeypot.trim() !== '') {
+      console.warn('🤖 Bot detected via honeypot field');
+      return res.status(400).json({ 
+        error: 'Invalid submission',
+        success: false 
+      });
+    }
     
     // Validatie: check required fields
     const requiredFields = [

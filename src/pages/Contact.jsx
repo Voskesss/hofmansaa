@@ -10,6 +10,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
 import { initEmailJS, sendContactEmail } from '../utils/emailService';
+import { sanitizeFormData, checkRateLimit, isValidEmail } from '../utils/security';
 
 function Contact() {
   const theme = useTheme();
@@ -19,7 +20,8 @@ function Contact() {
     email: '',
     phone: '',
     training: '',
-    message: ''
+    message: '',
+    honeypot: '' // Anti-bot field (moet leeg blijven)
   });
 
   const [trainingen, setTrainingen] = useState([]);
@@ -55,10 +57,41 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Anti-bot check: honeypot field moet leeg zijn
+    if (formData.honeypot) {
+      console.warn('🤖 Bot detected - honeypot filled');
+      return; // Stil falen - geen feedback aan bot
+    }
+    
+    // Rate limiting check
+    const rateLimit = checkRateLimit('contact-form', 3, 60000); // Max 3 per minuut
+    if (!rateLimit.allowed) {
+      setNotification({
+        open: true,
+        message: `⏱️ ${rateLimit.message}`,
+        severity: 'error'
+      });
+      return;
+    }
+    
+    // Email validatie
+    if (!isValidEmail(formData.email)) {
+      setNotification({
+        open: true,
+        message: '❌ Ongeldig e-mailadres. Controleer je invoer.',
+        severity: 'error'
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      await sendContactEmail(formData);
+      // Sanitize input voor XSS bescherming
+      const sanitizedData = sanitizeFormData(formData);
+      
+      await sendContactEmail(sanitizedData);
 
       setNotification({
         open: true,
@@ -70,7 +103,9 @@ function Contact() {
         name: '',
         email: '',
         phone: '',
-        message: ''
+        training: '',
+        message: '',
+        honeypot: ''
       });
 
     } catch (error) {
@@ -194,6 +229,23 @@ function Contact() {
                     onChange={handleChange}
                     required
                     sx={{ mb: 3 }}
+                  />
+                  
+                  {/* Honeypot field - verborgen voor gebruikers, bots vullen dit in */}
+                  <TextField 
+                    name="honeypot"
+                    value={formData.honeypot}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    tabIndex={-1}
+                    sx={{ 
+                      position: 'absolute',
+                      left: '-9999px',
+                      width: '1px',
+                      height: '1px',
+                      opacity: 0
+                    }}
+                    aria-hidden="true"
                   />
                   
                   <Button 

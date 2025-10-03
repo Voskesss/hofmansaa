@@ -8,6 +8,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
 import { initEmailJS, sendAanmeldEmail } from '../utils/emailService';
+import { sanitizeFormData, checkRateLimit, isValidEmail, isValidPhone, isValidPostalCode } from '../utils/security';
 
 function Aanmelden() {
   const theme = useTheme();
@@ -29,7 +30,8 @@ function Aanmelden() {
     contactEmail: '',
     training: [],
     message: '',
-    sessionId: null
+    sessionId: null,
+    honeypot: '' // Anti-bot field
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -197,6 +199,53 @@ function Aanmelden() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Anti-bot check: honeypot field moet leeg zijn
+    if (formData.honeypot) {
+      console.warn('🤖 Bot detected - honeypot filled');
+      return; // Stil falen
+    }
+    
+    // Rate limiting check
+    const rateLimit = checkRateLimit('aanmelden-form', 2, 120000); // Max 2 per 2 minuten
+    if (!rateLimit.allowed) {
+      setNotification({
+        open: true,
+        message: `⏱️ ${rateLimit.message}`,
+        severity: 'error'
+      });
+      return;
+    }
+    
+    // Email validatie
+    if (!isValidEmail(formData.email)) {
+      setNotification({
+        open: true,
+        message: '❌ Ongeldig e-mailadres. Controleer je invoer.',
+        severity: 'error'
+      });
+      return;
+    }
+    
+    // Telefoonnummer validatie
+    if (!isValidPhone(formData.phone)) {
+      setNotification({
+        open: true,
+        message: '❌ Ongeldig telefoonnummer. Gebruik een Nederlands nummer (bijv. 0612345678).',
+        severity: 'error'
+      });
+      return;
+    }
+    
+    // Postcode validatie (alleen voor Nederland)
+    if (formData.country === 'Nederland' && !isValidPostalCode(formData.postalCode)) {
+      setNotification({
+        open: true,
+        message: '❌ Ongeldige postcode. Gebruik het format 1234 AB.',
+        severity: 'error'
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
@@ -218,6 +267,9 @@ function Aanmelden() {
 
       let savedToDatabase = false;
 
+      // Sanitize alle input
+      const sanitizedData = sanitizeFormData(formData);
+      
       // Probeer eerst backend API (als we op Vercel draaien of lokaal met vercel dev)
       try {
         const apiResponse = await fetch('/api/aanmelden', {
@@ -225,7 +277,7 @@ function Aanmelden() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(sanitizedData)
         });
 
         const apiResult = await apiResponse.json();
@@ -261,7 +313,7 @@ function Aanmelden() {
       }
 
       // Verstuur email via EmailJS (altijd, ook als database werkt)
-      await sendAanmeldEmail(formData, selectedTrainings, sessionInfo);
+      await sendAanmeldEmail(sanitizedData, selectedTrainings, sessionInfo);
 
       setNotification({
         open: true,
@@ -277,7 +329,8 @@ function Aanmelden() {
         orgName: '', contactName: '', contactEmail: '',
         training: sessionSelectionEnabled ? '' : [], 
         message: '', 
-        sessionId: null
+        sessionId: null,
+        honeypot: ''
       });
 
     } catch (error) {
@@ -648,6 +701,23 @@ function Aanmelden() {
                     onChange={handleChange}
                     required
                     sx={{ mb: 3 }}
+                  />
+                  
+                  {/* Honeypot field - verborgen anti-bot veld */}
+                  <TextField 
+                    name="honeypot"
+                    value={formData.honeypot}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    tabIndex={-1}
+                    sx={{ 
+                      position: 'absolute',
+                      left: '-9999px',
+                      width: '1px',
+                      height: '1px',
+                      opacity: 0
+                    }}
+                    aria-hidden="true"
                   />
                   
                   <Button 
