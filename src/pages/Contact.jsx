@@ -94,13 +94,31 @@ function Contact() {
       
       await sendContactEmail(sanitizedData);
 
-      // 🎊 CONFETTI!
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#1976d2', '#ff6b35', '#008494']
-      });
+      // 🎊 CONFETTI DWARRELT VANAF BOVEN!
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0 },
+          colors: ['#1976d2', '#ff6b35', '#008494']
+        });
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0 },
+          colors: ['#1976d2', '#ff6b35', '#008494']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
       
       setNotification({
         open: true,

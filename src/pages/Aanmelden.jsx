@@ -298,6 +298,32 @@ function Aanmelden() {
       // Verstuur email via EmailJS (altijd, ook als database werkt)
       await sendAanmeldEmail(sanitizedData, selectedTrainings, sessionInfo);
 
+      // 🎊 CONFETTI DWARRELT VANAF BOVEN!
+      const duration = 4000; // Iets langer voor aanmeldingen
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0 },
+          colors: ['#1976d2', '#ff6b35', '#008494', '#4ade80']
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0 },
+          colors: ['#1976d2', '#ff6b35', '#008494', '#4ade80']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+
       setNotification({
         open: true,
         message: `🎉 Fantastisch ${fullName}!\n\nWat leuk dat je ons een bericht hebt gestuurd! We hebben je aanmelding voor "${selectedTrainings}" ontvangen.\n\nWe nemen zo spoedig mogelijk contact met je op voor verdere informatie. Tot snel! 🚀`,
