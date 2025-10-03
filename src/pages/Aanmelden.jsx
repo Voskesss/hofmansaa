@@ -136,14 +136,20 @@ function Aanmelden() {
   }, [sessionSelectionEnabled]);
 
   useEffect(() => {
+    console.log('🔄 useEffect triggered - sessionSelectionEnabled:', sessionSelectionEnabled, 'formData.training:', formData.training);
+    
     // Check: als single select (string) of multiple select (array met items)
     const hasTraining = sessionSelectionEnabled 
       ? (typeof formData.training === 'string' && formData.training !== '')
       : (Array.isArray(formData.training) && formData.training.length > 0);
     
+    console.log('📋 hasTraining:', hasTraining, 'type:', typeof formData.training);
+    
     if (sessionSelectionEnabled && hasTraining) {
+      console.log('✅ Calling fetchAvailableSessions()');
       fetchAvailableSessions();
     } else {
+      console.log('❌ NOT calling fetchAvailableSessions - sessionSelectionEnabled:', sessionSelectionEnabled, 'hasTraining:', hasTraining);
       setAvailableSessions([]);
       setFormData(prev => ({ ...prev, sessionId: null }));
     }
