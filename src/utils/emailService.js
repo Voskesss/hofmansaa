@@ -30,6 +30,7 @@ const createContactEmailHTML = (formData) => `
     <p style="margin: 8px 0;"><strong>👤 Naam:</strong> ${formData.name}</p>
     <p style="margin: 8px 0;"><strong>📧 Email:</strong> <a href="mailto:${formData.email}" style="color: #006BB2;">${formData.email}</a></p>
     <p style="margin: 8px 0;"><strong>📱 Telefoon:</strong> ${formData.phone || 'Niet opgegeven'}</p>
+    <p style="margin: 8px 0;"><strong>🎓 Interesse in training:</strong> ${formData.training || 'Niet opgegeven'}</p>
     <p style="margin: 8px 0; padding-top: 12px; border-top: 1px solid #e5e7eb;"><strong>💬 Bericht:</strong></p>
     <p style="margin: 8px 0; white-space: pre-wrap;">${formData.message}</p>
   </div>

@@ -2,19 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box, Container, Typography, Paper, Switch, FormControlLabel,
-  Alert, CircularProgress, Button, Card, CardContent, Divider
+  Alert, CircularProgress, Button, Card, CardContent, Divider,
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Checkbox
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { SEO } from '../utils/seo.jsx';
 
 function AdminSettings() {
   const navigate = useNavigate();
   const [settings, setSettings] = useState({});
+  const [trainingen, setTrainingen] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  
+  // Training dialog states
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingTraining, setEditingTraining] = useState(null);
+  const [trainingForm, setTrainingForm] = useState({
+    naam: '',
+    beschrijving: '',
+    heeft_sessies: false,
+    toon_in_contact: false,
+    volgorde: 0
+  });
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -23,6 +40,7 @@ function AdminSettings() {
       return;
     }
     fetchSettings();
+    fetchTrainingen();
   }, [navigate]);
 
   const fetchSettings = async () => {
@@ -59,6 +77,104 @@ function AdminSettings() {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTrainingen = async () => {
+    try {
+      const response = await fetch('/api/admin/trainingen');
+      const data = await response.json();
+      if (data.success) {
+        setTrainingen(data.data);
+      }
+    } catch (err) {
+      console.error('Fout bij ophalen trainingen:', err);
+    }
+  };
+
+  const handleOpenDialog = (training = null) => {
+    if (training) {
+      setEditingTraining(training);
+      setTrainingForm({
+        naam: training.naam,
+        beschrijving: training.beschrijving || '',
+        heeft_sessies: training.heeft_sessies,
+        toon_in_contact: training.toon_in_contact,
+        volgorde: training.volgorde
+      });
+    } else {
+      setEditingTraining(null);
+      setTrainingForm({
+        naam: '',
+        beschrijving: '',
+        heeft_sessies: false,
+        toon_in_contact: false,
+        volgorde: trainingen.length
+      });
+    }
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setEditingTraining(null);
+  };
+
+  const handleSaveTraining = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      const method = editingTraining ? 'PUT' : 'POST';
+      const body = editingTraining 
+        ? { ...trainingForm, id: editingTraining.id }
+        : trainingForm;
+
+      const response = await fetch('/api/admin/trainingen', {
+        method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setSuccess(data.message);
+        setTimeout(() => setSuccess(''), 3000);
+        handleCloseDialog();
+        fetchTrainingen();
+      } else {
+        setError(data.error);
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleDeleteTraining = async (id, naam) => {
+    if (!window.confirm(`Weet je zeker dat je "${naam}" wilt verwijderen?`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`/api/admin/trainingen?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setSuccess(data.message);
+        setTimeout(() => setSuccess(''), 3000);
+        fetchTrainingen();
+      } else {
+        setError(data.error);
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -226,6 +342,145 @@ function AdminSettings() {
             </Box>
           </CardContent>
         </Card>
+
+        {/* Trainingen Beheer */}
+        <Card sx={{ mt: 4 }}>
+          <CardContent sx={{ p: 4 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Typography variant="h5">
+                Trainingen Beheer
+              </Typography>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={() => handleOpenDialog()}
+              >
+                Nieuwe Training
+              </Button>
+            </Box>
+            <Divider sx={{ my: 2 }} />
+
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell><strong>Naam</strong></TableCell>
+                    <TableCell><strong>Heeft Sessies</strong></TableCell>
+                    <TableCell><strong>In Contactformulier</strong></TableCell>
+                    <TableCell><strong>Volgorde</strong></TableCell>
+                    <TableCell align="right"><strong>Acties</strong></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {trainingen.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={5} align="center" sx={{ py: 4 }}>
+                        <Typography color="text.secondary">
+                          Geen trainingen gevonden. Klik op "Nieuwe Training" om er een toe te voegen.
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    trainingen.map((training) => (
+                      <TableRow key={training.id} hover>
+                        <TableCell>
+                          <Typography variant="body1" fontWeight="bold">
+                            {training.naam}
+                          </Typography>
+                          {training.beschrijving && (
+                            <Typography variant="caption" color="text.secondary">
+                              {training.beschrijving}
+                            </Typography>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Checkbox checked={training.heeft_sessies} disabled />
+                        </TableCell>
+                        <TableCell>
+                          <Checkbox checked={training.toon_in_contact} disabled />
+                        </TableCell>
+                        <TableCell>{training.volgorde}</TableCell>
+                        <TableCell align="right">
+                          <IconButton
+                            size="small"
+                            onClick={() => handleOpenDialog(training)}
+                            color="primary"
+                          >
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={() => handleDeleteTraining(training.id, training.naam)}
+                            color="error"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </CardContent>
+        </Card>
+
+        {/* Training Dialog */}
+        <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+          <DialogTitle>
+            {editingTraining ? 'Training Bewerken' : 'Nieuwe Training'}
+          </DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <TextField
+                label="Naam"
+                fullWidth
+                value={trainingForm.naam}
+                onChange={(e) => setTrainingForm({ ...trainingForm, naam: e.target.value })}
+                required
+              />
+              <TextField
+                label="Beschrijving"
+                fullWidth
+                multiline
+                rows={2}
+                value={trainingForm.beschrijving}
+                onChange={(e) => setTrainingForm({ ...trainingForm, beschrijving: e.target.value })}
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={trainingForm.heeft_sessies}
+                    onChange={(e) => setTrainingForm({ ...trainingForm, heeft_sessies: e.target.checked })}
+                  />
+                }
+                label="Heeft toetsmomenten/sessies (toon in aanmeldformulier)"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={trainingForm.toon_in_contact}
+                    onChange={(e) => setTrainingForm({ ...trainingForm, toon_in_contact: e.target.checked })}
+                  />
+                }
+                label="Toon in contactformulier"
+              />
+              <TextField
+                label="Volgorde"
+                type="number"
+                fullWidth
+                value={trainingForm.volgorde}
+                onChange={(e) => setTrainingForm({ ...trainingForm, volgorde: parseInt(e.target.value) })}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Annuleren</Button>
+            <Button onClick={handleSaveTraining} variant="contained">
+              Opslaan
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </Box>
   );

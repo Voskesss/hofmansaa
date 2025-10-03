@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Dialog, DialogContent, DialogActions, useTheme } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Dialog, DialogContent, DialogActions, useTheme, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -18,8 +18,11 @@ function Contact() {
     name: '',
     email: '',
     phone: '',
+    training: '',
     message: ''
   });
+
+  const [trainingen, setTrainingen] = useState([]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notification, setNotification] = useState({
@@ -30,7 +33,20 @@ function Contact() {
 
   useEffect(() => {
     initEmailJS();
+    fetchTrainingen();
   }, []);
+
+  const fetchTrainingen = async () => {
+    try {
+      const response = await fetch('/api/admin/trainingen?filter=contact');
+      const data = await response.json();
+      if (data.success) {
+        setTrainingen(data.data);
+      }
+    } catch (err) {
+      console.error('Fout bij ophalen trainingen:', err);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -150,6 +166,23 @@ function Contact() {
                     autoComplete="off"
                     sx={{ mb: 2 }}
                   />
+
+                  <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Over welke training wil je informatie? *</InputLabel>
+                    <Select
+                      name="training"
+                      value={formData.training}
+                      onChange={handleChange}
+                      label="Over welke training wil je informatie? *"
+                      required
+                    >
+                      {trainingen.map((training) => (
+                        <MenuItem key={training.id} value={training.naam}>
+                          {training.naam}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   
                   <TextField 
                     fullWidth 

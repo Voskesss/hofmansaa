@@ -41,11 +41,36 @@ function Aanmelden() {
   const [sessionSelectionEnabled, setSessionSelectionEnabled] = useState(false);
   const [availableSessions, setAvailableSessions] = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
+  const [allTrainingen, setAllTrainingen] = useState([]);
+  const [uniqueTrainingen, setUniqueTrainingen] = useState([]);
 
   useEffect(() => {
     initEmailJS();
     fetchSettings();
+    fetchAllSessions();
   }, []);
+
+  const fetchAllSessions = async () => {
+    try {
+      const response = await fetch('/api/sessions/available');
+      const data = await response.json();
+      if (data.success) {
+        // Haal unieke training types op uit beschikbare sessies
+        const unique = [...new Set(data.data.map(s => s.training_type))].filter(Boolean);
+        setUniqueTrainingen(unique);
+        
+        // Als er maar 1 training is, selecteer deze automatisch
+        if (unique.length === 1) {
+          setFormData(prev => ({
+            ...prev,
+            training: sessionSelectionEnabled ? unique[0] : [unique[0]]
+          }));
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching all sessions:', error);
+    }
+  };
 
   const fetchSettings = async () => {
     try {
@@ -445,42 +470,62 @@ function Aanmelden() {
                     />
                   </Box>
 
-                  <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel>
-                      {sessionSelectionEnabled 
-                        ? 'Kies Training *' 
-                        : 'Interesse in Training (meerdere mogelijk)'}
-                    </InputLabel>
-                    <Select
-                      name="training"
-                      value={formData.training}
-                      onChange={handleChange}
-                      label={sessionSelectionEnabled 
-                        ? 'Kies Training *' 
-                        : 'Interesse in Training (meerdere mogelijk)'}
-                      multiple={!sessionSelectionEnabled}
-                      renderValue={!sessionSelectionEnabled ? (selected) => {
-                        const options = {
-                          'voertuigtechniek': 'Voertuigtechniek Werkplaats',
-                          'llo': 'Leven Lang Ontwikkelen (LLO)',
-                          'niet-technisch': 'Niet-Technisch Personeel',
-                          'nederlands-rekenen': 'Nederlands & Rekenen'
-                        };
-                        return selected.map(item => options[item]).join(', ');
-                      } : undefined}
-                      required
-                    >
-                      <MenuItem value="voertuigtechniek">Voertuigtechniek Werkplaats</MenuItem>
-                      <MenuItem value="llo">Leven Lang Ontwikkelen (LLO)</MenuItem>
-                      <MenuItem value="niet-technisch">Niet-Technisch Personeel</MenuItem>
-                      <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
-                    </Select>
-                    {sessionSelectionEnabled && (
-                      <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
-                        Bij sessie selectie kun je 1 training per keer kiezen
-                      </Typography>
-                    )}
-                  </FormControl>
+                  {/* Training/Toetsing Selectie */}
+                  {uniqueTrainingen.length === 1 ? (
+                    // Slechts 1 training beschikbaar - toon disabled field
+                    <TextField
+                      fullWidth
+                      label="Training/Toetsing"
+                      value={uniqueTrainingen[0]}
+                      disabled
+                      sx={{ mb: 2 }}
+                      helperText="Er is momenteel slechts 1 training/toetsing beschikbaar"
+                    />
+                  ) : uniqueTrainingen.length > 1 ? (
+                    // Meerdere trainingen - toon dropdown
+                    <FormControl fullWidth sx={{ mb: 2 }}>
+                      <InputLabel>
+                        {sessionSelectionEnabled 
+                          ? 'Kies Training/Toetsing *' 
+                          : 'Interesse in Training (meerdere mogelijk)'}
+                      </InputLabel>
+                      <Select
+                        name="training"
+                        value={formData.training}
+                        onChange={handleChange}
+                        label={sessionSelectionEnabled 
+                          ? 'Kies Training/Toetsing *' 
+                          : 'Interesse in Training (meerdere mogelijk)'}
+                        multiple={!sessionSelectionEnabled}
+                        renderValue={!sessionSelectionEnabled ? (selected) => {
+                          return Array.isArray(selected) ? selected.join(', ') : selected;
+                        } : undefined}
+                        required
+                      >
+                        {uniqueTrainingen.map((training) => (
+                          <MenuItem key={training} value={training}>
+                            {training}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {sessionSelectionEnabled && (
+                        <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+                          Kies de training/toetsing waarvoor je een moment wilt reserveren
+                        </Typography>
+                      )}
+                    </FormControl>
+                  ) : (
+                    // Geen trainingen beschikbaar
+                    <TextField
+                      fullWidth
+                      label="Training/Toetsing"
+                      value="Geen trainingen beschikbaar"
+                      disabled
+                      sx={{ mb: 2 }}
+                      error
+                      helperText="Er zijn momenteel geen trainingen/toetsingen beschikbaar"
+                    />
+                  )}
 
                   {/* Sessie Selectie (conditionally shown) */}
                   {sessionSelectionEnabled && formData.training && (
