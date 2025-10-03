@@ -38,7 +38,46 @@ export default async function handler(req, res) {
   try {
     // GET - Haal alle trainingen op (geen auth nodig voor publieke data)
     if (req.method === 'GET') {
-      const { filter } = req.query;
+      const { filter, setup } = req.query;
+
+      // SETUP MODE - Maak tabel aan (admin only)
+      if (setup === 'true') {
+        const user = verifyToken(req);
+        if (!user) {
+          return res.status(401).json({ error: 'Niet geautoriseerd' });
+        }
+
+        // Create table
+        await sql`
+          CREATE TABLE IF NOT EXISTS trainingen (
+            id SERIAL PRIMARY KEY,
+            naam VARCHAR(255) NOT NULL UNIQUE,
+            beschrijving TEXT,
+            heeft_sessies BOOLEAN DEFAULT false,
+            toon_in_contact BOOLEAN DEFAULT false,
+            actief BOOLEAN DEFAULT true,
+            volgorde INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          )
+        `;
+
+        // Insert defaults
+        await sql`
+          INSERT INTO trainingen (naam, beschrijving, heeft_sessies, toon_in_contact, volgorde)
+          VALUES 
+            ('Nederlands & Rekenen', 'Toetsing Nederlands en Rekenen (certificaat)', true, false, 1),
+            ('Voertuigen', 'Training voor voertuigen en voertuigbeveiliging', false, true, 2),
+            ('Niet-technisch personeel', 'Training voor niet-technisch personeel', false, true, 3),
+            ('LLO', 'Luchthavenbeveiliging en Luchtvaartoperaties', false, true, 4)
+          ON CONFLICT (naam) DO NOTHING
+        `;
+
+        return res.status(200).json({
+          success: true,
+          message: 'Trainingen tabel aangemaakt'
+        });
+      }
 
       let trainingen;
       
