@@ -85,10 +85,14 @@ function AdminSettings() {
       const response = await fetch('/api/admin/trainingen');
       const data = await response.json();
       if (data.success) {
-        setTrainingen(data.data);
+        setTrainingen(data.data || []);
+      } else {
+        // Tabel bestaat mogelijk nog niet
+        setTrainingen([]);
       }
     } catch (err) {
       console.error('Fout bij ophalen trainingen:', err);
+      setTrainingen([]);
     }
   };
 
@@ -375,9 +379,32 @@ function AdminSettings() {
                   {trainingen.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={5} align="center" sx={{ py: 4 }}>
-                        <Typography color="text.secondary">
-                          Geen trainingen gevonden. Klik op "Nieuwe Training" om er een toe te voegen.
+                        <Typography color="text.secondary" gutterBottom>
+                          Geen trainingen gevonden.
                         </Typography>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={async () => {
+                            try {
+                              const token = localStorage.getItem('adminToken');
+                              const response = await fetch('/api/admin/trainingen?setup=true', {
+                                headers: { 'Authorization': `Bearer ${token}` }
+                              });
+                              const data = await response.json();
+                              if (data.success) {
+                                setSuccess('Database tabel aangemaakt! Trainingen geladen.');
+                                setTimeout(() => setSuccess(''), 3000);
+                                fetchTrainingen();
+                              }
+                            } catch (err) {
+                              setError('Fout bij setup: ' + err.message);
+                            }
+                          }}
+                          sx={{ mt: 2 }}
+                        >
+                          🔧 Database Tabel Aanmaken
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ) : (

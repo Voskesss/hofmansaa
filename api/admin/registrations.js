@@ -72,9 +72,19 @@ export default async function handler(req, res) {
         ORDER BY created_at DESC
       `;
 
+      // Bereken stats
+      const stats = {
+        total: aanmeldingen.length,
+        byStatus: aanmeldingen.reduce((acc, item) => {
+          acc[item.status] = (acc[item.status] || 0) + 1;
+          return acc;
+        }, {})
+      };
+
       return res.status(200).json({
         success: true,
-        data: aanmeldingen
+        data: aanmeldingen,
+        stats: stats
       });
     }
 
