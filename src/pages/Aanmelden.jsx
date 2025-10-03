@@ -45,10 +45,13 @@ function Aanmelden() {
   const [uniqueTrainingen, setUniqueTrainingen] = useState([]);
   const [trainingLookup, setTrainingLookup] = useState({}); // key -> naam mapping
 
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
+
   useEffect(() => {
     initEmailJS();
     const loadData = async () => {
       await fetchSettings(); // Eerst settings laden
+      setSettingsLoaded(true); // Mark als geladen
       await fetchAllSessions(); // Dan sessies
     };
     loadData();
@@ -79,14 +82,18 @@ function Aanmelden() {
         setUniqueTrainingen(unique);
         console.log('🎯 Unique trainingen keys:', unique);
         console.log('📅 All sessions:', sessionsData.data);
+        console.log('⚙️ sessionSelectionEnabled at auto-select time:', sessionSelectionEnabled);
         
         // Als er maar 1 training is, selecteer deze automatisch
-        if (unique.length === 1) {
-          console.log('✨ Auto-selecting:', unique[0]);
+        // Maar ALLEEN als settings al geladen zijn
+        if (unique.length === 1 && settingsLoaded) {
+          console.log('✨ Auto-selecting:', unique[0], 'as', sessionSelectionEnabled ? 'STRING' : 'ARRAY');
           setFormData(prev => ({
             ...prev,
             training: sessionSelectionEnabled ? unique[0] : [unique[0]]
           }));
+        } else if (unique.length === 1 && !settingsLoaded) {
+          console.log('⏸️ Waiting for settings to load before auto-select...');
         }
       }
     } catch (error) {
