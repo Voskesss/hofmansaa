@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions, useTheme, alpha, CircularProgress } from '@mui/material';
+import { Link } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
@@ -768,6 +769,56 @@ function Aanmelden() {
           </Grid>
           
           <Grid item xs={12} md={6}>
+            {/* Info blok voor algemene vragen */}
+            <Card sx={{ borderRadius: 4, mb: 3, background: `linear-gradient(135deg, ${theme.palette.secondary.main}10, ${theme.palette.primary.main}10)`, border: `2px solid ${theme.palette.secondary.main}` }}>
+              <CardContent sx={{ padding: { xs: 2, sm: 3, md: 4 } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <EmailIcon sx={{ fontSize: 40, color: 'secondary.main', mr: 2 }} />
+                  <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'secondary.main' }}>
+                    Meer informatie nodig?
+                  </Typography>
+                </Box>
+                
+                <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.8 }}>
+                  <strong>Let op:</strong> Dit formulier is alleen voor directe aanmelding voor een specifieke training of toets.
+                </Typography>
+                
+                <Typography variant="body1" sx={{ mb: 3, lineHeight: 1.8 }}>
+                  Wilt u eerst meer informatie over onze trainingen, opleidingen of heeft u andere vragen? Neem dan contact met ons op via:
+                </Typography>
+                
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                    📧 E-mail:
+                  </Typography>
+                  <Typography variant="body1">
+                    support@hofmansautomotiveacademie.nl
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="body1" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                    📞 Telefoon:
+                  </Typography>
+                  <Typography variant="body1">
+                    +31 (0)24 641 32 22
+                  </Typography>
+                </Box>
+                
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  component={Link}
+                  to="/contact"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                >
+                  Naar Contactformulier
+                </Button>
+              </CardContent>
+            </Card>
+            
+            {/* Contactgegevens */}
             <Card sx={{ borderRadius: 4 }}>
               <CardContent sx={{ padding: { xs: 2, sm: 3, md: 5 } }}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3, color: 'primary.main' }}>
