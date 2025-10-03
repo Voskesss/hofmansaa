@@ -6,6 +6,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { motion } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import { SEO } from '../utils/seo.jsx';
 import { initEmailJS, sendAanmeldEmail } from '../utils/emailService';
 import { sanitizeFormData, checkRateLimit, isValidEmail, isValidPhone, isValidPostalCode } from '../utils/security';

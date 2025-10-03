@@ -8,6 +8,7 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { motion } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import { SEO } from '../utils/seo.jsx';
 import { initEmailJS, sendContactEmail } from '../utils/emailService';
 import { sanitizeFormData, checkRateLimit, isValidEmail } from '../utils/security';
@@ -93,6 +94,14 @@ function Contact() {
       
       await sendContactEmail(sanitizedData);
 
+      // 🎊 CONFETTI!
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#1976d2', '#ff6b35', '#008494']
+      });
+      
       setNotification({
         open: true,
         message: `🎉 Bedankt ${formData.name}!\n\nWe hebben je bericht ontvangen en nemen zo spoedig mogelijk contact met je op. Tot snel! 🚀`,
