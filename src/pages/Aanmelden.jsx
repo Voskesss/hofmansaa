@@ -138,7 +138,7 @@ function Aanmelden() {
         ? formData.training 
         : formData.training[0];
       
-      const response = await fetch(`/api/sessions/available?training_type=${trainingType}`);
+      const response = await fetch(`/api/sessions/available?training_type=${encodeURIComponent(trainingType)}`);
       const data = await response.json();
       if (data.success) {
         setAvailableSessions(data.data);
