@@ -493,15 +493,21 @@ function Aanmelden() {
                           <MenuItem disabled>Geen beschikbare sessies voor deze training</MenuItem>
                         ) : (
                           availableSessions.map((session) => (
-                            <MenuItem key={session.id} value={session.id}>
-                              {new Date(session.session_date).toLocaleDateString('nl-NL', { 
-                                weekday: 'short', 
-                                day: 'numeric', 
-                                month: 'short',
-                                year: 'numeric'
-                              })} - {session.start_time.substring(0,5)} tot {session.end_time.substring(0,5)} 
-                              {session.location && ` | ${session.location}`}
-                              {session.available_spots !== undefined && ` (${session.available_spots} plekken beschikbaar)`}
+                            <MenuItem key={session.id} value={session.id} sx={{ whiteSpace: 'normal', py: 1.5 }}>
+                              <Box>
+                                <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                                  {new Date(session.session_date).toLocaleDateString('nl-NL', { 
+                                    weekday: 'short', 
+                                    day: 'numeric', 
+                                    month: 'short',
+                                    year: 'numeric'
+                                  })} - {session.start_time.substring(0,5)} tot {session.end_time.substring(0,5)}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {session.location && `${session.location}`}
+                                  {session.available_spots !== undefined && ` (${session.available_spots} plekken beschikbaar)`}
+                                </Typography>
+                              </Box>
                             </MenuItem>
                           ))
                         )}
