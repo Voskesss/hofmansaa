@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Dialog, DialogContent, DialogActions, useTheme, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Dialog, DialogContent, DialogActions, useTheme, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -253,10 +253,16 @@ function Contact() {
                     variant="contained" 
                     size="large" 
                     fullWidth
-                    endIcon={<SendIcon />}
+                    endIcon={isSubmitting ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <SendIcon />}
                     disabled={isSubmitting}
+                    sx={{
+                      '&.Mui-disabled': {
+                        backgroundColor: 'primary.main',
+                        opacity: 0.8
+                      }
+                    }}
                   >
-                    {isSubmitting ? 'Verzenden...' : 'Verstuur Bericht'}
+                    {isSubmitting ? 'Bezig met verzenden...' : 'Verstuur Bericht'}
                   </Button>
                 </form>
               </CardContent>
