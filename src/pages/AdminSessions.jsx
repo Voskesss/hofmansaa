@@ -338,7 +338,7 @@ function AdminSessions() {
                   <TableRow key={session.id} hover>
                     <TableCell>
                       <Typography variant="body2" fontWeight="bold">
-                        {TRAINING_TYPES[session.training_type] || session.training_type}
+                        {session.training_type}
                       </Typography>
                       {session.description && (
                         <Typography variant="caption" color="text.secondary">
