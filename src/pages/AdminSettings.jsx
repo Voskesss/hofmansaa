@@ -26,6 +26,7 @@ function AdminSettings() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingTraining, setEditingTraining] = useState(null);
   const [trainingForm, setTrainingForm] = useState({
+    key: '',
     naam: '',
     beschrijving: '',
     heeft_sessies: false,
@@ -100,6 +101,7 @@ function AdminSettings() {
     if (training) {
       setEditingTraining(training);
       setTrainingForm({
+        key: training.key,
         naam: training.naam,
         beschrijving: training.beschrijving || '',
         heeft_sessies: training.heeft_sessies,
@@ -109,6 +111,7 @@ function AdminSettings() {
     } else {
       setEditingTraining(null);
       setTrainingForm({
+        key: '',
         naam: '',
         beschrijving: '',
         heeft_sessies: false,
@@ -460,7 +463,16 @@ function AdminSettings() {
           <DialogContent>
             <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
               <TextField
-                label="Naam"
+                label="Key (technische naam, kleine letters, geen spaties)"
+                fullWidth
+                value={trainingForm.key}
+                onChange={(e) => setTrainingForm({ ...trainingForm, key: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                required
+                helperText="Bijv: nederlands-rekenen, voertuigen, llo"
+                placeholder="nederlands-rekenen"
+              />
+              <TextField
+                label="Naam (weergave)"
                 fullWidth
                 value={trainingForm.naam}
                 onChange={(e) => setTrainingForm({ ...trainingForm, naam: e.target.value })}

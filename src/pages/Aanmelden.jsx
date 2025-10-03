@@ -43,6 +43,7 @@ function Aanmelden() {
   const [loadingSessions, setLoadingSessions] = useState(false);
   const [allTrainingen, setAllTrainingen] = useState([]);
   const [uniqueTrainingen, setUniqueTrainingen] = useState([]);
+  const [trainingLookup, setTrainingLookup] = useState({}); // key -> naam mapping
 
   useEffect(() => {
     initEmailJS();
@@ -55,11 +56,25 @@ function Aanmelden() {
 
   const fetchAllSessions = async () => {
     try {
-      const response = await fetch('/api/sessions/available');
-      const data = await response.json();
-      if (data.success) {
-        // Haal unieke training types op uit beschikbare sessies
-        const unique = [...new Set(data.data.map(s => s.training_type))].filter(Boolean);
+      // Haal sessies en trainingen op
+      const [sessionsRes, trainingenRes] = await Promise.all([
+        fetch('/api/sessions/available'),
+        fetch('/api/admin/trainingen?filter=sessies')
+      ]);
+      
+      const sessionsData = await sessionsRes.json();
+      const trainingenData = await trainingenRes.json();
+      
+      if (sessionsData.success && trainingenData.success) {
+        // Maak lookup map: key -> naam
+        const lookup = {};
+        trainingenData.data.forEach(t => {
+          lookup[t.key] = t.naam;
+        });
+        setTrainingLookup(lookup);
+        
+        // Haal unieke training keys op uit beschikbare sessies
+        const unique = [...new Set(sessionsData.data.map(s => s.training_type))].filter(Boolean);
         setUniqueTrainingen(unique);
         
         // Als er maar 1 training is, selecteer deze automatisch
@@ -138,7 +153,7 @@ function Aanmelden() {
         ? formData.training 
         : formData.training[0];
       
-      const response = await fetch(`/api/sessions/available?training_type=${encodeURIComponent(trainingType)}`);
+      const response = await fetch(`/api/sessions/available?training_type=${trainingType}`);
       const data = await response.json();
       if (data.success) {
         setAvailableSessions(data.data);
@@ -486,7 +501,7 @@ function Aanmelden() {
                     <TextField
                       fullWidth
                       label="Training/Toetsing"
-                      value={uniqueTrainingen[0]}
+                      value={trainingLookup[uniqueTrainingen[0]] || uniqueTrainingen[0]}
                       disabled
                       sx={{ mb: 2 }}
                       helperText="Er is momenteel slechts 1 training/toetsing beschikbaar"
@@ -508,13 +523,13 @@ function Aanmelden() {
                           : 'Interesse in Training (meerdere mogelijk)'}
                         multiple={!sessionSelectionEnabled}
                         renderValue={!sessionSelectionEnabled ? (selected) => {
-                          return Array.isArray(selected) ? selected.join(', ') : selected;
-                        } : undefined}
+                          return Array.isArray(selected) ? selected.map(key => trainingLookup[key] || key).join(', ') : (trainingLookup[selected] || selected);
+                        } : (selected) => trainingLookup[selected] || selected}
                         required
                       >
-                        {uniqueTrainingen.map((training) => (
-                          <MenuItem key={training} value={training}>
-                            {training}
+                        {uniqueTrainingen.map((trainingKey) => (
+                          <MenuItem key={trainingKey} value={trainingKey}>
+                            {trainingLookup[trainingKey] || trainingKey}
                           </MenuItem>
                         ))}
                       </Select>

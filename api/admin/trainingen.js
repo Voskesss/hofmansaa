@@ -51,7 +51,8 @@ export default async function handler(req, res) {
         await sql`
           CREATE TABLE IF NOT EXISTS trainingen (
             id SERIAL PRIMARY KEY,
-            naam VARCHAR(255) NOT NULL UNIQUE,
+            key VARCHAR(100) NOT NULL UNIQUE,
+            naam VARCHAR(255) NOT NULL,
             beschrijving TEXT,
             heeft_sessies BOOLEAN DEFAULT false,
             toon_in_contact BOOLEAN DEFAULT false,
@@ -64,13 +65,13 @@ export default async function handler(req, res) {
 
         // Insert defaults
         await sql`
-          INSERT INTO trainingen (naam, beschrijving, heeft_sessies, toon_in_contact, volgorde)
+          INSERT INTO trainingen (key, naam, beschrijving, heeft_sessies, toon_in_contact, volgorde)
           VALUES 
-            ('Nederlands & Rekenen', 'Toetsing Nederlands en Rekenen (certificaat)', true, false, 1),
-            ('Voertuigen', 'Training voor voertuigen en voertuigbeveiliging', false, true, 2),
-            ('Niet-technisch personeel', 'Training voor niet-technisch personeel', false, true, 3),
-            ('LLO', 'Luchthavenbeveiliging en Luchtvaartoperaties', false, true, 4)
-          ON CONFLICT (naam) DO NOTHING
+            ('nederlands-rekenen', 'Nederlands & Rekenen', 'Toetsing Nederlands en Rekenen (certificaat)', true, false, 1),
+            ('voertuigen', 'Voertuigen', 'Training voor voertuigen en voertuigbeveiliging', false, true, 2),
+            ('niet-technisch', 'Niet-technisch personeel', 'Training voor niet-technisch personeel', false, true, 3),
+            ('llo', 'LLO', 'Luchthavenbeveiliging en Luchtvaartoperaties', false, true, 4)
+          ON CONFLICT (key) DO NOTHING
         `;
 
         return res.status(200).json({
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
       if (filter === 'contact') {
         // Voor contactformulier: alleen trainingen die in contact getoond worden
         trainingen = await sql`
-          SELECT id, naam, beschrijving
+          SELECT id, key, naam, beschrijving
           FROM trainingen
           WHERE toon_in_contact = true AND actief = true
           ORDER BY volgorde, naam
@@ -92,7 +93,7 @@ export default async function handler(req, res) {
       } else if (filter === 'sessies') {
         // Voor sessie aanmaken: alleen trainingen die sessies hebben
         trainingen = await sql`
-          SELECT id, naam, beschrijving
+          SELECT id, key, naam, beschrijving
           FROM trainingen
           WHERE heeft_sessies = true AND actief = true
           ORDER BY volgorde, naam
@@ -120,15 +121,15 @@ export default async function handler(req, res) {
 
     // POST - Nieuwe training
     if (req.method === 'POST') {
-      const { naam, beschrijving, heeft_sessies, toon_in_contact, volgorde } = req.body;
+      const { key, naam, beschrijving, heeft_sessies, toon_in_contact, volgorde } = req.body;
 
-      if (!naam) {
-        return res.status(400).json({ error: 'Naam is verplicht' });
+      if (!key || !naam) {
+        return res.status(400).json({ error: 'Key en naam zijn verplicht' });
       }
 
       const result = await sql`
-        INSERT INTO trainingen (naam, beschrijving, heeft_sessies, toon_in_contact, volgorde)
-        VALUES (${naam}, ${beschrijving || null}, ${heeft_sessies || false}, ${toon_in_contact || false}, ${volgorde || 0})
+        INSERT INTO trainingen (key, naam, beschrijving, heeft_sessies, toon_in_contact, volgorde)
+        VALUES (${key}, ${naam}, ${beschrijving || null}, ${heeft_sessies || false}, ${toon_in_contact || false}, ${volgorde || 0})
         RETURNING *
       `;
 
@@ -141,7 +142,7 @@ export default async function handler(req, res) {
 
     // PUT - Update training
     if (req.method === 'PUT') {
-      const { id, naam, beschrijving, heeft_sessies, toon_in_contact, actief, volgorde } = req.body;
+      const { id, key, naam, beschrijving, heeft_sessies, toon_in_contact, actief, volgorde } = req.body;
 
       if (!id) {
         return res.status(400).json({ error: 'ID is verplicht' });
@@ -150,6 +151,7 @@ export default async function handler(req, res) {
       const result = await sql`
         UPDATE trainingen
         SET 
+          key = COALESCE(${key}, key),
           naam = COALESCE(${naam}, naam),
           beschrijving = COALESCE(${beschrijving}, beschrijving),
           heeft_sessies = COALESCE(${heeft_sessies}, heeft_sessies),

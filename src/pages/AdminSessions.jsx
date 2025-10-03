@@ -338,7 +338,7 @@ function AdminSessions() {
                   <TableRow key={session.id} hover>
                     <TableCell>
                       <Typography variant="body2" fontWeight="bold">
-                        {session.training_type}
+                        {trainingen.find(t => t.key === session.training_type)?.naam || session.training_type}
                       </Typography>
                       {session.description && (
                         <Typography variant="caption" color="text.secondary">
@@ -437,7 +437,7 @@ function AdminSessions() {
                   onChange={(e) => setFormData({ ...formData, training_type: e.target.value })}
                 >
                   {trainingen.map((training) => (
-                    <MenuItem key={training.id} value={training.naam}>
+                    <MenuItem key={training.id} value={training.key}>
                       {training.naam}
                     </MenuItem>
                   ))}
