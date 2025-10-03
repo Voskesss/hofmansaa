@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions, useTheme, alpha } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions, useTheme, alpha, CircularProgress } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
@@ -563,10 +563,17 @@ function Aanmelden() {
                     variant="contained" 
                     size="large" 
                     fullWidth
-                    endIcon={<SendIcon />}
+                    endIcon={isSubmitting ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <SendIcon />}
                     disabled={isSubmitting}
+                    sx={{
+                      position: 'relative',
+                      '&.Mui-disabled': {
+                        backgroundColor: 'primary.main',
+                        opacity: 0.8
+                      }
+                    }}
                   >
-                    {isSubmitting ? 'Verzenden...' : 'Verstuur Aanmelding'}
+                    {isSubmitting ? 'Bezig met verzenden...' : 'Verstuur Aanmelding'}
                   </Button>
                 </form>
               </CardContent>
