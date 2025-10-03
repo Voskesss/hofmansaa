@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
 import { initEmailJS, sendAanmeldEmail } from '../utils/emailService';
 import { sanitizeFormData, checkRateLimit, isValidEmail, isValidPhone, isValidPostalCode } from '../utils/security';
+import AddressPicker from '../components/AddressPicker';
 
 function Aanmelden() {
   const theme = useTheme();
@@ -481,44 +482,7 @@ function Aanmelden() {
                     📍 Adresgegevens
                   </Typography>
 
-                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '2fr 1fr' }, gap: 2 }}>
-                    <TextField 
-                      label="Straatnaam"
-                      name="street"
-                      value={formData.street}
-                      onChange={handleChange}
-                      required
-                      autoComplete="street-address"
-                    />
-                    <TextField 
-                      label="Huisnummer"
-                      name="houseNumber"
-                      value={formData.houseNumber}
-                      onChange={handleChange}
-                      required
-                      autoComplete="off"
-                    />
-                  </Box>
-
-                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 2fr' }, gap: 2 }}>
-                    <TextField 
-                      label="Postcode"
-                      name="postalCode"
-                      value={formData.postalCode}
-                      onChange={handleChange}
-                      required
-                      autoComplete="postal-code"
-                      placeholder="1234 AB"
-                    />
-                    <TextField 
-                      label="Plaats"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleChange}
-                      required
-                      autoComplete="address-level2"
-                    />
-                  </Box>
+                  <AddressPicker formData={formData} setFormData={setFormData} />
 
                   <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel>Land</InputLabel>
