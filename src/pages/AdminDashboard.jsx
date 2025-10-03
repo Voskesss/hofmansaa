@@ -39,6 +39,7 @@ function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState('created_at');
   const [sortDirection, setSortDirection] = useState('desc');
+  const [sessionFilter, setSessionFilter] = useState('all');
 
   useEffect(() => {
     // Check of admin ingelogd is
@@ -119,6 +120,17 @@ function AdminDashboard() {
       );
     }
     
+    // Filter op sessie
+    if (sessionFilter !== 'all') {
+      if (sessionFilter === 'none') {
+        // Alleen niet ingeplande aanmeldingen
+        result = result.filter(item => !item.session_id);
+      } else {
+        // Specifieke sessie
+        result = result.filter(item => item.session_id === parseInt(sessionFilter));
+      }
+    }
+    
     // Zoeken op naam, email, telefoon, ID
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
@@ -170,7 +182,7 @@ function AdminDashboard() {
     });
     
     setFilteredAanmeldingen(result);
-  }, [trainingFilter, searchTerm, sortField, sortDirection, aanmeldingen]);
+  }, [trainingFilter, sessionFilter, searchTerm, sortField, sortDirection, aanmeldingen]);
 
   const handleStatusChange = async (id, newStatus) => {
     setUpdating(id);
@@ -604,18 +616,46 @@ function AdminDashboard() {
             }}
             size="small"
           />
-          <FormControl sx={{ minWidth: 250 }} size="small">
-            <InputLabel>Filter op Training</InputLabel>
+          <FormControl sx={{ minWidth: 200 }} size="small">
+            <InputLabel>Filter Training</InputLabel>
             <Select
               value={trainingFilter}
               onChange={(e) => setTrainingFilter(e.target.value)}
-              label="Filter op Training"
+              label="Filter Training"
             >
-              <MenuItem value="all">Alle Trainingen ({aanmeldingen.length})</MenuItem>
+              <MenuItem value="all">Alle Trainingen</MenuItem>
               <MenuItem value="llo">LLO</MenuItem>
               <MenuItem value="voertuigtechniek">Voertuigtechniek</MenuItem>
               <MenuItem value="nederlands-rekenen">Nederlands & Rekenen</MenuItem>
               <MenuItem value="niet-technisch">Niet-technisch</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 250 }} size="small">
+            <InputLabel>Filter Sessie</InputLabel>
+            <Select
+              value={sessionFilter}
+              onChange={(e) => setSessionFilter(e.target.value)}
+              label="Filter Sessie"
+            >
+              <MenuItem value="all">Alle Sessies</MenuItem>
+              <MenuItem value="none">Zonder Sessie ({aanmeldingen.filter(a => !a.session_id).length})</MenuItem>
+              {allSessions
+                .sort((a, b) => new Date(b.session_date) - new Date(a.session_date))
+                .map(session => {
+                  const count = aanmeldingen.filter(a => a.session_id === session.id).length;
+                  if (count === 0) return null;
+                  return (
+                    <MenuItem key={session.id} value={session.id}>
+                      {session.training_type} - {new Date(session.session_date).toLocaleDateString('nl-NL', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                      })} ({count})
+                    </MenuItem>
+                  );
+                })
+                .filter(Boolean)
+              }
             </Select>
           </FormControl>
           <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
