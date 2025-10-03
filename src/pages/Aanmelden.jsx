@@ -44,6 +44,7 @@ function Aanmelden() {
   const [sessionSelectionEnabled, setSessionSelectionEnabled] = useState(false);
   const [availableSessions, setAvailableSessions] = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
+  const [loadingTrainingen, setLoadingTrainingen] = useState(true); // Loading state voor trainingen
   const [allTrainingen, setAllTrainingen] = useState([]);
   const [uniqueTrainingen, setUniqueTrainingen] = useState([]);
   const [trainingLookup, setTrainingLookup] = useState({}); // key -> naam mapping
@@ -61,6 +62,7 @@ function Aanmelden() {
   }, []);
 
   const fetchAllSessions = async () => {
+    setLoadingTrainingen(true);
     try {
       // Haal sessies en trainingen op
       const [sessionsRes, trainingenRes] = await Promise.all([
@@ -87,6 +89,8 @@ function Aanmelden() {
       }
     } catch (error) {
       console.error('Error fetching all sessions:', error);
+    } finally {
+      setLoadingTrainingen(false);
     }
   };
 
@@ -584,7 +588,15 @@ function Aanmelden() {
                   </Box>
 
                   {/* Training/Toetsing Selectie */}
-                  {uniqueTrainingen.length === 1 ? (
+                  {loadingTrainingen ? (
+                    // Laden...
+                    <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <CircularProgress size={24} />
+                      <Typography variant="body2" color="text.secondary">
+                        Trainingen laden...
+                      </Typography>
+                    </Box>
+                  ) : uniqueTrainingen.length === 1 ? (
                     // Slechts 1 training beschikbaar - toon disabled field
                     <TextField
                       fullWidth
@@ -592,7 +604,7 @@ function Aanmelden() {
                       value={trainingLookup[uniqueTrainingen[0]] || uniqueTrainingen[0]}
                       disabled
                       sx={{ mb: 2 }}
-                      helperText="Er is momenteel slechts 1 training/toetsing beschikbaar"
+                      helperText="Deze training/toetsing is automatisch geselecteerd"
                     />
                   ) : uniqueTrainingen.length > 1 ? (
                     // Meerdere trainingen - toon dropdown
