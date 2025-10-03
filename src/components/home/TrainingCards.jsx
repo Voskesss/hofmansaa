@@ -59,7 +59,7 @@ const TrainingCards = () => {
             }
           }}
         >
-          Onze Trainingen
+          Onze Trainingen & Toetsen
         </Typography>
       </motion.div>
 
@@ -446,7 +446,7 @@ const TrainingCards = () => {
               />
               <CardContent sx={{ flexGrow: 1, p: 3, height: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', overflow: 'hidden' }}>
                 <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>
-                  Essentiële basisvaardigheden voor EVC-trajecten. Met onze trainingen en toetsingen behaal je het niveau dat nodig is voor de volgende stap in je carrière.
+                  Officiële taal- en rekentoetsen voor EVC-trajecten. Verplicht voor MBO 2, 3 en 4 diploma aanvraag. Wij organiseren de complete toetsing voor u.
                 </Typography>
               </CardContent>
               <Box sx={{ p: 3, pt: 0 }}>

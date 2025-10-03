@@ -100,14 +100,14 @@ function Navbar() {
               <MenuItem onClick={handleClose} component={Link} to="/llo" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
                 Leven Lang Ontwikkelen (LLO)
               </MenuItem>
-              <MenuItem onClick={handleClose} component={Link} to="/nederlands-rekenen" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
-                Nederlands & Rekenen
-              </MenuItem>
               <MenuItem onClick={handleClose} component={Link} to="/niet-technisch" sx={{ '&:hover': { backgroundColor: `${theme.palette.common.white}1A` } }}>
                 Niet-Technisch Personeel
               </MenuItem>
             </Menu>
           </Box>
+          <Button color="primary" component={Link} to="/nederlands-rekenen" sx={{ fontWeight: 'bold', color: scrolled ? theme.palette.primary.dark : theme.palette.common.white, '&:hover': { backgroundColor: scrolled ? `${theme.palette.primary.main}1A` : `${theme.palette.common.white}1A` }, transition: 'color 0.3s ease-in-out' }}>
+            Toetsen
+          </Button>
           <Button color="primary" component={Link} to="/contact" sx={{ fontWeight: 'bold', color: scrolled ? theme.palette.primary.dark : theme.palette.common.white, '&:hover': { backgroundColor: scrolled ? `${theme.palette.primary.main}1A` : `${theme.palette.common.white}1A` }, transition: 'color 0.3s ease-in-out' }}>
             Contact
           </Button>
@@ -180,11 +180,12 @@ function Navbar() {
               <ListItem button component={Link} to="/llo">
                 <ListItemText primary="Leven Lang Ontwikkelen (LLO)" />
               </ListItem>
-              <ListItem button component={Link} to="/nederlands-rekenen">
-                <ListItemText primary="Nederlands & Rekenen" />
-              </ListItem>
               <ListItem button component={Link} to="/niet-technisch">
                 <ListItemText primary="Niet-Technisch Personeel" />
+              </ListItem>
+              <Divider sx={{ backgroundColor: `${theme.palette.common.white}33`, my: 1 }} />
+              <ListItem button component={Link} to="/nederlands-rekenen">
+                <ListItemText primary="Toetsen: Nederlands & Rekenen" />
               </ListItem>
               <ListItem button component={Link} to="/contact">
                 <ListItemText primary="Contact" />
