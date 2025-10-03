@@ -5,7 +5,7 @@ import {
   TableHead, TableRow, Paper, Chip, Button, Select, MenuItem, FormControl, InputLabel,
   Alert, CircularProgress, Card, CardContent, Grid, Checkbox, Collapse, IconButton,
   Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch, Tooltip,
-  TextField, InputAdornment, TableSortLabel
+  TextField, InputAdornment, TableSortLabel, TablePagination
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -40,6 +40,8 @@ function AdminDashboard() {
   const [sortField, setSortField] = useState('created_at');
   const [sortDirection, setSortDirection] = useState('desc');
   const [sessionFilter, setSessionFilter] = useState('all');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
 
   useEffect(() => {
     // Check of admin ingelogd is
@@ -658,9 +660,28 @@ function AdminDashboard() {
               }
             </Select>
           </FormControl>
-          <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-            {filteredAanmeldingen.length} {filteredAanmeldingen.length === 1 ? 'resultaat' : 'resultaten'}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+              {filteredAanmeldingen.length} {filteredAanmeldingen.length === 1 ? 'resultaat' : 'resultaten'}
+            </Typography>
+            <FormControl size="small" sx={{ minWidth: 120 }}>
+              <InputLabel>Per pagina</InputLabel>
+              <Select
+                value={rowsPerPage}
+                onChange={(e) => {
+                  setRowsPerPage(e.target.value);
+                  setPage(0);
+                }}
+                label="Per pagina"
+              >
+                <MenuItem value={25}>25</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={75}>75</MenuItem>
+                <MenuItem value={100}>100</MenuItem>
+                <MenuItem value={filteredAanmeldingen.length || 999999}>Alles</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
 
         {/* Stats Cards */}
@@ -855,7 +876,9 @@ function AdminDashboard() {
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredAanmeldingen.map((item) => {
+                filteredAanmeldingen
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((item) => {
                   const isExpanded = expandedRows.includes(item.id);
                   return (
                     <React.Fragment key={item.id}>
@@ -1059,6 +1082,20 @@ function AdminDashboard() {
               )}
             </TableBody>
           </Table>
+          <TablePagination
+            component="div"
+            count={filteredAanmeldingen.length}
+            page={page}
+            onPageChange={(event, newPage) => setPage(newPage)}
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={(event) => {
+              setRowsPerPage(parseInt(event.target.value, 10));
+              setPage(0);
+            }}
+            rowsPerPageOptions={[25, 50, 75, 100, { label: 'Alles', value: filteredAanmeldingen.length || 999999 }]}
+            labelRowsPerPage="Rijen per pagina:"
+            labelDisplayedRows={({ from, to, count }) => `${from}-${to} van ${count}`}
+          />
         </TableContainer>
       </Container>
 
