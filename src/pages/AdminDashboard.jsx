@@ -72,7 +72,7 @@ function AdminDashboard() {
     try {
       const token = localStorage.getItem('adminToken');
       
-      const response = await fetch('/api/admin/aanmeldingen', {
+      const response = await fetch('/api/admin/registrations', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -122,7 +122,7 @@ function AdminDashboard() {
     try {
       const token = localStorage.getItem('adminToken');
       
-      const response = await fetch('/api/admin/update-status', {
+      const response = await fetch('/api/admin/registrations', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -334,7 +334,7 @@ function AdminDashboard() {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/delete-registration?id=${id}`, {
+      const response = await fetch(`/api/admin/registrations?id=${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

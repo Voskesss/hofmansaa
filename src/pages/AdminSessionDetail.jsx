@@ -12,6 +12,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import DeleteIcon from '@mui/icons-material/Delete';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 
@@ -191,6 +192,45 @@ function AdminSessionDetail() {
       setDuplicateDialogOpen(false);
       setSelectedIds([]);
       setTargetSessionId('');
+      fetchSessionDetails();
+
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleDeleteParticipants = async () => {
+    if (selectedIds.length === 0) return;
+
+    const namen = participants
+      .filter(p => selectedIds.includes(p.id))
+      .map(p => `${p.first_name} ${p.last_name}`)
+      .join(', ');
+
+    if (!window.confirm(`Weet je zeker dat je ${selectedIds.length} deelnemer(s) wilt verwijderen?\n\n${namen}\n\nDit kan niet ongedaan worden gemaakt!`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      
+      for (const participantId of selectedIds) {
+        const response = await fetch(`/api/admin/registrations?id=${participantId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || 'Fout bij verwijderen');
+        }
+      }
+
+      alert(`${selectedIds.length} deelnemer(s) verwijderd`);
+      setSelectedIds([]);
+      fetchSessionDetails();
 
     } catch (err) {
       alert(err.message);
@@ -471,6 +511,15 @@ function AdminSessionDetail() {
             disabled={selectedIds.length === 0}
           >
             Extra Toevoegen ({selectedIds.length})
+          </Button>
+          <Button
+            startIcon={<DeleteIcon />}
+            variant="outlined"
+            color="error"
+            onClick={handleDeleteParticipants}
+            disabled={selectedIds.length === 0}
+          >
+            Verwijder ({selectedIds.length})
           </Button>
         </Box>
 
