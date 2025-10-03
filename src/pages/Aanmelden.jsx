@@ -84,17 +84,7 @@ function Aanmelden() {
         console.log('📅 All sessions:', sessionsData.data);
         console.log('⚙️ sessionSelectionEnabled at auto-select time:', sessionSelectionEnabled);
         
-        // Als er maar 1 training is, selecteer deze automatisch
-        // Maar ALLEEN als settings al geladen zijn
-        if (unique.length === 1 && settingsLoaded) {
-          console.log('✨ Auto-selecting:', unique[0], 'as', sessionSelectionEnabled ? 'STRING' : 'ARRAY');
-          setFormData(prev => ({
-            ...prev,
-            training: sessionSelectionEnabled ? unique[0] : [unique[0]]
-          }));
-        } else if (unique.length === 1 && !settingsLoaded) {
-          console.log('⏸️ Waiting for settings to load before auto-select...');
-        }
+        // Unieke trainingen opslaan - auto-select gebeurt in useEffect hieronder
       }
     } catch (error) {
       console.error('Error fetching all sessions:', error);
@@ -125,6 +115,17 @@ function Aanmelden() {
       localStorage.removeItem('selectedTraining');
     }
   }, []);
+
+  // Auto-select als er maar 1 training is (na settings geladen)
+  useEffect(() => {
+    if (uniqueTrainingen.length === 1 && !formData.training) {
+      console.log('✨ Auto-selecting:', uniqueTrainingen[0], 'as', sessionSelectionEnabled ? 'STRING' : 'ARRAY');
+      setFormData(prev => ({
+        ...prev,
+        training: sessionSelectionEnabled ? uniqueTrainingen[0] : [uniqueTrainingen[0]]
+      }));
+    }
+  }, [uniqueTrainingen, sessionSelectionEnabled]);
 
   // Reset training field wanneer session selection mode verandert
   useEffect(() => {
