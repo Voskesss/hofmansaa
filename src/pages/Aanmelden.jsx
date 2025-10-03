@@ -72,13 +72,17 @@ function Aanmelden() {
           lookup[t.key] = t.naam;
         });
         setTrainingLookup(lookup);
+        console.log('🗺️ Training lookup:', lookup);
         
         // Haal unieke training keys op uit beschikbare sessies
         const unique = [...new Set(sessionsData.data.map(s => s.training_type))].filter(Boolean);
         setUniqueTrainingen(unique);
+        console.log('🎯 Unique trainingen keys:', unique);
+        console.log('📅 All sessions:', sessionsData.data);
         
         // Als er maar 1 training is, selecteer deze automatisch
         if (unique.length === 1) {
+          console.log('✨ Auto-selecting:', unique[0]);
           setFormData(prev => ({
             ...prev,
             training: sessionSelectionEnabled ? unique[0] : [unique[0]]
@@ -153,13 +157,17 @@ function Aanmelden() {
         ? formData.training 
         : formData.training[0];
       
+      console.log('🔍 Fetching sessions for training_type:', trainingType);
       const response = await fetch(`/api/sessions/available?training_type=${trainingType}`);
       const data = await response.json();
+      console.log('📦 Sessions response:', data);
+      
       if (data.success) {
         setAvailableSessions(data.data);
+        console.log('✅ Available sessions:', data.data.length);
       }
     } catch (error) {
-      console.error('Error fetching sessions:', error);
+      console.error('❌ Error fetching sessions:', error);
     } finally {
       setLoadingSessions(false);
     }
