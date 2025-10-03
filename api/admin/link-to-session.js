@@ -49,14 +49,28 @@ export default async function handler(req, res) {
   const client = await pool.connect();
 
   try {
-    const { registrationIds, sessionIds, duplicateForMultiple } = req.body;
+    const { registrationIds, sessionIds, duplicateForMultiple, unlink } = req.body;
 
     if (!registrationIds || !Array.isArray(registrationIds) || registrationIds.length === 0) {
       return res.status(400).json({ error: 'registrationIds (array) is verplicht' });
     }
 
+    // ONTKOPPELEN - session_id = null
+    if (unlink === true) {
+      await client.query(`
+        UPDATE aanmeldingen
+        SET session_id = NULL, updated_at = CURRENT_TIMESTAMP
+        WHERE id = ANY($1)
+      `, [registrationIds]);
+
+      return res.status(200).json({
+        success: true,
+        message: `${registrationIds.length} aanmelding(en) ontkoppeld van sessie`
+      });
+    }
+
     if (!sessionIds || !Array.isArray(sessionIds) || sessionIds.length === 0) {
-      return res.status(400).json({ error: 'sessionIds (array) is verplicht' });
+      return res.status(400).json({ error: 'sessionIds (array) is verplicht (of gebruik unlink: true)' });
     }
 
     if (sessionIds.length === 1) {

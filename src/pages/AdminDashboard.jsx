@@ -12,6 +12,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LinkIcon from '@mui/icons-material/Link';
+import LinkOffIcon from '@mui/icons-material/LinkOff';
 import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -393,6 +394,45 @@ function AdminDashboard() {
     }
   };
 
+  const handleUnlinkFromSession = async () => {
+    if (selectedIds.length === 0) {
+      alert('Selecteer minimaal 1 aanmelding');
+      return;
+    }
+
+    if (!confirm(`Weet je zeker dat je ${selectedIds.length} aanmelding(en) wilt ontkoppelen van hun sessie?`)) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch('/api/admin/link-to-session', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          registrationIds: selectedIds,
+          unlink: true
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Fout bij ontkoppelen');
+      }
+
+      alert(data.message);
+      setSelectedIds([]);
+      fetchAanmeldingen();
+
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
@@ -445,6 +485,15 @@ function AdminDashboard() {
                 variant="outlined"
               >
                 Koppel aan Sessie ({selectedIds.length})
+              </Button>
+              <Button
+                startIcon={<LinkOffIcon />}
+                onClick={handleUnlinkFromSession}
+                disabled={selectedIds.length === 0}
+                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                variant="outlined"
+              >
+                Ontkoppel ({selectedIds.length})
               </Button>
               <Button
                 startIcon={<FileDownloadIcon />}
