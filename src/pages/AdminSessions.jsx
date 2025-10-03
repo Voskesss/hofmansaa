@@ -14,16 +14,10 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { SEO } from '../utils/seo.jsx';
 
-const TRAINING_TYPES = {
-  'llo': 'LLO',
-  'voertuigtechniek': 'Voertuigtechniek',
-  'nederlands-rekenen': 'Nederlands & Rekenen',
-  'niet-technisch': 'Niet-technisch'
-};
-
 function AdminSessions() {
   const navigate = useNavigate();
   const [sessions, setSessions] = useState([]);
+  const [trainingen, setTrainingen] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
@@ -48,7 +42,20 @@ function AdminSessions() {
       return;
     }
     fetchSessions();
+    fetchTrainingen();
   }, [navigate]);
+
+  const fetchTrainingen = async () => {
+    try {
+      const response = await fetch('/api/admin/trainingen?filter=sessies');
+      const data = await response.json();
+      if (data.success) {
+        setTrainingen(data.data || []);
+      }
+    } catch (err) {
+      console.error('Fout bij ophalen trainingen:', err);
+    }
+  };
 
   const fetchSessions = async () => {
     setLoading(true);
@@ -429,8 +436,10 @@ function AdminSessions() {
                   label="Training Type"
                   onChange={(e) => setFormData({ ...formData, training_type: e.target.value })}
                 >
-                  {Object.entries(TRAINING_TYPES).map(([key, label]) => (
-                    <MenuItem key={key} value={key}>{label}</MenuItem>
+                  {trainingen.map((training) => (
+                    <MenuItem key={training.id} value={training.naam}>
+                      {training.naam}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>
