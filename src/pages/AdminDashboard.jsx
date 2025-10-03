@@ -510,11 +510,14 @@ function AdminDashboard() {
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom>
-                  Totaal
+                  📊 Totaal
                 </Typography>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                   {stats.total}
                 </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Alle aanmeldingen
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -522,11 +525,44 @@ function AdminDashboard() {
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom>
-                  Nieuw
+                  🆕 Nieuw
                 </Typography>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'info.main' }}>
                   {stats.byStatus?.nieuw || 0}
                 </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Actie vereist
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Card sx={{ bgcolor: 'warning.light' }}>
+              <CardContent>
+                <Typography color="text.primary" gutterBottom fontWeight="bold">
+                  ⚠️ Zonder Sessie
+                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.dark' }}>
+                  {aanmeldingen.filter(a => !a.session_id).length}
+                </Typography>
+                <Typography variant="caption" color="text.primary">
+                  Moeten ingepland
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={2.4}>
+            <Card sx={{ bgcolor: 'success.light' }}>
+              <CardContent>
+                <Typography color="text.primary" gutterBottom fontWeight="bold">
+                  ✅ Ingepland
+                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.dark' }}>
+                  {aanmeldingen.filter(a => a.session_id).length}
+                </Typography>
+                <Typography variant="caption" color="text.primary">
+                  Gekoppeld aan sessie
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -534,34 +570,17 @@ function AdminDashboard() {
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom>
-                  In Behandeling
+                  📅 Deze Week
                 </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
-                  {stats.byStatus?.in_behandeling || 0}
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                  {aanmeldingen.filter(a => {
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    return new Date(a.created_at) > weekAgo;
+                  }).length}
                 </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
-            <Card>
-              <CardContent>
-                <Typography color="text.secondary" gutterBottom>
-                  Goedgekeurd
-                </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>
-                  {stats.byStatus?.goedgekeurd || 0}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6} md={2.4}>
-            <Card>
-              <CardContent>
-                <Typography color="text.secondary" gutterBottom>
-                  Voltooid
-                </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                  {stats.byStatus?.voltooid || 0}
+                <Typography variant="caption" color="text.secondary">
+                  Laatste 7 dagen
                 </Typography>
               </CardContent>
             </Card>
