@@ -17,7 +17,6 @@ function Aanmelden() {
     lastName: '',
     birthDate: '',
     birthPlace: '',
-    bsn: '',
     email: '',
     phone: '',
     street: '',
@@ -39,7 +38,6 @@ function Aanmelden() {
     message: '',
     severity: 'success'
   });
-  const [bsnError, setBsnError] = useState('');
   const [sessionSelectionEnabled, setSessionSelectionEnabled] = useState(false);
   const [availableSessions, setAvailableSessions] = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
@@ -117,52 +115,15 @@ function Aanmelden() {
     }
   };
 
-  const validateBSN = (bsn) => {
-    // Verwijder spaties en streepjes
-    const cleaned = bsn.replace(/[\s-]/g, '');
-    
-    // Moet 8 of 9 cijfers zijn
-    if (!/^\d{8,9}$/.test(cleaned)) {
-      return false;
-    }
-    
-    // Pad met 0 als het 8 cijfers zijn
-    const bsnNumber = cleaned.padStart(9, '0');
-    
-    // 11-proef: vermenigvuldig elk cijfer met zijn positie (9,8,7,6,5,4,3,2,-1)
-    let sum = 0;
-    for (let i = 0; i < 9; i++) {
-      const multiplier = i === 8 ? -1 : 9 - i;
-      sum += parseInt(bsnNumber[i]) * multiplier;
-    }
-    
-    // Som moet deelbaar zijn door 11
-    return sum % 11 === 0;
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    // BSN validatie tijdens typen
-    if (name === 'bsn') {
-      if (value && !validateBSN(value)) {
-        setBsnError('Ongeldig BSN nummer (moet voldoen aan 11-proef)');
-      } else {
-        setBsnError('');
-      }
-    }
     
     setFormData(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Controleer BSN voor verzending
-    if (formData.bsn && !validateBSN(formData.bsn)) {
-      setBsnError('Ongeldig BSN nummer. Controleer het nummer en probeer opnieuw.');
-      return;
-    }
     
     setIsSubmitting(true);
 
@@ -219,7 +180,7 @@ function Aanmelden() {
 
       setFormData({ 
         firstName: '', middleName: '', lastName: '',
-        birthDate: '', birthPlace: '', bsn: '',
+        birthDate: '', birthPlace: '',
         email: '', phone: '',
         street: '', houseNumber: '', postalCode: '', city: '', country: 'Nederland',
         orgName: '', contactName: '', contactEmail: '',
@@ -371,18 +332,6 @@ function Aanmelden() {
                     />
                   </Box>
 
-                  <TextField 
-                    fullWidth
-                    label="BurgerServiceNummer"
-                    name="bsn"
-                    value={formData.bsn}
-                    onChange={handleChange}
-                    required
-                    autoComplete="off"
-                    error={!!bsnError}
-                    helperText={bsnError || 'Moet voldoen aan 11-proef (8 of 9 cijfers)'}
-                    sx={{ mb: 2 }}
-                  />
 
                   <Typography variant="h6" sx={{ mt: 3, mb: 2, color: 'primary.main', fontWeight: 600 }}>
                     📍 Adresgegevens

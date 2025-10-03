@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     
     // Validatie: check required fields
     const requiredFields = [
-      'firstName', 'lastName', 'birthDate', 'birthPlace', 'bsn',
+      'firstName', 'lastName', 'birthDate', 'birthPlace',
       'email', 'phone', 'street', 'houseNumber', 'postalCode', 
       'city', 'country'
     ];
@@ -51,32 +51,28 @@ export default async function handler(req, res) {
     // Training array formatteren voor Postgres
     const trainingsArray = Array.isArray(formData.training) 
       ? formData.training 
-      : [formData.training].filter(Boolean);
-
+      : [formData.training];
+    
     // Insert aanmelding in database
     const result = await sql`
       INSERT INTO aanmeldingen (
         first_name, middle_name, last_name,
-        birth_date, birth_place, bsn,
+        birth_date, birth_place,
         email, phone,
         street, house_number, postal_code, city, country,
         org_name, contact_name, contact_email,
-        trainings, message,
-        session_id,
-        status
+        trainings, message, status, session_id
       ) VALUES (
         ${formData.firstName},
-        ${formData.middleName || null},
+        ${formData.middleName || ''},
         ${formData.lastName},
         ${formData.birthDate},
         ${formData.birthPlace},
-        ${formData.bsn},
         ${formData.email},
         ${formData.phone},
         ${formData.street},
         ${formData.houseNumber},
         ${formData.postalCode},
-        ${formData.city},
         ${formData.country},
         ${formData.orgName || null},
         ${formData.contactName || null},

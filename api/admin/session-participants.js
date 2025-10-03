@@ -70,7 +70,7 @@ export default async function handler(req, res) {
       const participantsResult = await client.query(`
         SELECT 
           id, first_name, middle_name, last_name,
-          birth_date, birth_place, bsn,
+          birth_date, birth_place,
           email, phone,
           street, house_number, postal_code, city, country,
           org_name, contact_name, contact_email,
@@ -119,7 +119,7 @@ export default async function handler(req, res) {
         const result = await client.query(`
           INSERT INTO aanmeldingen (
             first_name, middle_name, last_name,
-            birth_date, birth_place, bsn,
+            birth_date, birth_place,
             email, phone,
             street, house_number, postal_code, city, country,
             org_name, contact_name, contact_email,
@@ -128,7 +128,7 @@ export default async function handler(req, res) {
           )
           SELECT 
             first_name, middle_name, last_name,
-            birth_date, birth_place, bsn,
+            birth_date, birth_place,
             email, phone,
             street, house_number, postal_code, city, country,
             org_name, contact_name, contact_email,
@@ -159,7 +159,6 @@ export default async function handler(req, res) {
         lastName,
         birthDate,
         birthPlace,
-        bsn,
         email,
         phone,
         street,
@@ -186,7 +185,7 @@ export default async function handler(req, res) {
       const result = await client.query(`
         INSERT INTO aanmeldingen (
           first_name, middle_name, last_name,
-          birth_date, birth_place, bsn,
+          birth_date, birth_place,
           email, phone,
           street, house_number, postal_code, city, country,
           org_name, contact_name, contact_email,
@@ -205,8 +204,7 @@ export default async function handler(req, res) {
         middleName || '', 
         lastName,
         birthDate || '2000-01-01', 
-        birthPlace || 'Onbekend', 
-        bsn || '000000000',
+        birthPlace || 'Onbekend',
         email, 
         phone || '',
         street || 'n.v.t.', 

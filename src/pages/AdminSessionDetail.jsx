@@ -38,7 +38,6 @@ function AdminSessionDetail() {
     lastName: '',
     birthDate: '',
     birthPlace: '',
-    bsn: '',
     email: '',
     phone: '',
     street: '',
@@ -223,7 +222,6 @@ function AdminSessionDetail() {
       'Achternaam': item.last_name,
       'Geboortedatum': formatBirthDate(item.birth_date),
       'Geboorteplaats': item.birth_place,
-      'BSN': item.bsn,
       'Email': item.email,
       'Telefoon': item.phone,
       'Straat': item.street,
@@ -259,7 +257,6 @@ function AdminSessionDetail() {
       { wch: 15 }, // Achternaam
       { wch: 12 }, // Geboortedatum
       { wch: 15 }, // Geboorteplaats
-      { wch: 10 }, // BSN
       { wch: 25 }, // Email
       { wch: 15 }, // Telefoon
       { wch: 20 }, // Straat
@@ -323,7 +320,6 @@ function AdminSessionDetail() {
         lastName: '',
         birthDate: '',
         birthPlace: '',
-        bsn: '',
         email: '',
         phone: '',
         street: '',
@@ -658,15 +654,6 @@ function AdminSessionDetail() {
                 onChange={(e) => setNewParticipant({...newParticipant, birthPlace: e.target.value})}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="BSN *"
-                value={newParticipant.bsn}
-                onChange={(e) => setNewParticipant({...newParticipant, bsn: e.target.value})}
-                helperText="9 cijfers"
-              />
-            </Grid>
           </Grid>
 
           <Typography variant="h6" sx={{ mt: 3, mb: 1, color: 'primary.main' }}>
@@ -800,7 +787,6 @@ function AdminSessionDetail() {
               !newParticipant.email ||
               !newParticipant.birthDate ||
               !newParticipant.birthPlace ||
-              !newParticipant.bsn ||
               !newParticipant.phone ||
               !newParticipant.street ||
               !newParticipant.houseNumber ||

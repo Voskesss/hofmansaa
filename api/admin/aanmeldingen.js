@@ -40,7 +40,6 @@ export default async function handler(req, res) {
         last_name,
         birth_date,
         birth_place,
-        bsn,
         email,
         phone,
         street,

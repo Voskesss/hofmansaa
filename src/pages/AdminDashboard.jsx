@@ -202,7 +202,6 @@ function AdminDashboard() {
         'Achternaam': item.last_name,
         'Geboortedatum': formatBirthDate(item.birth_date),
         'Geboorteplaats': item.birth_place,
-        'BSN': item.bsn,
         'Email': item.email,
         'Telefoon': item.phone,
         'Straat': item.street,
@@ -239,7 +238,6 @@ function AdminDashboard() {
       { wch: 15 }, // Achternaam
       { wch: 12 }, // Geboortedatum (dd-mm-jjjj)
       { wch: 15 }, // Geboorteplaats
-      { wch: 10 }, // BSN
       { wch: 25 }, // Email
       { wch: 15 }, // Telefoon
       { wch: 20 }, // Straat
@@ -707,7 +705,6 @@ function AdminDashboard() {
                               <Typography variant="subtitle2" color="text.secondary">Persoonlijke Gegevens</Typography>
                               <Typography><strong>Geboortedatum:</strong> {formatBirthDate(item.birth_date)}</Typography>
                               <Typography><strong>Geboorteplaats:</strong> {item.birth_place}</Typography>
-                              <Typography><strong>BSN:</strong> {item.bsn}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
                               <Typography variant="subtitle2" color="text.secondary">Adresgegevens</Typography>
