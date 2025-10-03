@@ -271,10 +271,10 @@ function Contact() {
             <Card sx={{ borderRadius: 4, mt: 3 }}>
               <CardContent sx={{ padding: 5, textAlign: 'center' }}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'primary.main', mb: 3 }}>
-                  Wil je je aanmelden voor een training?
+                  Wil je je aanmelden voor toetsing Nederlands & Rekenen?
                 </Typography>
                 <Typography variant="body1" sx={{ color: 'text.primary', mb: 4, fontSize: '1.1rem' }}>
-                  Klik hier om naar het aanmeldformulier te gaan en je in te schrijven voor een training.
+                  Klik hier om naar het aanmeldformulier te gaan voor de officiële taal- en rekentoetsen.
                 </Typography>
                 <Button 
                   variant="contained" 
@@ -298,7 +298,7 @@ function Contact() {
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  Aanmelden
+                  Aanmelden voor Toetsing
                 </Button>
               </CardContent>
             </Card>
