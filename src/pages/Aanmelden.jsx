@@ -478,6 +478,14 @@ function Aanmelden() {
                           label="Kies je voorkeursmoment *"
                           required={availableSessions.length > 0}
                           disabled={loadingSessions || availableSessions.length === 0}
+                          MenuProps={{
+                            PaperProps: {
+                              style: {
+                                maxHeight: 300,
+                                width: 'auto'
+                              }
+                            }
+                          }}
                       >
                         {loadingSessions ? (
                           <MenuItem disabled>Sessies laden...</MenuItem>
