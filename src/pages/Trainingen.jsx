@@ -244,12 +244,12 @@ function Trainingen() {
               }}>
                 <CardHeader
                   avatar={<AssignmentIcon sx={{ fontSize: 60, color: theme.palette.primary.main, marginBottom: 2 }} />}
-                  title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}>Nederlands & Rekenen</Typography>}
+                  title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}>Nederlands & Rekenen Toetsing</Typography>}
                   sx={{ paddingBottom: 0 }}
                 />
                 <CardContent>
                   <Typography variant="body1" color="text.secondary" sx={{ padding: 2, lineHeight: 1.6 }}>
-                    Essentiële basisvaardigheden voor EVC-trajecten. Behaal het niveau dat nodig is voor de volgende stap in je carrière.
+                    Officiële taal- en rekentoetsen voor EVC-trajecten. Verplicht voor MBO 2, 3 en 4 diploma aanvraag.
                   </Typography>
                   <Button 
                     variant="contained"
