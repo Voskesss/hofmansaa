@@ -131,7 +131,7 @@ export const sendContactEmail = async (formData) => {
 };
 
 // HTML template voor aanmelding naar bedrijf (Excel-vriendelijk)
-const createAanmeldEmailHTML = (formData, selectedTrainings) => {
+const createAanmeldEmailHTML = (formData, selectedTrainings, sessionInfo = null) => {
   const fullName = [formData.firstName, formData.middleName, formData.lastName].filter(Boolean).join(' ');
   
   return `
@@ -148,7 +148,6 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
     <p style="margin: 8px 0;"><strong>Achternaam:</strong> ${formData.lastName}</p>
     <p style="margin: 8px 0;"><strong>Geboortedatum:</strong> ${formData.birthDate}</p>
     <p style="margin: 8px 0;"><strong>Geboorteplaats:</strong> ${formData.birthPlace}</p>
-    <p style="margin: 8px 0;"><strong>BSN:</strong> ${formData.bsn}</p>
     <p style="margin: 8px 0;"><strong>Email:</strong> <a href="mailto:${formData.email}">${formData.email}</a></p>
     <p style="margin: 8px 0;"><strong>Telefoon:</strong> ${formData.phone}</p>
   </div>
@@ -173,6 +172,16 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
     <p style="margin: 8px 0; font-size: 18px;"><strong>${selectedTrainings}</strong></p>
   </div>
 
+  ${sessionInfo ? `
+  <div style="background-color: #dcfce7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+    <h3 style="margin-top: 0; color: #16a34a;">📅 Geselecteerde Sessie</h3>
+    <p style="margin: 8px 0;"><strong>Datum:</strong> ${sessionInfo.date}</p>
+    <p style="margin: 8px 0;"><strong>Tijd:</strong> ${sessionInfo.time}</p>
+    <p style="margin: 8px 0;"><strong>Locatie:</strong> ${sessionInfo.location}</p>
+    <p style="margin: 8px 0;"><strong>Training:</strong> ${sessionInfo.training}</p>
+  </div>
+  ` : ''}
+
   ${formData.message ? `
   <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
     <h3 style="margin-top: 0; color: #006BB2;">Aanvullend Bericht</h3>
@@ -193,7 +202,6 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
         <th>Achternaam</th>
         <th>Geboortedatum</th>
         <th>Geboorteplaats</th>
-        <th>BSN</th>
         <th>Email</th>
         <th>Telefoon</th>
         <th>Straat</th>
@@ -215,7 +223,6 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
         <td>${formData.lastName}</td>
         <td>${formData.birthDate}</td>
         <td>${formData.birthPlace}</td>
-        <td>${formData.bsn}</td>
         <td>${formData.email}</td>
         <td>${formData.phone}</td>
         <td>${formData.street}</td>
@@ -236,7 +243,7 @@ const createAanmeldEmailHTML = (formData, selectedTrainings) => {
 };
 
 // HTML template voor aanmelding auto-reply
-const createAanmeldReplyHTML = (name, selectedTrainings) => `
+const createAanmeldReplyHTML = (name, selectedTrainings, sessionInfo = null) => `
 <div style="font-family: system-ui, sans-serif, Arial; font-size: 16px; max-width: 600px;">
   <h2 style="color: #006BB2; margin-bottom: 10px;">Bedankt voor je aanmelding! 🎉</h2>
   
@@ -245,6 +252,14 @@ const createAanmeldReplyHTML = (name, selectedTrainings) => `
   <p>
     Hartelijk dank voor je aanmelding voor <strong>${selectedTrainings}</strong>!
   </p>
+  
+  ${sessionInfo ? `
+  <div style="background-color: #dcfce7; padding: 16px; border-radius: 8px; margin: 20px 0;">
+    <p style="margin: 0; color: #15803d;"><strong>📅 Jouw Geselecteerde Sessie:</strong></p>
+    <p style="margin: 8px 0 0 0; color: #15803d;">${sessionInfo.date} om ${sessionInfo.time}</p>
+    <p style="margin: 4px 0 0 0; color: #15803d;">📍 ${sessionInfo.location}</p>
+  </div>
+  ` : ''}
   
   <p>
     We hebben je aanmelding goed ontvangen en zullen deze beoordelen. Je ontvangt binnen <strong>3 werkdagen</strong> een bevestiging van ons met verdere informatie over de training.
@@ -271,7 +286,7 @@ const createAanmeldReplyHTML = (name, selectedTrainings) => `
 `;
 
 // Verstuur aanmeld formulier
-export const sendAanmeldEmail = async (formData, selectedTrainings) => {
+export const sendAanmeldEmail = async (formData, selectedTrainings, sessionInfo = null) => {
   const fullName = [
     formData.firstName,
     formData.middleName,
@@ -281,8 +296,8 @@ export const sendAanmeldEmail = async (formData, selectedTrainings) => {
   // Email naar bedrijf
   const companyEmailParams = {
     to_email: EMAIL_CONFIG.TO_EMAIL,
-    email_subject: `Nieuwe trainingsaanmelding: ${fullName} - ${selectedTrainings}`,
-    html_content: createAanmeldEmailHTML(formData, selectedTrainings)
+    email_subject: `Nieuwe trainingsaanmelding: ${fullName} - ${selectedTrainings}${sessionInfo ? ' [SESSIE GEKOZEN]' : ''}`,
+    html_content: createAanmeldEmailHTML(formData, selectedTrainings, sessionInfo)
   };
 
   await emailjs.send(
@@ -296,7 +311,7 @@ export const sendAanmeldEmail = async (formData, selectedTrainings) => {
   const replyParams = {
     to_email: formData.email,
     email_subject: 'Bevestiging aanmelding - Hofmans Automotive Academie',
-    html_content: createAanmeldReplyHTML(fullName, selectedTrainings)
+    html_content: createAanmeldReplyHTML(fullName, selectedTrainings, sessionInfo)
   };
 
   return await emailjs.send(

@@ -169,8 +169,27 @@ function Aanmelden() {
         console.warn('⚠️ Backend API niet bereikbaar, gebruik EmailJS:', apiError.message);
       }
 
+      // Sessie info ophalen als sessie gekozen
+      let sessionInfo = null;
+      if (formData.sessionId && availableSessions.length > 0) {
+        const selectedSession = availableSessions.find(s => s.id === formData.sessionId);
+        if (selectedSession) {
+          sessionInfo = {
+            date: new Date(selectedSession.session_date).toLocaleDateString('nl-NL', { 
+              weekday: 'long', 
+              day: 'numeric', 
+              month: 'long',
+              year: 'numeric'
+            }),
+            time: `${selectedSession.start_time.substring(0,5)} - ${selectedSession.end_time.substring(0,5)}`,
+            location: selectedSession.location,
+            training: selectedSession.training_type
+          };
+        }
+      }
+
       // Verstuur email via EmailJS (altijd, ook als database werkt)
-      await sendAanmeldEmail(formData, selectedTrainings);
+      await sendAanmeldEmail(formData, selectedTrainings, sessionInfo);
 
       setNotification({
         open: true,
