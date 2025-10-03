@@ -12,7 +12,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import DeleteIcon from '@mui/icons-material/Delete';
+import LinkOffIcon from '@mui/icons-material/LinkOff';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 
@@ -199,7 +199,7 @@ function AdminSessionDetail() {
     }
   };
 
-  const handleDeleteParticipants = async () => {
+  const handleUnlinkParticipants = async () => {
     if (selectedIds.length === 0) return;
 
     const namen = participants
@@ -207,28 +207,32 @@ function AdminSessionDetail() {
       .map(p => `${p.first_name} ${p.last_name}`)
       .join(', ');
 
-    if (!window.confirm(`Weet je zeker dat je ${selectedIds.length} deelnemer(s) wilt verwijderen?\n\n${namen}\n\nDit kan niet ongedaan worden gemaakt!`)) {
+    if (!window.confirm(`Weet je zeker dat je ${selectedIds.length} deelnemer(s) wilt ontkoppelen van deze sessie?\n\n${namen}\n\nZe blijven wel in het dashboard staan.`)) {
       return;
     }
 
     try {
       const token = localStorage.getItem('adminToken');
       
-      for (const participantId of selectedIds) {
-        const response = await fetch(`/api/admin/registrations?id=${participantId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+      const response = await fetch('/api/admin/link-to-session', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          registrationIds: selectedIds,
+          unlink: true
+        })
+      });
 
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error || 'Fout bij verwijderen');
-        }
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Fout bij ontkoppelen');
       }
 
-      alert(`${selectedIds.length} deelnemer(s) verwijderd`);
+      alert(data.message);
       setSelectedIds([]);
       fetchSessionDetails();
 
@@ -513,13 +517,13 @@ function AdminSessionDetail() {
             Extra Toevoegen ({selectedIds.length})
           </Button>
           <Button
-            startIcon={<DeleteIcon />}
+            startIcon={<LinkOffIcon />}
             variant="outlined"
-            color="error"
-            onClick={handleDeleteParticipants}
+            color="warning"
+            onClick={handleUnlinkParticipants}
             disabled={selectedIds.length === 0}
           >
-            Verwijder ({selectedIds.length})
+            Ontkoppel van Sessie ({selectedIds.length})
           </Button>
         </Box>
 
