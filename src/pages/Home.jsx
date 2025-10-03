@@ -45,6 +45,25 @@ const heroImageVariants = {
 function Home() {
   const theme = useTheme();
   
+  // Wisselende header foto's
+  const headerImages = [
+    '/assets/Hofmans-automotive-academie-home.jpg',
+    '/assets/voertuigtechniek.jpg',
+    '/assets/opleidingen-niet-technisch-personeel.jpg',
+    '/assets/nedrlands-en-wiskunde-toetsing.jpg'
+  ];
+  
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  
+  // Wissel foto elke 8 seconden (rustiger)
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % headerImages.length);
+    }, 8000);
+    
+    return () => clearInterval(interval);
+  }, []);
+  
   return (
     <Box>
       <SEO 
@@ -79,39 +98,41 @@ function Home() {
           zIndex: 0
         }} />
         
-        {/* Hero background image */}
+        {/* Hero background image - wisselend */}
         <motion.div
+          key={currentImageIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 2.5, ease: "easeInOut" }}
           style={{
             position: 'absolute',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: `url(${getAssetPath('/assets/Hofmans-automotive-academie-home.jpg')})`,
+            backgroundImage: `url(${getAssetPath(headerImages[currentImageIndex])})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: 0.15,
             zIndex: 0
           }}
-          variants={heroImageVariants}
-          animate="animate"
         />
         
-        {/* Decorative elements */}
+        {/* Kleurrijke overlay voor betere leesbaarheid */}
         <Box sx={{ 
           position: 'absolute', 
           top: 0, 
           left: 0, 
           width: '100%', 
           height: '100%', 
-          background: `linear-gradient(135deg, ${theme.palette.primary.main}33, ${theme.palette.tertiary.main}40, ${theme.palette.secondary.main}33)`,
-          zIndex: 0
+          background: `linear-gradient(135deg, ${theme.palette.primary.main}CC 0%, ${theme.palette.primary.dark}DD 50%, ${theme.palette.secondary.main}BB 100%)`,
+          zIndex: 1
         }} />
         
         {/* Animated background icons */}
         <BackgroundIcons opacity={0.15} count={4} />
         
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
           <motion.div 
             initial="hidden" 
             animate="visible" 
