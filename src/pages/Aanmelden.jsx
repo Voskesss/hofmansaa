@@ -9,7 +9,6 @@ import { motion } from 'framer-motion';
 import { SEO } from '../utils/seo.jsx';
 import { initEmailJS, sendAanmeldEmail } from '../utils/emailService';
 import { sanitizeFormData, checkRateLimit, isValidEmail, isValidPhone, isValidPostalCode } from '../utils/security';
-import AddressPicker from '../components/AddressPicker';
 
 function Aanmelden() {
   const theme = useTheme();
@@ -464,7 +463,48 @@ function Aanmelden() {
                     📍 Adresgegevens
                   </Typography>
 
-                  <AddressPicker formData={formData} setFormData={setFormData} />
+                  <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+                    <TextField 
+                      label="Postcode"
+                      name="postalCode"
+                      value={formData.postalCode}
+                      onChange={handleChange}
+                      required
+                      autoComplete="postal-code"
+                      placeholder="1234 AB"
+                    />
+                    <TextField 
+                      label="Huisnummer"
+                      name="houseNumber"
+                      value={formData.houseNumber}
+                      onChange={handleChange}
+                      required
+                      autoComplete="off"
+                      placeholder="12"
+                    />
+                  </Box>
+
+                  <TextField 
+                    fullWidth
+                    label="Straatnaam"
+                    name="street"
+                    value={formData.street}
+                    onChange={handleChange}
+                    required
+                    autoComplete="street-address"
+                    sx={{ mb: 2 }}
+                  />
+
+                  <TextField 
+                    fullWidth
+                    label="Plaats"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    required
+                    autoComplete="address-level2"
+                    sx={{ mb: 2 }}
+                  />
 
                   <FormControl fullWidth sx={{ mb: 2 }}>
                     <InputLabel>Land</InputLabel>
