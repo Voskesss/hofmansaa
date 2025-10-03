@@ -46,8 +46,11 @@ function Aanmelden() {
 
   useEffect(() => {
     initEmailJS();
-    fetchSettings();
-    fetchAllSessions();
+    const loadData = async () => {
+      await fetchSettings(); // Eerst settings laden
+      await fetchAllSessions(); // Dan sessies
+    };
+    loadData();
   }, []);
 
   const fetchAllSessions = async () => {
@@ -99,6 +102,13 @@ function Aanmelden() {
 
   // Reset training field wanneer session selection mode verandert
   useEffect(() => {
+    // Skip reset als training al een waarde heeft (bijv. auto-selected)
+    if (formData.training && 
+        ((sessionSelectionEnabled && typeof formData.training === 'string') ||
+         (!sessionSelectionEnabled && Array.isArray(formData.training)))) {
+      return; // Training format is al correct
+    }
+    
     setFormData(prev => ({
       ...prev,
       training: sessionSelectionEnabled ? '' : [],
