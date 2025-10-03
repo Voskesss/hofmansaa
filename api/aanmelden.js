@@ -73,14 +73,15 @@ export default async function handler(req, res) {
         ${formData.street},
         ${formData.houseNumber},
         ${formData.postalCode},
+        ${formData.city},
         ${formData.country},
         ${formData.orgName || null},
         ${formData.contactName || null},
         ${formData.contactEmail || null},
         ${trainingsArray},
         ${formData.message || null},
-        ${formData.sessionId || null},
-        'nieuw'
+        'nieuw',
+        ${formData.sessionId || null}
       )
       RETURNING id, created_at
     `;
