@@ -240,11 +240,11 @@ function Aanmelden() {
         </Container>
       </Box>
 
-      <Container maxWidth="lg" sx={{ padding: '80px 0' }}>
-        <Grid container spacing={6}>
+      <Container maxWidth="lg" sx={{ padding: { xs: '40px 16px', md: '80px 0' } }}>
+        <Grid container spacing={{ xs: 2, md: 6 }}>
           <Grid item xs={12} md={6}>
             <Card sx={{ borderRadius: 4 }}>
-              <CardContent sx={{ padding: 5 }}>
+              <CardContent sx={{ padding: { xs: 2, sm: 3, md: 5 } }}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3, color: 'primary.main' }}>
                   Aanmeldformulier
                 </Typography>
@@ -550,7 +550,7 @@ function Aanmelden() {
           
           <Grid item xs={12} md={6}>
             <Card sx={{ borderRadius: 4 }}>
-              <CardContent sx={{ padding: 5 }}>
+              <CardContent sx={{ padding: { xs: 2, sm: 3, md: 5 } }}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: 3, color: 'primary.main' }}>
                   Contactgegevens
                 </Typography>
