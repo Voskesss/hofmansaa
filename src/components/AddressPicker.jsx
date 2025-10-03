@@ -34,30 +34,37 @@ export default function AddressPicker({ formData, setFormData }) {
     setSuccess(false);
 
     try {
-      // Gebruik postcode.tech (gratis, geen API key nodig)
+      // Gebruik Postcode API (gratis Nederlandse service)
       const response = await fetch(
-        `https://postcode.tech/api/v1/postcode?postcode=${cleanPostcode}&number=${houseNumber}`
+        `https://postcode-api.apiwise.nl/v2/addresses/?postcode=${cleanPostcode}&number=${houseNumber}`
       );
 
       if (!response.ok) {
         throw new Error('Adres niet gevonden');
       }
 
-      const data = await response.json();
+      const result = await response.json();
+      
+      // Postcode API geeft array terug met addresses
+      if (!result._embedded || !result._embedded.addresses || result._embedded.addresses.length === 0) {
+        throw new Error('Geen adres gevonden');
+      }
+      
+      const data = result._embedded.addresses[0];
       
       // Update formData met gevonden adres
       setFormData(prev => ({
         ...prev,
         street: data.street || '',
-        city: data.city || '',
-        postalCode: cleanPostcode
+        city: data.city.label || '',
+        postalCode: cleanPostcode,
+        houseNumber: houseNumber
       }));
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
 
     } catch (err) {
-      console.error('Address lookup error:', err);
       setError('Adres niet gevonden. Controleer postcode en huisnummer of vul handmatig in.');
     } finally {
       setLoading(false);

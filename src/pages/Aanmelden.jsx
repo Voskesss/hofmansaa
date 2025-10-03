@@ -78,14 +78,10 @@ function Aanmelden() {
           lookup[t.key] = t.naam;
         });
         setTrainingLookup(lookup);
-        console.log('🗺️ Training lookup:', lookup);
         
         // Haal unieke training keys op uit beschikbare sessies
         const unique = [...new Set(sessionsData.data.map(s => s.training_type))].filter(Boolean);
         setUniqueTrainingen(unique);
-        console.log('🎯 Unique trainingen keys:', unique);
-        console.log('📅 All sessions:', sessionsData.data);
-        console.log('⚙️ sessionSelectionEnabled at auto-select time:', sessionSelectionEnabled);
         
         // Unieke trainingen opslaan - auto-select gebeurt in useEffect hieronder
       }
@@ -122,7 +118,6 @@ function Aanmelden() {
   // Auto-select als er maar 1 training is (na settings geladen)
   useEffect(() => {
     if (uniqueTrainingen.length === 1 && !formData.training) {
-      console.log('✨ Auto-selecting:', uniqueTrainingen[0], 'as', sessionSelectionEnabled ? 'STRING' : 'ARRAY');
       setFormData(prev => ({
         ...prev,
         training: sessionSelectionEnabled ? uniqueTrainingen[0] : [uniqueTrainingen[0]]
@@ -147,20 +142,14 @@ function Aanmelden() {
   }, [sessionSelectionEnabled]);
 
   useEffect(() => {
-    console.log('🔄 useEffect triggered - sessionSelectionEnabled:', sessionSelectionEnabled, 'formData.training:', formData.training);
-    
     // Check: als single select (string) of multiple select (array met items)
     const hasTraining = sessionSelectionEnabled 
       ? (typeof formData.training === 'string' && formData.training !== '')
       : (Array.isArray(formData.training) && formData.training.length > 0);
     
-    console.log('📋 hasTraining:', hasTraining, 'type:', typeof formData.training);
-    
     if (sessionSelectionEnabled && hasTraining) {
-      console.log('✅ Calling fetchAvailableSessions()');
       fetchAvailableSessions();
     } else {
-      console.log('❌ NOT calling fetchAvailableSessions - sessionSelectionEnabled:', sessionSelectionEnabled, 'hasTraining:', hasTraining);
       setAvailableSessions([]);
       setFormData(prev => ({ ...prev, sessionId: null }));
     }
@@ -174,17 +163,14 @@ function Aanmelden() {
         ? formData.training 
         : formData.training[0];
       
-      console.log('🔍 Fetching sessions for training_type:', trainingType);
       const response = await fetch(`/api/sessions/available?training_type=${trainingType}`);
       const data = await response.json();
-      console.log('📦 Sessions response:', data);
       
       if (data.success) {
         setAvailableSessions(data.data);
-        console.log('✅ Available sessions:', data.data.length);
       }
     } catch (error) {
-      console.error('❌ Error fetching sessions:', error);
+      console.error('Error fetching sessions:', error);
     } finally {
       setLoadingSessions(false);
     }
@@ -285,13 +271,9 @@ function Aanmelden() {
         
         if (apiResult.success && apiResult.savedToDatabase) {
           savedToDatabase = true;
-          console.log('✅ Aanmelding opgeslagen in database:', apiResult.data);
-        } else {
-          console.warn('⚠️ Database opslag mislukt, gebruik EmailJS fallback');
         }
       } catch (apiError) {
         // API niet beschikbaar (bijv. op GitHub Pages) - gebruik EmailJS
-        console.warn('⚠️ Backend API niet bereikbaar, gebruik EmailJS:', apiError.message);
       }
 
       // Sessie info ophalen als sessie gekozen
