@@ -4,7 +4,8 @@ import {
   Box, Container, Typography, Table, TableBody, TableCell, TableContainer, 
   TableHead, TableRow, Paper, Chip, Button, Select, MenuItem, FormControl, InputLabel,
   Alert, CircularProgress, Card, CardContent, Grid, Checkbox, Collapse, IconButton,
-  Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch, Tooltip
+  Dialog, DialogTitle, DialogContent, DialogActions, FormControlLabel, Switch, Tooltip,
+  TextField, InputAdornment, TableSortLabel
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -16,6 +17,7 @@ import LinkOffIcon from '@mui/icons-material/LinkOff';
 import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import SearchIcon from '@mui/icons-material/Search';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 
@@ -34,6 +36,9 @@ function AdminDashboard() {
   const [duplicateMode, setDuplicateMode] = useState(false);
   const [trainingFilter, setTrainingFilter] = useState('all');
   const [filteredAanmeldingen, setFilteredAanmeldingen] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortField, setSortField] = useState('created_at');
+  const [sortDirection, setSortDirection] = useState('desc');
 
   useEffect(() => {
     // Check of admin ingelogd is
@@ -101,20 +106,71 @@ function AdminDashboard() {
     }
   };
 
-  // Filter aanmeldingen when training filter changes
+  // Filter and sort aanmeldingen
   useEffect(() => {
-    if (trainingFilter === 'all') {
-      setFilteredAanmeldingen(aanmeldingen);
-    } else {
-      setFilteredAanmeldingen(
-        aanmeldingen.filter(item => 
-          Array.isArray(item.trainings) 
-            ? item.trainings.includes(trainingFilter)
-            : item.trainings === trainingFilter
-        )
+    let result = [...aanmeldingen];
+    
+    // Filter op training
+    if (trainingFilter !== 'all') {
+      result = result.filter(item => 
+        Array.isArray(item.trainings) 
+          ? item.trainings.includes(trainingFilter)
+          : item.trainings === trainingFilter
       );
     }
-  }, [trainingFilter, aanmeldingen]);
+    
+    // Zoeken op naam, email, telefoon, ID
+    if (searchTerm) {
+      const search = searchTerm.toLowerCase();
+      result = result.filter(item => {
+        const fullName = `${item.first_name} ${item.middle_name || ''} ${item.last_name}`.toLowerCase();
+        const email = (item.email || '').toLowerCase();
+        const phone = (item.phone || '').toLowerCase();
+        const id = item.id.toString();
+        
+        return fullName.includes(search) || 
+               email.includes(search) || 
+               phone.includes(search) ||
+               id.includes(search);
+      });
+    }
+    
+    // Sorteren
+    result.sort((a, b) => {
+      let aVal, bVal;
+      
+      switch(sortField) {
+        case 'id':
+          aVal = a.id;
+          bVal = b.id;
+          break;
+        case 'name':
+          aVal = `${a.first_name} ${a.last_name}`.toLowerCase();
+          bVal = `${b.first_name} ${b.last_name}`.toLowerCase();
+          break;
+        case 'email':
+          aVal = a.email.toLowerCase();
+          bVal = b.email.toLowerCase();
+          break;
+        case 'created_at':
+          aVal = new Date(a.created_at);
+          bVal = new Date(b.created_at);
+          break;
+        case 'status':
+          aVal = a.status;
+          bVal = b.status;
+          break;
+        default:
+          return 0;
+      }
+      
+      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+    
+    setFilteredAanmeldingen(result);
+  }, [trainingFilter, searchTerm, sortField, sortDirection, aanmeldingen]);
 
   const handleStatusChange = async (id, newStatus) => {
     setUpdating(id);
@@ -532,9 +588,23 @@ function AdminDashboard() {
           </Alert>
         )}
 
-        {/* Filter */}
-        <Box sx={{ mb: 3 }}>
-          <FormControl sx={{ minWidth: 250 }}>
+        {/* Filter & Zoeken */}
+        <Box sx={{ mb: 3, display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+          <TextField
+            placeholder="Zoek op naam, email, telefoon of ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ minWidth: 300, flexGrow: 1, maxWidth: 500 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            size="small"
+          />
+          <FormControl sx={{ minWidth: 250 }} size="small">
             <InputLabel>Filter op Training</InputLabel>
             <Select
               value={trainingFilter}
@@ -548,8 +618,8 @@ function AdminDashboard() {
               <MenuItem value="niet-technisch">Niet-technisch</MenuItem>
             </Select>
           </FormControl>
-          <Typography variant="caption" sx={{ ml: 2, color: 'text.secondary' }}>
-            {trainingFilter !== 'all' && `${filteredAanmeldingen.length} resultaten`}
+          <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+            {filteredAanmeldingen.length} {filteredAanmeldingen.length === 1 ? 'resultaat' : 'resultaten'}
           </Typography>
         </Box>
 
@@ -649,14 +719,89 @@ function AdminDashboard() {
                     onChange={handleSelectAll}
                   />
                 </TableCell>
-                <TableCell><strong>ID</strong></TableCell>
-                <TableCell><strong>Naam</strong></TableCell>
-                <TableCell><strong>Email</strong></TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortField === 'id'}
+                    direction={sortField === 'id' ? sortDirection : 'asc'}
+                    onClick={() => {
+                      if (sortField === 'id') {
+                        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+                      } else {
+                        setSortField('id');
+                        setSortDirection('asc');
+                      }
+                    }}
+                  >
+                    <strong>ID</strong>
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortField === 'name'}
+                    direction={sortField === 'name' ? sortDirection : 'asc'}
+                    onClick={() => {
+                      if (sortField === 'name') {
+                        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+                      } else {
+                        setSortField('name');
+                        setSortDirection('asc');
+                      }
+                    }}
+                  >
+                    <strong>Naam</strong>
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortField === 'email'}
+                    direction={sortField === 'email' ? sortDirection : 'asc'}
+                    onClick={() => {
+                      if (sortField === 'email') {
+                        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+                      } else {
+                        setSortField('email');
+                        setSortDirection('asc');
+                      }
+                    }}
+                  >
+                    <strong>Email</strong>
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell><strong>Telefoon</strong></TableCell>
                 <TableCell><strong>Training(s)</strong></TableCell>
                 <TableCell><strong>Sessie</strong></TableCell>
-                <TableCell><strong>Aangemeld op</strong></TableCell>
-                <TableCell><strong>Status</strong></TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortField === 'created_at'}
+                    direction={sortField === 'created_at' ? sortDirection : 'asc'}
+                    onClick={() => {
+                      if (sortField === 'created_at') {
+                        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+                      } else {
+                        setSortField('created_at');
+                        setSortDirection('desc');
+                      }
+                    }}
+                  >
+                    <strong>Aangemeld op</strong>
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={sortField === 'status'}
+                    direction={sortField === 'status' ? sortDirection : 'asc'}
+                    onClick={() => {
+                      if (sortField === 'status') {
+                        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+                      } else {
+                        setSortField('status');
+                        setSortDirection('asc');
+                      }
+                    }}
+                  >
+                    <strong>Status</strong>
+                  </TableSortLabel>
+                </TableCell>
                 <TableCell><strong>Acties</strong></TableCell>
               </TableRow>
             </TableHead>
