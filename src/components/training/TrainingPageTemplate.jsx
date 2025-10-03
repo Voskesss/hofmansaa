@@ -17,6 +17,7 @@ import BackgroundIcons from '../decorative/BackgroundIcons';
  * @param {string} props.subtitle - Ondertitel voor de header
  * @param {Object} props.mainContent - Hoofdinhoud van de training (React element)
  * @param {Object} props.additionalContent - Extra inhoud van de training (React element)
+ * @param {boolean} props.isToetsing - Of het een toetsing is (true) of training (false, default)
  */
 function TrainingPageTemplate({
   title,
@@ -27,7 +28,8 @@ function TrainingPageTemplate({
   trainingId,
   subtitle,
   mainContent,
-  additionalContent
+  additionalContent,
+  isToetsing = false
 }) {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -158,17 +160,22 @@ function TrainingPageTemplate({
             }}>
               <CardContent sx={{ p: 4 }}>
                 <Typography variant="h5" sx={{ mb: 3, color: 'primary.main', fontWeight: 700 }}>
-                  Interesse in deze training?
+                  {isToetsing ? 'Interesse in deze toetsing?' : 'Meer informatie over deze training?'}
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 4 }}>
-                  Meld u aan voor deze training en verbeter uw vaardigheden en kennis.
+                  {isToetsing 
+                    ? 'Meld u aan voor deze toetsing en behaal uw certificaat.' 
+                    : 'Neem contact met ons op voor meer informatie over deze training.'}
                 </Typography>
                 <Button 
                   variant="contained" 
                   color="secondary" 
                   size="large" 
                   fullWidth
-                  onClick={handleAanmelden}
+                  {...(isToetsing 
+                    ? { onClick: handleAanmelden } 
+                    : { component: Link, to: '/contact' }
+                  )}
                   sx={{ 
                     py: 1.5,
                     borderRadius: 2,
@@ -179,7 +186,7 @@ function TrainingPageTemplate({
                     }
                   }}
                 >
-                  Aanmelden
+                  {isToetsing ? 'Aanmelden' : 'Neem contact op'}
                 </Button>
               </CardContent>
             </Card>

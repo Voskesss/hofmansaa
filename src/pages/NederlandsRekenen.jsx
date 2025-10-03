@@ -121,6 +121,7 @@ function NederlandsRekenen() {
       subtitle="Officiële taal- en rekentoetsen voor uw EVC-traject. Verplicht voor MBO 2, 3 en 4 diploma aanvraag. Wij organiseren de complete toetsing voor u."
       mainContent={mainContent}
       additionalContent={additionalContent}
+      isToetsing={true}
     />
   );
 }
