@@ -18,6 +18,8 @@ import BackgroundIcons from '../decorative/BackgroundIcons';
  * @param {Object} props.mainContent - Hoofdinhoud van de training (React element)
  * @param {Object} props.additionalContent - Extra inhoud van de training (React element)
  * @param {boolean} props.isToetsing - Of het een toetsing is (true) of training (false, default)
+ * @param {Object} props.schemaData - Structured data voor SEO
+ * @param {Object} props.faqSchema - FAQ structured data voor SEO
  */
 function TrainingPageTemplate({
   title,
@@ -29,7 +31,9 @@ function TrainingPageTemplate({
   subtitle,
   mainContent,
   additionalContent,
-  isToetsing = false
+  isToetsing = false,
+  schemaData,
+  faqSchema
 }) {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -44,11 +48,13 @@ function TrainingPageTemplate({
   return (
     <Box>
       <SEO 
-        title={`${title} | Hofmans Automotive Academie`}
+        title={title}
         description={description}
         keywords={keywords}
         image={getAssetPath('/assets/logo-hofmans.png')}
         url={url}
+        schemaData={schemaData}
+        faqSchema={faqSchema}
       />
       <Box sx={{ 
         background: `linear-gradient(135deg, ${theme.palette.primary.dark}E6, ${theme.palette.tertiary.main}D9, ${theme.palette.secondary.main}CC), url(${getAssetPath(imageUrl)})`, 

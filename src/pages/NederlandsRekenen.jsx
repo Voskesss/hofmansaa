@@ -111,11 +111,92 @@ function NederlandsRekenen() {
     </>
   );
 
+  // Structured data voor SEO (Course schema)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "Nederlands & Rekenen Examens voor MBO",
+    "description": "Officiële taal- en rekenexamens voor MBO-diploma via EVC. Wij verzorgen Nederlands, Engels en Rekenen toetsing voor niveau 2F en 3F.",
+    "provider": {
+      "@type": "EducationalOrganization",
+      "name": "Hofmans Automotive Academie",
+      "url": "https://hofmansautomotiveacademie.nl",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Boskantse Broekstraat 3",
+        "addressLocality": "Wijchen",
+        "postalCode": "6603 LD",
+        "addressCountry": "NL"
+      },
+      "telephone": "+31246413222",
+      "email": "support@hofmansautomotiveacademie.nl"
+    },
+    "educationalLevel": "MBO niveau 2, 3 en 4",
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "onsite",
+      "location": {
+        "@type": "Place",
+        "name": "Hofmans Academie Utrecht",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Wijchen",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    "offers": {
+      "@type": "Offer",
+      "category": "Examens & Toetsing"
+    },
+    "keywords": "Nederlands examen MBO, Rekenen examen MBO, EVC toetsing, taaltoets 2F, taaltoets 3F, rekentoets 2F, rekentoets 3F, Engels A2 B1"
+  };
+
+  // FAQ Structured data voor veelgestelde vragen
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Welke taal- en rekentoetsen zijn verplicht voor MBO niveau 2 en 3?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Voor MBO niveau 2 en 3 zijn de volgende toetsen verplicht: Nederlands (niveau 2F) en Rekenen (niveau 2F)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Welke examens moet ik doen voor MBO niveau 4?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Voor MBO niveau 4 zijn verplicht: Nederlands (niveau 3F), Engels (A2 tot B1) en Rekenen (niveau 3F)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Uit welke onderdelen bestaat het rekenexamen?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Het digitale rekenexamen toetst vier hoofdgebieden: Getallen (gehele getallen, breuken, decimalen), Verhoudingen (percentages, schaalverdeling), Meten en Meetkunde (lengtes, oppervlaktes, vormen) en Verbanden (grafieken, tabellen, formules)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Hoe zijn de taalexamens Nederlands en Engels opgebouwd?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "De taalexamens bestaan uit vijf onderdelen: Lezen en Luisteren (centraal afgenomen), Schrijven (door onze instelling), en Spreken en Gesprekken voeren (door onze instelling)."
+        }
+      }
+    ]
+  };
+
   return (
     <TrainingPageTemplate
-      title="Taal- en Rekentoetsen | Nederlands & Rekenen"
-      description="Geaccrediteerde Nederlands, Engels en Rekenexamens voor MBO via EVC bij Hofmans Automotive Academie. Complete begeleiding van aanmelding tot diploma."
-      keywords="Nederlands examen, Rekenen examen, EVC toetsing, MBO diploma halen, taalexamen, rekenexamen, Hofmans Automotive Academie"
+      title="Nederlands & Rekenen Examens MBO | EVC Toetsing 2F & 3F"
+      description="✓ Officiële MBO examens Nederlands, Engels & Rekenen ✓ Niveau 2F en 3F ✓ EVC Toetsing ✓ Geaccrediteerd instituut ✓ Bel 024-6413222 voor info"
+      keywords="Nederlands examen MBO, Rekenen examen MBO, EVC toetsing, taaltoets 2F, taaltoets 3F, rekentoets 2F, rekentoets 3F, Engels examen A2 B1, MBO diploma halen, taal en rekenen EVC, Nederlands 3F examen, Rekenen 3F examen, centrale examens MBO"
       imageUrl={nederlandsRekenenImg}
       url="https://hofmansautomotiveacademie.nl/nederlands-rekenen"
       trainingId="nederlands-rekenen"
@@ -123,6 +204,8 @@ function NederlandsRekenen() {
       mainContent={mainContent}
       additionalContent={additionalContent}
       isToetsing={true}
+      schemaData={structuredData}
+      faqSchema={faqStructuredData}
     />
   );
 }

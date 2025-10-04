@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet-async';
  * @param {boolean} props.noindex - Optioneel, indien true wordt de pagina niet geïndexeerd
  * @param {string} props.type - Type pagina voor Schema.org (standaard 'WebPage')
  * @param {Object} props.schemaData - Extra schema data voor structured data
+ * @param {Object} props.faqSchema - FAQ schema data voor FAQ pagina's
  */
 export const SEO = ({ 
   title, 
@@ -20,7 +21,8 @@ export const SEO = ({
   url = '/',
   noindex = false,
   type = 'WebPage',
-  schemaData = {}
+  schemaData = {},
+  faqSchema = null
 }) => {
   // Basis domein voor absolute URL's
   const baseDomain = "https://hofmansautomotiveacademie.nl";
@@ -98,6 +100,13 @@ export const SEO = ({
       <script type="application/ld+json">
         {JSON.stringify(organizationSchema)}
       </script>
+      
+      {/* FAQ schema (indien beschikbaar) */}
+      {faqSchema && (
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      )}
     </Helmet>
   );
 };
