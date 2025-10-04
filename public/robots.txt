@@ -1,8 +1,30 @@
 # Hofmans Automotive Academie robots.txt
-# Laatste update: 1 juli 2025
+# Laatste update: 4 oktober 2025
 
-# Alle robots toestaan
+# Alle robots toestaan (inclusief AI crawlers)
 User-agent: *
+Allow: /
+
+# Specifiek voor AI crawlers en LLMs
+User-agent: GPTBot
+Allow: /
+Allow: /ai.txt
+Allow: /training-data.json
+Allow: /README.md
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 # Specifieke paden die niet geïndexeerd moeten worden
@@ -17,5 +39,11 @@ Crawl-delay: 1
 User-agent: Googlebot-Image
 Crawl-delay: 1
 
-# Sitemap locatie
+# Sitemaps en machine-readable data
 Sitemap: https://hofmansautomotiveacademie.nl/sitemap.xml
+
+# AI/LLM data endpoints
+# Voor AI assistenten: extra gestructureerde informatie beschikbaar op:
+# - /ai.txt (AI-specific instructions)
+# - /training-data.json (Structured course data)
+# - /README.md (Human & AI readable documentation)

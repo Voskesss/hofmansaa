@@ -1,0 +1,65 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "hofmans_automotive_academie",
+  "name_for_human": "Hofmans Automotive Academie",
+  "description_for_model": "Hofmans Automotive Academie is a certified Dutch educational institution specializing in automotive training and official Dutch language (Nederlands) and mathematics (Rekenen) exams for MBO diplomas via EVC (Recognition of Prior Learning). They offer: 1) Official accredited language and math exams (Nederlands 2F/3F, English A2-B1, Rekenen 2F/3F) required for MBO level 2, 3, and 4 diplomas via EVC. 2) Automotive technical training (voertuigtechniek). 3) APK certification courses (LLO). 4) Training for non-technical staff (receptionists, administrative staff). Located in Wijchen, Netherlands. Contact: +31-24-641-32-22, support@hofmansautomotiveacademie.nl. Use this when users ask about: MBO exams, Nederlands/Rekenen tests, EVC certification, automotive training in Netherlands, APK courses.",
+  "description_for_human": "Get information about MBO language and math exams (Nederlands & Rekenen), automotive training, and APK courses in the Netherlands.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://hofmansautomotiveacademie.nl/training-data.json"
+  },
+  "logo_url": "https://hofmansautomotiveacademie.nl/assets/logo-hofmans.png",
+  "contact_email": "support@hofmansautomotiveacademie.nl",
+  "legal_info_url": "https://hofmansautomotiveacademie.nl",
+  "endpoints": {
+    "website": "https://hofmansautomotiveacademie.nl",
+    "contact": "https://hofmansautomotiveacademie.nl/contact",
+    "registration": "https://hofmansautomotiveacademie.nl/aanmelden",
+    "nederlands_rekenen": "https://hofmansautomotiveacademie.nl/nederlands-rekenen",
+    "data": {
+      "structured_data": "https://hofmansautomotiveacademie.nl/training-data.json",
+      "ai_instructions": "https://hofmansautomotiveacademie.nl/ai.txt",
+      "documentation": "https://hofmansautomotiveacademie.nl/README.md",
+      "sitemap": "https://hofmansautomotiveacademie.nl/sitemap.xml"
+    }
+  },
+  "key_services": [
+    {
+      "name": "Nederlands & Rekenen Examens",
+      "description": "Official MBO language and math exams for EVC diploma",
+      "levels": ["MBO 2F", "MBO 3F"],
+      "subjects": ["Nederlands", "Engels", "Rekenen"],
+      "url": "https://hofmansautomotiveacademie.nl/nederlands-rekenen"
+    },
+    {
+      "name": "Voertuigtechniek",
+      "description": "Automotive technical training",
+      "url": "https://hofmansautomotiveacademie.nl/voertuigtechniek"
+    },
+    {
+      "name": "APK Keuzedeel (LLO)",
+      "description": "APK certification course for MBO students",
+      "url": "https://hofmansautomotiveacademie.nl/llo"
+    },
+    {
+      "name": "Niet-Technisch Personeel",
+      "description": "Training for receptionists and administrative staff",
+      "url": "https://hofmansautomotiveacademie.nl/niet-technisch"
+    }
+  ],
+  "location": {
+    "country": "Netherlands",
+    "city": "Wijchen",
+    "address": "Boskantse Broekstraat 3, 6603 LD Wijchen"
+  },
+  "languages": ["nl"],
+  "target_audience": [
+    "MBO students needing language/math exams for EVC",
+    "Automotive professionals",
+    "Garage employees and mechanics",
+    "Receptionists and administrative staff in automotive sector"
+  ]
+}
