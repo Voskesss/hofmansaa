@@ -1,0 +1,136 @@
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Hofmans Automotive Academie",
+  "url": "https://hofmansautomotiveacademie.nl",
+  "logo": "https://hofmansautomotiveacademie.nl/assets/logo-hofmans.png",
+  "description": "Geaccrediteerd instituut voor automotive trainingen en MBO taal- en rekenexamens in Nederland",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Boskantse Broekstraat 3",
+    "addressLocality": "Wijchen",
+    "postalCode": "6603 LD",
+    "addressCountry": "NL"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+31-24-641-32-22",
+    "email": "support@hofmansautomotiveacademie.nl",
+    "contactType": "customer service",
+    "availableLanguage": "Dutch"
+  },
+  "identifier": {
+    "@type": "PropertyValue",
+    "name": "KVK nummer",
+    "value": "97469785"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Trainingen en Examens",
+    "itemListElement": [
+      {
+        "@type": "Course",
+        "name": "Nederlands & Rekenen Examens voor MBO",
+        "description": "Officiële taal- en rekenexamens voor MBO-diploma via EVC. Nederlands, Engels en Rekenen toetsing voor niveau 2F en 3F.",
+        "url": "https://hofmansautomotiveacademie.nl/nederlands-rekenen",
+        "provider": {
+          "@type": "Organization",
+          "name": "Hofmans Automotive Academie"
+        },
+        "educationalLevel": "MBO niveau 2, 3 en 4",
+        "coursePrerequisites": "Ervaringscertificaat (EVC)",
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "onsite",
+          "location": {
+            "@type": "Place",
+            "name": "Hofmans Academie Utrecht",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Wijchen",
+              "addressCountry": "NL"
+            }
+          }
+        },
+        "offers": {
+          "@type": "Offer",
+          "category": "Examens & Toetsing",
+          "availability": "https://schema.org/InStock"
+        },
+        "keywords": [
+          "Nederlands examen MBO",
+          "Rekenen examen MBO",
+          "EVC toetsing",
+          "taaltoets 2F",
+          "taaltoets 3F",
+          "rekentoets 2F",
+          "rekentoets 3F",
+          "Engels A2 B1"
+        ],
+        "details": {
+          "examComponents": {
+            "Nederlands": ["Lezen", "Luisteren", "Schrijven", "Spreken", "Gesprekken voeren"],
+            "Engels": ["Lezen", "Luisteren", "Schrijven", "Spreken", "Gesprekken voeren"],
+            "Rekenen": ["Getallen", "Verhoudingen", "Meten en Meetkunde", "Verbanden"]
+          },
+          "requiredForMBO2_3": ["Nederlands 2F", "Rekenen 2F"],
+          "requiredForMBO4": ["Nederlands 3F", "Engels A2-B1", "Rekenen 3F"],
+          "format": "Digitaal en fysiek",
+          "supervision": "Persoonlijke begeleiding"
+        }
+      },
+      {
+        "@type": "Course",
+        "name": "Voertuigtechniek Trainingen",
+        "description": "Praktijkgerichte trainingen voor automotive professionals in voertuigtechniek en onderhoud.",
+        "url": "https://hofmansautomotiveacademie.nl/voertuigtechniek",
+        "provider": {
+          "@type": "Organization",
+          "name": "Hofmans Automotive Academie"
+        },
+        "targetAudience": "Garagemedewerkers, monteurs, automotive professionals",
+        "keywords": ["voertuigtechniek", "automotive training", "monteur opleiding", "garage training"]
+      },
+      {
+        "@type": "Course",
+        "name": "APK Keuzedeel LLO",
+        "description": "Levenslang Leren Onderwijs (LLO) met keuzedeel APK voor MBO studenten in de automotive sector.",
+        "url": "https://hofmansautomotiveacademie.nl/llo",
+        "provider": {
+          "@type": "Organization",
+          "name": "Hofmans Automotive Academie"
+        },
+        "educationalLevel": "MBO",
+        "keywords": ["APK keuzedeel", "LLO", "MBO automotive", "APK opleiding"]
+      },
+      {
+        "@type": "Course",
+        "name": "Opleidingen Niet-Technisch Personeel",
+        "description": "Trainingen voor receptionisten en administratief personeel in de automotive sector.",
+        "url": "https://hofmansautomotiveacademie.nl/niet-technisch",
+        "provider": {
+          "@type": "Organization",
+          "name": "Hofmans Automotive Academie"
+          },
+        "targetAudience": "Receptionisten, administratief medewerkers, klantenservice",
+        "keywords": ["receptie training", "automotive receptie", "klantenservice automotive"]
+      }
+    ]
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Nederland"
+  },
+  "foundingDate": "2024",
+  "sameAs": [],
+  "knowsAbout": [
+    "Automotive trainingen",
+    "MBO examens",
+    "EVC trajecten",
+    "Taal- en rekentoetsing",
+    "Voertuigtechniek",
+    "APK keuzedeel",
+    "Professionele ontwikkeling automotive sector"
+  ],
+  "lastUpdated": "2025-10-04"
+}
