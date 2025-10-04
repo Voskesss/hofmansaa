@@ -12,63 +12,64 @@ function NederlandsRekenen() {
   const mainContent = (
     <>
       <Typography variant="h4" sx={{ mb: 3, color: 'primary.main', fontWeight: 700 }}>
-        Taal- en Rekentoetsen voor EVC
+        Nederlands & Rekenen Examens
       </Typography>
       <Typography variant="body1" sx={{ mb: 3 }}>
-        Als u met uw Ervaringscertificaat een MBO-diploma wilt aanvragen, dan zijn de taal- en rekentoetsen verplicht. Wij kunnen deze toetsen voor u organiseren.
+        Wanneer u via een EVC-procedure uw MBO-diploma wilt behalen, moet u voldoen aan de taal- en rekeneisen. 
+        Bij Hofmans Automotive Academie verzorgen wij de complete organisatie en afname van deze verplichte examens.
       </Typography>
       
       <Typography variant="h5" sx={{ mt: 4, mb: 2, color: 'primary.main', fontWeight: 600 }}>
-        Taaltoetsen Nederlands en Engels
+        Hoe zijn de taalexamens opgebouwd?
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        De taaltoetsen Nederlands en Engels bestaan beide uit 5 onderdelen:
+        Voor zowel Nederlands als Engels worden dezelfde vaardigheden getoetst, verdeeld over vijf examenonderdelen:
       </Typography>
       <Box component="ul" sx={{ pl: 2, mb: 3 }}>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Lezen en Luisteren (Centrale Examens)
+          <strong>Lezen en Luisteren</strong> - Centraal afgenomen examens
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Schrijven (Instellingsexamen)
+          <strong>Schrijven</strong> - Afgenomen door onze instelling
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Spreken en Gesprekken voeren (Instellingsexamens)
+          <strong>Spreken en Gesprekken voeren</strong> - Afgenomen door onze instelling
         </Typography>
       </Box>
       
       <Typography variant="h5" sx={{ mt: 4, mb: 2, color: 'primary.main', fontWeight: 600 }}>
-        Centraal Examen Rekenen
+        Wat toetst het rekenexamen?
       </Typography>
       <Typography variant="body1" sx={{ mb: 2 }}>
-        Het Centraal Examen Rekenen wordt digitaal afgenomen en de volgende onderdelen komen aan bod:
+        U maakt het rekenexamen volledig digitaal. Tijdens dit centraal examen worden uw vaardigheden getest op vier hoofdgebieden:
       </Typography>
       <Box component="ul" sx={{ pl: 2, mb: 3 }}>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Getallen
+          <strong>Getallen</strong> - Werken met gehele getallen, breuken en decimalen
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Verhoudingen
+          <strong>Verhoudingen</strong> - Percentages, schaalverdeling en evenredigheid
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Meten en Meetkunde
+          <strong>Meten en Meetkunde</strong> - Lengtes, oppervlaktes, inhouden en vormen
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          Verbanden
+          <strong>Verbanden</strong> - Grafieken, tabellen en formules interpreteren
         </Typography>
       </Box>
       
       <Typography variant="h5" sx={{ mt: 4, mb: 2, color: 'primary.main', fontWeight: 600 }}>
-        Verplichte toetsen per niveau
+        Welke toetsen zijn verplicht voor uw niveau?
       </Typography>
       <Box component="ul" sx={{ pl: 2 }}>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          <strong>MBO 2 en 3:</strong> Verplichte taaltoets Nederlands en rekentoets (2F)
+          <strong>MBO niveau 2 en 3:</strong> Nederlands (niveau 2F) en Rekenen (niveau 2F)
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          <strong>MBO 4:</strong> Verplichte taaltoetsen Nederlands (3F) en Engels (A2-B1) en rekentoets (3F)
+          <strong>MBO niveau 4:</strong> Nederlands (niveau 3F), Engels (A2 tot B1) en Rekenen (niveau 3F)
         </Typography>
         <Typography component="li" variant="body1" sx={{ mb: 1 }}>
-          <strong>HBO:</strong> Geen verplichte taal- en rekentoetsen
+          <strong>HBO:</strong> Er gelden geen verplichte taal- en rekentoetsen
         </Typography>
       </Box>
     </>
@@ -82,12 +83,12 @@ function NederlandsRekenen() {
           <Card sx={{ height: '100%', boxShadow: 'none', bgcolor: 'transparent' }}>
             <CardHeader
               avatar={<AssignmentIcon sx={{ fontSize: 45, color: 'primary.main' }} />}
-              title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Erkende Toetsing</Typography>}
+              title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Officieel Geaccrediteerd</Typography>}
               sx={{ paddingBottom: 0, paddingLeft: 0 }}
             />
             <CardContent sx={{ paddingLeft: 0 }}>
               <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
-                Onze toetsingen zijn officieel erkend en noodzakelijk voor het verkrijgen van uw MBO-diploma via een EVC-traject.
+                Als geaccrediteerd exameninstituut verzorgen wij alle vereiste taal- en rekenexamens die u nodig heeft voor uw MBO-diplomering via EVC.
               </Typography>
             </CardContent>
           </Card>
@@ -96,12 +97,12 @@ function NederlandsRekenen() {
           <Card sx={{ height: '100%', boxShadow: 'none', bgcolor: 'transparent' }}>
             <CardHeader
               avatar={<AssignmentIcon sx={{ fontSize: 45, color: 'primary.main' }} />}
-              title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Professionele Begeleiding</Typography>}
+              title={<Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>Van A tot Z Geregeld</Typography>}
               sx={{ paddingBottom: 0, paddingLeft: 0 }}
             />
             <CardContent sx={{ paddingLeft: 0 }}>
               <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
-                Wij organiseren de complete toetsing voor u en begeleiden u door het hele proces naar uw MBO-diploma.
+                Van de eerste aanmelding tot en met de uitslag: wij begeleiden u persoonlijk bij elke stap richting uw diploma.
               </Typography>
             </CardContent>
           </Card>
@@ -113,12 +114,12 @@ function NederlandsRekenen() {
   return (
     <TrainingPageTemplate
       title="Taal- en Rekentoetsen | Nederlands & Rekenen"
-      description="Officiële taal- en rekentoetsen voor EVC-trajecten bij Hofmans Automotive Academie. Verplicht voor MBO 2, 3 en 4 diploma aanvraag."
-      keywords="Nederlands toets, Rekenen toets, EVC-trajecten, MBO diploma, taaltoets, rekentoets, Hofmans Automotive Academie"
+      description="Geaccrediteerde Nederlands, Engels en Rekenexamens voor MBO via EVC bij Hofmans Automotive Academie. Complete begeleiding van aanmelding tot diploma."
+      keywords="Nederlands examen, Rekenen examen, EVC toetsing, MBO diploma halen, taalexamen, rekenexamen, Hofmans Automotive Academie"
       imageUrl={nederlandsRekenenImg}
       url="https://hofmansautomotiveacademie.nl/nederlands-rekenen"
       trainingId="nederlands-rekenen"
-      subtitle="Officiële taal- en rekentoetsen voor uw EVC-traject. Verplicht voor MBO 2, 3 en 4 diploma aanvraag. Wij organiseren de complete toetsing voor u."
+      subtitle="Haal uw MBO-diploma via EVC met onze geaccrediteerde taal- en rekenexamens. Voor MBO niveau 2, 3 en 4 verzorgen wij de volledige examenorganisatie en persoonlijke begeleiding."
       mainContent={mainContent}
       additionalContent={additionalContent}
       isToetsing={true}
