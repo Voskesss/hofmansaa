@@ -5,5 +5,15 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   // Altijd / gebruiken - GitHub Pages deployment gebeurt via apart build proces
-  base: '/'
+  base: '/',
+  // Proxy voor lokale development: stuur /api calls door naar productie
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://hofmansautomotiveacademie.nl',
+        changeOrigin: true,
+        secure: true
+      }
+    }
+  }
 });

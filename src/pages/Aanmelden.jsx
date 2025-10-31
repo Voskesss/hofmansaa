@@ -74,7 +74,7 @@ function Aanmelden() {
       const sessionsData = await sessionsRes.json();
       const trainingenData = await trainingenRes.json();
       
-      if (sessionsData.success && trainingenData.success) {
+      if (trainingenData.success) {
         // Maak lookup map: key -> naam
         const lookup = {};
         trainingenData.data.forEach(t => {
@@ -82,11 +82,32 @@ function Aanmelden() {
         });
         setTrainingLookup(lookup);
         
-        // Haal unieke training keys op uit beschikbare sessies
-        const unique = [...new Set(sessionsData.data.map(s => s.training_type))].filter(Boolean);
-        setUniqueTrainingen(unique);
+        // Sla alle sessies op
+        if (sessionsData.success) {
+          setAllTrainingen(sessionsData.data);
+        }
         
-        // Unieke trainingen opslaan - auto-select gebeurt in useEffect hieronder
+        // Bepaal welke trainingen te tonen op basis van de sessie instelling
+        // Check de ACTUELE waarde uit settings API (niet uit state vanwege async)
+        const settingsResponse = await fetch('/api/settings?key=session_selection_enabled');
+        const settingsData = await settingsResponse.json();
+        const isSessionSelectionEnabled = settingsData.success && settingsData.data 
+          ? settingsData.data.setting_value === 'true'
+          : false;
+        
+        let unique;
+        if (!isSessionSelectionEnabled) {
+          // Sessie selectie UIT: toon alle trainingen (algemene interesse)
+          unique = trainingenData.data.map(t => t.key);
+        } else {
+          // Sessie selectie AAN: toon alleen trainingen met beschikbare sessies
+          const trainingsWithSessions = sessionsData.success 
+            ? [...new Set(sessionsData.data.map(s => s.training_type))].filter(Boolean)
+            : [];
+          unique = trainingsWithSessions;
+        }
+        
+        setUniqueTrainingen(unique);
       }
     } catch (error) {
       console.error('Error fetching all sessions:', error);
