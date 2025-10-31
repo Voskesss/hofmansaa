@@ -262,18 +262,12 @@ function Aanmelden() {
     setIsSubmitting(true);
 
     try {
-      const selectedOptions = {
-        'voertuigtechniek': 'Voertuigtechniek Werkplaats',
-        'llo': 'Leven Lang Ontwikkelen (LLO)',
-        'niet-technisch': 'Niet-Technisch Personeel',
-        'nederlands-rekenen': 'Nederlands & Rekenen'
-      };
-      
+      // Gebruik de dynamische trainingLookup uit database in plaats van hardcoded
       // Handle both single (string) and multiple (array) training selection
       const selectedTrainings = typeof formData.training === 'string'
-        ? selectedOptions[formData.training] || formData.training
+        ? trainingLookup[formData.training] || formData.training
         : formData.training.length > 0 
-          ? formData.training.map(item => selectedOptions[item]).join(', ')
+          ? formData.training.map(item => trainingLookup[item] || item).join(', ')
           : 'Geen specifieke training geselecteerd';
 
       const fullName = `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim();
