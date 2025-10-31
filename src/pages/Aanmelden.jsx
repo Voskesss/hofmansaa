@@ -143,7 +143,11 @@ function Aanmelden() {
 
   // Auto-select als er maar 1 training is (na settings geladen)
   useEffect(() => {
-    if (uniqueTrainingen.length === 1 && !formData.training) {
+    const hasTraining = Array.isArray(formData.training) 
+      ? formData.training.length > 0 
+      : !!formData.training;
+      
+    if (uniqueTrainingen.length === 1 && !hasTraining) {
       setFormData(prev => ({
         ...prev,
         training: sessionSelectionEnabled ? uniqueTrainingen[0] : [uniqueTrainingen[0]]
@@ -262,13 +266,19 @@ function Aanmelden() {
     setIsSubmitting(true);
 
     try {
-      // Gebruik de dynamische trainingLookup uit database in plaats van hardcoded
-      // Handle both single (string) and multiple (array) training selection
-      const selectedTrainings = typeof formData.training === 'string'
-        ? trainingLookup[formData.training] || formData.training
-        : formData.training.length > 0 
-          ? formData.training.map(item => trainingLookup[item] || item).join(', ')
-          : 'Geen specifieke training geselecteerd';
+      // Bepaal geselecteerde training(en) voor email/popup
+      let selectedTrainings;
+      
+      if (typeof formData.training === 'string' && formData.training) {
+        // Sessie selectie AAN: single training (string)
+        selectedTrainings = trainingLookup[formData.training] || formData.training;
+      } else if (Array.isArray(formData.training) && formData.training.length > 0) {
+        // Sessie selectie UIT: meerdere trainingen mogelijk (array)
+        selectedTrainings = formData.training.map(item => trainingLookup[item] || item).join(', ');
+      } else {
+        // Fallback: geen training geselecteerd
+        selectedTrainings = 'een training';
+      }
 
       const fullName = `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim();
 
