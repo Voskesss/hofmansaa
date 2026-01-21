@@ -821,14 +821,6 @@ function Aanmelden() {
                   </Typography>
                 </Box>
                 
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="body1" sx={{ fontWeight: 600, color: 'primary.main' }}>
-                    📞 Telefoon:
-                  </Typography>
-                  <Typography variant="body1">
-                    +31 (0)24 641 32 22
-                  </Typography>
-                </Box>
                 
                 <Button
                   variant="contained"
@@ -863,15 +855,6 @@ function Aanmelden() {
                   <Box>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>E-mail</Typography>
                     <Typography>support@hofmansautomotiveacademie.nl</Typography>
-                    <Typography>h.lombarts@hofmansautomotiveacademie.nl</Typography>
-                  </Box>
-                </Box>
-                
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 3 }}>
-                  <PhoneIcon sx={{ marginRight: 2 }} />
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Telefoon</Typography>
-                    <Typography>+31 (0)24 641 32 22</Typography>
                   </Box>
                 </Box>
                 
@@ -880,7 +863,7 @@ function Aanmelden() {
                     <strong>KVK-nummer:</strong> 97469785
                   </Typography>
                   <Typography variant="body2">
-                    © 2024 Hofmans Automotive Academie. Alle rechten voorbehouden.
+                    2024 Hofmans Automotive Academie. Alle rechten voorbehouden.
                   </Typography>
                 </Box>
               </CardContent>

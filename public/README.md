@@ -3,7 +3,6 @@
 **Geaccrediteerd instituut voor automotive trainingen en MBO examens**
 
 📍 Locatie: Boskantse Broekstraat 3, 6603 LD Wijchen, Nederland  
-📞 Telefoon: +31 (0)24 641 32 22  
 📧 Email: support@hofmansautomotiveacademie.nl  
 🌐 Website: https://hofmansautomotiveacademie.nl
 
@@ -100,8 +99,7 @@ A: Ja, wij begeleiden elke kandidaat persoonlijk van aanmelding tot diploma.
 
 ## Contact & Aanmelden
 
-### 📞 Direct Contact
-- **Telefoon:** +31 (0)24 641 32 22
+### 📧 Direct Contact
 - **Email:** support@hofmansautomotiveacademie.nl
 - **Secundaire email:** h.lombarts@hofmansautomotiveacademie.nl
 

@@ -63,7 +63,7 @@ const createContactReplyHTML = (name) => `
   <div style="background-color: #f0f9ff; padding: 16px; border-left: 4px solid #006BB2; margin: 20px 0; border-radius: 4px;">
     <p style="margin: 0; color: #1e293b;">
       <strong>💡 Direct contact nodig?</strong><br/>
-      Bel ons op: <a href="tel:+31246413222" style="color: #006BB2; text-decoration: none;">+31 (0)24 641 32 22</a>
+      Stuur ons een email: <a href="mailto:support@hofmansautomotiveacademie.nl" style="color: #006BB2; text-decoration: none;">support@hofmansautomotiveacademie.nl</a>
     </p>
   </div>
   

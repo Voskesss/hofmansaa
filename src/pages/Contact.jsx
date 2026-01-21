@@ -329,18 +329,6 @@ function Contact() {
                   </Box>
                 </Box>
                 
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', marginBottom: 3 }}>
-                  <PhoneIcon sx={{ marginRight: 2, color: '#008494', mt: 0.5 }} />
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Telefoon</Typography>
-                    <Typography>
-                      <a href="tel:+31246413222" style={{ color: theme.palette.text.primary, textDecoration: 'none' }}>
-                        +31 (0)24 641 32 22
-                      </a>
-                    </Typography>
-                  </Box>
-                </Box>
-                
                 <Box sx={{ marginTop: 5, padding: 3, borderRadius: 2, backgroundColor: 'rgba(0,0,0,0.03)', border: `1px solid ${theme.palette.grey[200]}` }}>
                   <Typography variant="body2" sx={{ mb: 1 }}>
                     <strong>KVK-nummer:</strong> 97469785
