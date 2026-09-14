@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, Card, CardContent, TextField, Button, Typography, Alert } from '@mui/material';

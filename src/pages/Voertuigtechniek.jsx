@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Typography, Box, Grid, Card, CardHeader, CardContent } from '@mui/material';
 import CarRepairIcon from '@mui/icons-material/CarRepair';

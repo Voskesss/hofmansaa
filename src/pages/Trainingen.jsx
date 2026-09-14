@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Box, Typography, Container, Grid, Card, CardHeader, CardContent, Button, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
