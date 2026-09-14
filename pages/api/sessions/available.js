@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         COUNT(a.id) as registered_count,
         (s.max_participants - COUNT(a.id)) as available_spots
       FROM training_sessions s
-      LEFT JOIN aanmeldingen a ON s.id = a.session_id
+      LEFT JOIN aanmeldingen a ON s.id = a.session_id AND a.status != 'afgewezen'
       WHERE s.status = 'open'
         AND s.session_date >= CURRENT_DATE
         AND s.allow_public_registration = true

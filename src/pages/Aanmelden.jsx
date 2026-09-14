@@ -330,6 +330,7 @@ function Aanmelden() {
       const fullName = `${formData.firstName} ${formData.middleName} ${formData.lastName}`.replace(/\s+/g, ' ').trim();
 
       let savedToDatabase = false;
+      let sessionBecameUnavailable = false;
 
       // Sanitize alle input
       const sanitizedData = sanitizeFormData(formData);
@@ -349,13 +350,18 @@ function Aanmelden() {
         if (apiResult.success && apiResult.savedToDatabase) {
           savedToDatabase = true;
         }
+        // Sessie bleek inmiddels vol of gesloten: aanmelding is wel opgeslagen,
+        // maar zonder sessie — laat dat weten i.p.v. de gekozen datum te bevestigen
+        if (apiResult.sessionUnavailable) {
+          sessionBecameUnavailable = true;
+        }
       } catch (apiError) {
         // API niet beschikbaar (bijv. op GitHub Pages) - gebruik EmailJS
       }
 
-      // Sessie info ophalen als sessie gekozen
+      // Sessie info ophalen als sessie gekozen (niet als die inmiddels vol bleek)
       let sessionInfo = null;
-      if (formData.sessionId && availableSessions.length > 0) {
+      if (formData.sessionId && !sessionBecameUnavailable && availableSessions.length > 0) {
         const selectedSession = availableSessions.find(s => s.id === formData.sessionId);
         if (selectedSession) {
           sessionInfo = {
@@ -403,7 +409,9 @@ function Aanmelden() {
 
       setNotification({
         open: true,
-        message: `🎉 Fantastisch ${fullName}!\n\nWat leuk dat je ons een bericht hebt gestuurd! We hebben je aanmelding voor "${selectedTrainings}" ontvangen.\n\nWe nemen zo spoedig mogelijk contact met je op voor verdere informatie. Tot snel! 🚀`,
+        message: sessionBecameUnavailable
+          ? `🎉 Bedankt ${fullName}!\n\nWe hebben je aanmelding voor "${selectedTrainings}" ontvangen. De gekozen datum bleek helaas net vol of niet meer beschikbaar — geen zorgen: we nemen contact met je op om samen een andere datum in te plannen! 📅`
+          : `🎉 Fantastisch ${fullName}!\n\nWat leuk dat je ons een bericht hebt gestuurd! We hebben je aanmelding voor "${selectedTrainings}" ontvangen.\n\nWe nemen zo spoedig mogelijk contact met je op voor verdere informatie. Tot snel! 🚀`,
         severity: 'success'
       });
 

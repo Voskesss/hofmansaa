@@ -87,9 +87,35 @@ export default async function handler(req, res) {
 
     const sql = neon(databaseUrl);
 
+    // Server-side capaciteitscheck: tussen het laden van het formulier en het
+    // versturen kan de gekozen sessie vol of gesloten zijn geraakt. In dat
+    // geval slaan we de aanmelding op ZONDER sessie (gaat niet verloren) en
+    // melden we dat, zodat er contact wordt opgenomen voor een andere datum.
+    let sessionId = formData.sessionId || null;
+    let sessionUnavailable = false;
+    if (sessionId) {
+      const sessionCheck = await sql`
+        SELECT s.max_participants,
+               COUNT(a.id) FILTER (WHERE a.status != 'afgewezen') AS registered_count
+        FROM training_sessions s
+        LEFT JOIN aanmeldingen a ON s.id = a.session_id
+        WHERE s.id = ${sessionId}
+          AND s.status = 'open'
+          AND s.session_date >= CURRENT_DATE
+          AND s.allow_public_registration = true
+        GROUP BY s.id, s.max_participants
+      `;
+      const available = sessionCheck.length > 0 &&
+        Number(sessionCheck[0].registered_count) < sessionCheck[0].max_participants;
+      if (!available) {
+        sessionId = null;
+        sessionUnavailable = true;
+      }
+    }
+
     // Training array formatteren voor Postgres
-    const trainingsArray = Array.isArray(formData.training) 
-      ? formData.training 
+    const trainingsArray = Array.isArray(formData.training)
+      ? formData.training
       : [formData.training];
     
     // Insert aanmelding in database
@@ -120,7 +146,7 @@ export default async function handler(req, res) {
         ${trainingsArray},
         ${formData.message || null},
         'nieuw',
-        ${formData.sessionId || null}
+        ${sessionId}
       )
       RETURNING id, created_at
     `;
@@ -138,6 +164,7 @@ export default async function handler(req, res) {
     return res.status(201).json({
       success: true,
       message: 'Aanmelding succesvol opgeslagen! ✅',
+      sessionUnavailable,
       savedToDatabase: true,
       data: {
         id: insertedId,

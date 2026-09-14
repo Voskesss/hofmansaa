@@ -10,7 +10,7 @@ function verifyToken(req) {
 
   const token = authHeader.substring(7);
   try {
-    return jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key-change-this');
+    return jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     return null;
   }
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
             ('nederlands-rekenen', 'Nederlands & Rekenen', 'Toetsing Nederlands en Rekenen (certificaat)', true, false, 1),
             ('voertuigen', 'Voertuigen', 'Training voor voertuigen en voertuigbeveiliging', false, true, 2),
             ('niet-technisch', 'Niet-technisch personeel', 'Training voor niet-technisch personeel', false, true, 3),
-            ('llo', 'LLO', 'Luchthavenbeveiliging en Luchtvaartoperaties', false, true, 4)
+            ('llo', 'LLO', 'Leven Lang Ontwikkelen - APK keuzedeel', false, true, 4)
           ON CONFLICT (key) DO NOTHING
         `;
 

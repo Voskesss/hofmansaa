@@ -1,12 +1,15 @@
 // JWT Authentication utilities voor admin endpoints
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-dev-secret-change-in-production';
-const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'changeme123';
+// Bewust GEEN fallback-waarden: ontbreken de env vars, dan faalt auth
+// gesloten (niemand kan inloggen) in plaats van open met bekende defaults.
+const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 // Genereer JWT token
 export function generateToken(username) {
+  if (!JWT_SECRET) throw new Error('JWT_SECRET ontbreekt');
   return jwt.sign(
     { username, role: 'admin' },
     JWT_SECRET,
@@ -17,6 +20,7 @@ export function generateToken(username) {
 // Verifieer JWT token
 export function verifyToken(token) {
   try {
+    if (!JWT_SECRET) return null;
     return jwt.verify(token, JWT_SECRET);
   } catch (error) {
     return null;
@@ -25,6 +29,7 @@ export function verifyToken(token) {
 
 // Check admin credentials
 export function validateAdminCredentials(username, password) {
+  if (!ADMIN_USERNAME || !ADMIN_PASSWORD) return false;
   return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
 }
 
