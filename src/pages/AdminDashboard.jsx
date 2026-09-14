@@ -22,9 +22,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
+import { useAdminFeedback } from '../components/admin/useAdminFeedback';
 
 function AdminDashboard() {
   const navigate = useNavigate();
+  const { notify, confirm: confirmDialog, feedback } = useAdminFeedback();
   const [aanmeldingen, setAanmeldingen] = useState([]);
   const [stats, setStats] = useState({ total: 0, byStatus: {} });
   const [loading, setLoading] = useState(true);
@@ -225,7 +227,7 @@ function AdminDashboard() {
       fetchAanmeldingen();
 
     } catch (err) {
-      alert(err.message || 'Fout bij updaten status');
+      notify(err.message || 'Fout bij updaten status', 'error');
     } finally {
       setUpdating(null);
     }
@@ -257,7 +259,7 @@ function AdminDashboard() {
     const selectedAanmeldingen = aanmeldingen.filter(item => selectedIds.includes(item.id));
     
     if (selectedAanmeldingen.length === 0) {
-      alert('Selecteer minimaal één aanmelding om te exporteren');
+      notify('Selecteer minimaal één aanmelding om te exporteren', 'warning');
       return;
     }
 
@@ -400,7 +402,7 @@ function AdminDashboard() {
   };
 
   const handleDeleteRegistration = async (id, naam) => {
-    if (!window.confirm(`Weet je zeker dat je de aanmelding van ${naam} wilt verwijderen?\n\nDit kan niet ongedaan worden gemaakt!`)) {
+    if (!(await confirmDialog(`Weet je zeker dat je de aanmelding van ${naam} wilt verwijderen?\n\nDit kan niet ongedaan worden gemaakt!`))) {
       return;
     }
 
@@ -419,17 +421,17 @@ function AdminDashboard() {
         throw new Error(data.error || 'Fout bij verwijderen');
       }
 
-      alert(data.message);
+      notify(data.message);
       fetchAanmeldingen();
 
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
   const handleLinkToSessions = async () => {
     if (selectedIds.length === 0 || selectedSessions.length === 0) {
-      alert('Selecteer minimaal 1 aanmelding en 1 sessie');
+      notify('Selecteer minimaal 1 aanmelding en 1 sessie', 'warning');
       return;
     }
 
@@ -454,7 +456,7 @@ function AdminDashboard() {
         throw new Error(data.error || 'Fout bij koppelen');
       }
 
-      alert(data.message);
+      notify(data.message);
       setLinkDialogOpen(false);
       setSelectedIds([]);
       setSelectedSessions([]);
@@ -462,17 +464,17 @@ function AdminDashboard() {
       fetchAanmeldingen();
 
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
   const handleUnlinkFromSession = async () => {
     if (selectedIds.length === 0) {
-      alert('Selecteer minimaal 1 aanmelding');
+      notify('Selecteer minimaal 1 aanmelding', 'warning');
       return;
     }
 
-    if (!confirm(`Weet je zeker dat je ${selectedIds.length} aanmelding(en) wilt ontkoppelen van hun sessie?`)) {
+    if (!(await confirmDialog(`Weet je zeker dat je ${selectedIds.length} aanmelding(en) wilt ontkoppelen van hun sessie?`))) {
       return;
     }
 
@@ -496,12 +498,12 @@ function AdminDashboard() {
         throw new Error(data.error || 'Fout bij ontkoppelen');
       }
 
-      alert(data.message);
+      notify(data.message);
       setSelectedIds([]);
       fetchAanmeldingen();
 
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
@@ -522,6 +524,7 @@ function AdminDashboard() {
       />
 
       <AdminNav />
+      {feedback}
 
       <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">

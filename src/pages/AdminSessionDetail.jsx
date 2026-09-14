@@ -17,9 +17,11 @@ import LinkOffIcon from '@mui/icons-material/LinkOff';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
+import { useAdminFeedback } from '../components/admin/useAdminFeedback';
 
 function AdminSessionDetail() {
   const navigate = useNavigate();
+  const { notify, confirm: confirmDialog, feedback } = useAdminFeedback();
   const { id } = useParams();
   const [session, setSession] = useState(null);
   const [participants, setParticipants] = useState([]);
@@ -155,14 +157,14 @@ function AdminSessionDetail() {
         throw new Error(data.error || 'Fout bij verplaatsen');
       }
 
-      alert(data.message);
+      notify(data.message);
       setMoveDialogOpen(false);
       setSelectedIds([]);
       setTargetSessionId('');
       fetchSessionDetails();
 
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
@@ -190,14 +192,14 @@ function AdminSessionDetail() {
         throw new Error(data.error || 'Fout bij dupliceren');
       }
 
-      alert(data.message);
+      notify(data.message);
       setDuplicateDialogOpen(false);
       setSelectedIds([]);
       setTargetSessionId('');
       fetchSessionDetails();
 
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
@@ -209,7 +211,7 @@ function AdminSessionDetail() {
       .map(p => `${p.first_name} ${p.last_name}`)
       .join(', ');
 
-    if (!window.confirm(`Weet je zeker dat je ${selectedIds.length} deelnemer(s) wilt ontkoppelen van deze sessie?\n\n${namen}\n\nZe blijven wel in het dashboard staan.`)) {
+    if (!(await confirmDialog(`Weet je zeker dat je ${selectedIds.length} deelnemer(s) wilt ontkoppelen van deze sessie?\n\n${namen}\n\nZe blijven wel in het dashboard staan.`))) {
       return;
     }
 
@@ -234,12 +236,12 @@ function AdminSessionDetail() {
         throw new Error(data.error || 'Fout bij ontkoppelen');
       }
 
-      alert(data.message);
+      notify(data.message);
       setSelectedIds([]);
       fetchSessionDetails();
 
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
@@ -256,7 +258,7 @@ function AdminSessionDetail() {
     const selectedParticipants = participants.filter(p => selectedIds.includes(p.id));
     
     if (selectedParticipants.length === 0) {
-      alert('Selecteer minimaal één deelnemer om te exporteren');
+      notify('Selecteer minimaal één deelnemer om te exporteren', 'warning');
       return;
     }
 
@@ -357,7 +359,7 @@ function AdminSessionDetail() {
         throw new Error(data.error || 'Fout bij toevoegen deelnemer');
       }
 
-      alert(data.message);
+      notify(data.message);
       setAddDialogOpen(false);
       // Reset form
       setNewParticipant({
@@ -381,7 +383,7 @@ function AdminSessionDetail() {
       fetchSessionDetails();
 
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
@@ -419,6 +421,7 @@ function AdminSessionDetail() {
       />
 
       <AdminNav />
+      {feedback}
 
       <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">

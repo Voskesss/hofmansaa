@@ -14,9 +14,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
+import { useAdminFeedback } from '../components/admin/useAdminFeedback';
 
 function AdminSettings() {
   const navigate = useNavigate();
+  const { notify, confirm: confirmDialog, feedback } = useAdminFeedback();
   const [settings, setSettings] = useState({});
   const [trainingen, setTrainingen] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -161,7 +163,7 @@ function AdminSettings() {
   };
 
   const handleDeleteTraining = async (id, naam) => {
-    if (!window.confirm(`Weet je zeker dat je "${naam}" wilt verwijderen?`)) {
+    if (!(await confirmDialog(`Weet je zeker dat je "${naam}" wilt verwijderen?`))) {
       return;
     }
 
@@ -248,6 +250,7 @@ function AdminSettings() {
       />
 
       <AdminNav />
+      {feedback}
 
       <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">

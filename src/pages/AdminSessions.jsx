@@ -15,9 +15,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
+import { useAdminFeedback } from '../components/admin/useAdminFeedback';
 
 function AdminSessions() {
   const navigate = useNavigate();
+  const { notify, confirm: confirmDialog, feedback } = useAdminFeedback();
   const [sessions, setSessions] = useState([]);
   const [trainingen, setTrainingen] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -148,7 +150,7 @@ function AdminSessions() {
       handleCloseDialog();
       fetchSessions();
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
@@ -176,7 +178,7 @@ function AdminSessions() {
         )
       );
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     } finally {
       setUpdatingStatus(null);
     }
@@ -206,14 +208,14 @@ function AdminSessions() {
         )
       );
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     } finally {
       setUpdatingRegistration(null);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Weet je zeker dat je deze sessie wilt verwijderen?')) {
+    if (!(await confirmDialog('Weet je zeker dat je deze sessie wilt verwijderen?'))) {
       return;
     }
 
@@ -234,7 +236,7 @@ function AdminSessions() {
 
       fetchSessions();
     } catch (err) {
-      alert(err.message);
+      notify(err.message, 'error');
     }
   };
 
@@ -273,6 +275,7 @@ function AdminSessions() {
       />
 
       <AdminNav />
+      {feedback}
 
       <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">
