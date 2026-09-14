@@ -1,5 +1,5 @@
 // POST /api/admin/login - Admin login met username/password
-import { validateAdminCredentials, generateToken } from '../_lib/auth.js';
+import { validateAdminCredentials, generateToken } from '../../../src/server/auth.js';
 
 export default async function handler(req, res) {
   // CORS headers

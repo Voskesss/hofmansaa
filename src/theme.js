@@ -1,24 +1,4 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import Home from './pages/Home';
-import Trainingen from './pages/Trainingen';
-import Contact from './pages/Contact';
-import Aanmelden from './pages/Aanmelden';
-import Voertuigtechniek from './pages/Voertuigtechniek';
-import LLO from './pages/LLO';
-import NederlandsRekenen from './pages/NederlandsRekenen';
-import NietTechnisch from './pages/NietTechnisch';
-import StudentPortal from './pages/StudentPortal';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminSessions from './pages/AdminSessions';
-import AdminSessionDetail from './pages/AdminSessionDetail';
-import AdminSettings from './pages/AdminSettings';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -262,53 +242,4 @@ const theme = createTheme({
   },
 });
 
-function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  
-  // Check of we op een admin route zijn (veilig met optional chaining)
-  const isAdminRoute = location?.pathname?.startsWith('/admin') ?? false;
-
-  // Verwerk de omleiding van 404.html
-  useEffect(() => {
-    // Controleer of er een opgeslagen route is in sessionStorage
-    const redirectRoute = sessionStorage.getItem('redirect_route');
-    if (redirectRoute && redirectRoute !== '/') {
-      // Verwijder de opgeslagen route
-      sessionStorage.removeItem('redirect_route');
-      // Navigeer naar de opgeslagen route
-      navigate(redirectRoute);
-    }
-  }, [navigate]);
-
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ScrollToTop />
-      <Navbar />
-      <Routes>
-        {/* Admin routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/sessions" element={<AdminSessions />} />
-        <Route path="/admin/sessions/:id" element={<AdminSessionDetail />} />
-        <Route path="/admin/settings" element={<AdminSettings />} />
-        
-        {/* Normale routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/trainingen" element={<Trainingen />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/aanmelden" element={<Aanmelden />} />
-        <Route path="/voertuigtechniek" element={<Voertuigtechniek />} />
-        <Route path="/llo" element={<LLO />} />
-        <Route path="/nederlands-rekenen" element={<NederlandsRekenen />} />
-        <Route path="/niet-technisch" element={<NietTechnisch />} />
-        <Route path="/student-portal" element={<StudentPortal />} />
-      </Routes>
-      {/* Footer alleen tonen op niet-admin pagina's */}
-      {!isAdminRoute && <Footer />}
-    </ThemeProvider>
-  );
-}
-
-export default App;
+export default theme;

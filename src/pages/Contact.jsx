@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Dialog, DialogContent, DialogActions, useTheme, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
