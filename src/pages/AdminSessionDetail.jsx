@@ -16,6 +16,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
+import AdminNav from '../components/admin/AdminNav';
 
 function AdminSessionDetail() {
   const navigate = useNavigate();
@@ -417,9 +418,11 @@ function AdminSessionDetail() {
         noindex={true}
       />
 
-      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 8, mb: 4 }}>
+      <AdminNav />
+
+      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 Sessie Deelnemers
@@ -429,14 +432,6 @@ function AdminSessionDetail() {
               </Typography>
             </Box>
             <Box>
-              <Button
-                startIcon={<HomeIcon />}
-                onClick={() => navigate('/admin/dashboard')}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
-                variant="outlined"
-              >
-                Dashboard
-              </Button>
               <Button
                 startIcon={<ArrowBackIcon />}
                 onClick={() => navigate('/admin/sessions')}

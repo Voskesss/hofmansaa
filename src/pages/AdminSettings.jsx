@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { SEO } from '../utils/seo.jsx';
+import AdminNav from '../components/admin/AdminNav';
 
 function AdminSettings() {
   const navigate = useNavigate();
@@ -246,9 +247,11 @@ function AdminSettings() {
         noindex={true}
       />
 
-      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 8, mb: 4 }}>
+      <AdminNav />
+
+      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 Systeem Instellingen
@@ -256,16 +259,6 @@ function AdminSettings() {
               <Typography variant="body2" sx={{ mt: 1 }}>
                 Beheer globale instellingen voor het aanmeldsysteem
               </Typography>
-            </Box>
-            <Box>
-              <Button
-                startIcon={<ArrowBackIcon />}
-                onClick={() => navigate('/admin/dashboard')}
-                sx={{ color: 'white', borderColor: 'white' }}
-                variant="outlined"
-              >
-                Dashboard
-              </Button>
             </Box>
           </Box>
         </Container>

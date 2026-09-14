@@ -14,6 +14,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { SEO } from '../utils/seo.jsx';
+import AdminNav from '../components/admin/AdminNav';
 
 function AdminSessions() {
   const navigate = useNavigate();
@@ -271,9 +272,11 @@ function AdminSessions() {
         noindex={true}
       />
 
-      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 8, mb: 4 }}>
+      <AdminNav />
+
+      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 Sessies Beheer
@@ -283,14 +286,6 @@ function AdminSessions() {
               </Typography>
             </Box>
             <Box>
-              <Button
-                startIcon={<ArrowBackIcon />}
-                onClick={() => navigate('/admin/dashboard')}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
-                variant="outlined"
-              >
-                Dashboard
-              </Button>
               <Button
                 startIcon={<AddIcon />}
                 onClick={() => handleOpenDialog()}

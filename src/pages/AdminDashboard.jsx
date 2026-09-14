@@ -21,6 +21,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
 import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
+import AdminNav from '../components/admin/AdminNav';
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -520,9 +521,11 @@ function AdminDashboard() {
         noindex={true}
       />
 
-      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 8, mb: 4 }}>
+      <AdminNav />
+
+      <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4, mt: 2, mb: 4 }}>
         <Container maxWidth="xl">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 Admin Dashboard
@@ -531,28 +534,12 @@ function AdminDashboard() {
                 Hofmans Automotive Academie - Aanmeldingen Beheer
               </Typography>
             </Box>
-            <Box>
-              <Button
-                startIcon={<CalendarMonthIcon />}
-                onClick={() => navigate('/admin/sessions')}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
-                variant="outlined"
-              >
-                Sessies
-              </Button>
-              <Button
-                startIcon={<SettingsIcon />}
-                onClick={() => navigate('/admin/settings')}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
-                variant="outlined"
-              >
-                Instellingen
-              </Button>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
               <Button
                 startIcon={<LinkIcon />}
                 onClick={() => setLinkDialogOpen(true)}
                 disabled={selectedIds.length === 0}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                sx={{ color: 'white', borderColor: 'white' }}
                 variant="outlined"
               >
                 Koppel aan Sessie ({selectedIds.length})
@@ -561,7 +548,7 @@ function AdminDashboard() {
                 startIcon={<LinkOffIcon />}
                 onClick={handleUnlinkFromSession}
                 disabled={selectedIds.length === 0}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                sx={{ color: 'white', borderColor: 'white' }}
                 variant="outlined"
               >
                 Ontkoppel ({selectedIds.length})
@@ -570,7 +557,7 @@ function AdminDashboard() {
                 startIcon={<FileDownloadIcon />}
                 onClick={handleExportToExcel}
                 disabled={selectedIds.length === 0}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
+                sx={{ color: 'white', borderColor: 'white' }}
                 variant="outlined"
               >
                 Export Excel ({selectedIds.length})
@@ -578,18 +565,10 @@ function AdminDashboard() {
               <Button
                 startIcon={<RefreshIcon />}
                 onClick={fetchAanmeldingen}
-                sx={{ mr: 2, color: 'white', borderColor: 'white' }}
-                variant="outlined"
-              >
-                Ververs
-              </Button>
-              <Button
-                startIcon={<LogoutIcon />}
-                onClick={handleLogout}
                 sx={{ color: 'white', borderColor: 'white' }}
                 variant="outlined"
               >
-                Uitloggen
+                Ververs
               </Button>
             </Box>
           </Box>
