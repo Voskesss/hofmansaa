@@ -325,9 +325,10 @@ function AdminSettings() {
 
             <Box sx={{ mt: 4, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
               <Typography variant="caption" color="text.secondary">
-                <strong>Let op:</strong> Als je sessie selectie activeert, zorg ervoor dat je voldoende 
-                sessies hebt aangemaakt met "Inschrijving AAN". Kandidaten kunnen alleen kiezen uit 
-                beschikbare sessies.
+                <strong>Let op:</strong> Als je sessie selectie activeert, kunnen kandidaten bij het
+                aanmelden een datum kiezen uit de sessies met "Inschrijving AAN". Geen beschikbare
+                sessies voor een training? Dan kan men zich nog steeds aanmelden — er staat dan bij
+                dat wij contact opnemen om een datum te plannen.
               </Typography>
             </Box>
           </CardContent>

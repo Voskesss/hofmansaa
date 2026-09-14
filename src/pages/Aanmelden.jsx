@@ -96,17 +96,11 @@ function Aanmelden() {
           ? settingsData.data.setting_value === 'true'
           : false;
         
-        let unique;
-        if (!isSessionSelectionEnabled) {
-          // Sessie selectie UIT: toon alle trainingen (algemene interesse)
-          unique = trainingenData.data.map(t => t.key);
-        } else {
-          // Sessie selectie AAN: toon alleen trainingen met beschikbare sessies
-          const trainingsWithSessions = sessionsData.success 
-            ? [...new Set(sessionsData.data.map(s => s.training_type))].filter(Boolean)
-            : [];
-          unique = trainingsWithSessions;
-        }
+        // Toon in beide standen alle trainingen, zodat aanmelden altijd mogelijk
+        // blijft — ook wanneer sessies verlopen zijn of (nog) niet zijn aangemaakt.
+        // Heeft een gekozen training geen beschikbare sessies, dan toont het
+        // formulier verderop vanzelf "wij nemen contact op om een datum te plannen".
+        const unique = trainingenData.data.map(t => t.key);
         
         setUniqueTrainingen(unique);
       }
