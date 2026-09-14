@@ -44,6 +44,7 @@ Sitemap: https://hofmansautomotiveacademie.nl/sitemap.xml
 
 # AI/LLM data endpoints
 # Voor AI assistenten: extra gestructureerde informatie beschikbaar op:
+# - /llms.txt (LLM-friendly site overview, llmstxt.org standaard)
 # - /ai.txt (AI-specific instructions)
 # - /training-data.json (Structured course data)
 # - /README.md (Human & AI readable documentation)

@@ -71,7 +71,7 @@ function Home() {
         description="Hofmans Automotive Academie biedt hoogwaardige trainingen en onderwijs voor de automotive sector. Ontdek ons aanbod en meld je aan."
         keywords="automotive training, Hofmans Automotive Academie, voertuigtechniek, APK keuzedeel"
         image="/assets/logo-hofmans.png"
-        url="https://hofmansautomotiveacademie.github.io"
+        url="/"
       />
       {/* Hero Section */}
       <Box 

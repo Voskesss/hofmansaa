@@ -42,6 +42,9 @@ export const SEO = ({
 
   // Combineer basis schema met eventuele extra schema data
   const fullSchemaData = { ...baseSchemaData, ...schemaData };
+
+  // Absolute image URL voor social media tags
+  const fullImage = image?.startsWith('http') ? image : `${baseDomain}${image?.startsWith('/') ? image : `/${image}`}`;
   
   // Organisatie schema data
   const organizationSchema = {
@@ -53,12 +56,16 @@ export const SEO = ({
     "description": "Hofmans Automotive Academie biedt trainingen en L.L.O. onderwijs voor de automotive sector, inclusief keuzedeel APK, voertuigtechniek en meer.",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "Boskantse Broekstraat 3",
+      "addressLocality": "Wijchen",
+      "postalCode": "6603 LD",
       "addressCountry": "NL"
     },
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "email": "info@hofmansautomotiveacademie.nl"
+      "email": "support@hofmansautomotiveacademie.nl",
+      "availableLanguage": "Dutch"
     }
   };
 
@@ -81,15 +88,17 @@ export const SEO = ({
       {/* Open Graph tags voor social media */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:url" content={url} />
+      <meta property="og:image" content={fullImage} />
+      <meta property="og:url" content={fullUrl} />
       <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="Hofmans Automotive Academie" />
+      <meta property="og:locale" content="nl_NL" />
       
       {/* Twitter Card tags */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={fullImage} />
       
       {/* Structured Data / Schema.org */}
       <script type="application/ld+json">

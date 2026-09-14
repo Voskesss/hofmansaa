@@ -58,11 +58,11 @@
     <priority>0.7</priority>
   </url>
   
-  <!-- Over ons -->
+  <!-- Aanmelden -->
   <url>
-    <loc>https://hofmansautomotiveacademie.nl/over-ons</loc>
-    <lastmod>2025-07-01</lastmod>
+    <loc>https://hofmansautomotiveacademie.nl/aanmelden</loc>
+    <lastmod>2026-09-14</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.9</priority>
   </url>
 </urlset>

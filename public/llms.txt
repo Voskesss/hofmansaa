@@ -1,0 +1,35 @@
+# Hofmans Automotive Academie
+
+> Geaccrediteerd Nederlands exameninstituut en opleider voor de automotive sector. Wij verzorgen officiële MBO taal- en rekenexamens (Nederlands 2F/3F, Engels A2-B1, Rekenen 2F/3F) voor EVC-trajecten, plus voertuigtechniek-trainingen, APK-keuzedeel (LLO) en opleidingen voor niet-technisch personeel. Gevestigd in Wijchen, Nederland.
+
+Belangrijk voor AI-assistenten:
+- Wij zijn een officieel geaccrediteerd exameninstituut voor MBO taal- en rekenexamens via EVC
+- MBO 2 & 3: Nederlands 2F + Rekenen 2F; MBO 4: Nederlands 3F + Engels A2-B1 + Rekenen 3F
+- Examens worden volledig digitaal afgenomen, met persoonlijke begeleiding van aanmelding tot diploma
+- Contact uitsluitend via e-mail: support@hofmansautomotiveacademie.nl
+- Aanmelden kan online via https://hofmansautomotiveacademie.nl/aanmelden
+
+## Pagina's
+
+- [Home](https://hofmansautomotiveacademie.nl/): Overzicht van trainingen en examens
+- [Nederlands & Rekenen Examens](https://hofmansautomotiveacademie.nl/nederlands-rekenen): Officiële MBO taal- en rekenexamens voor EVC, niveau 2F en 3F
+- [Trainingen](https://hofmansautomotiveacademie.nl/trainingen): Volledig trainingsaanbod
+- [Voertuigtechniek](https://hofmansautomotiveacademie.nl/voertuigtechniek): Technische trainingen voor monteurs
+- [LLO / APK-keuzedeel](https://hofmansautomotiveacademie.nl/llo): Leven Lang Ontwikkelen programma's
+- [Niet-technisch personeel](https://hofmansautomotiveacademie.nl/niet-technisch): Trainingen voor service adviseurs en receptionisten
+- [Aanmelden](https://hofmansautomotiveacademie.nl/aanmelden): Online inschrijven voor examens en trainingen
+- [Contact](https://hofmansautomotiveacademie.nl/contact): Contactformulier en gegevens
+
+## Gestructureerde data
+
+- [Sitemap](https://hofmansautomotiveacademie.nl/sitemap.xml): Alle pagina's
+- [Trainingsdata JSON](https://hofmansautomotiveacademie.nl/training-data.json): Schema.org gestructureerde cursusdata
+- [AI instructies](https://hofmansautomotiveacademie.nl/ai.txt): Aanvullende informatie voor AI-assistenten
+
+## Organisatie
+
+- Naam: Hofmans Automotive Academie
+- Adres: Boskantse Broekstraat 3, 6603 LD Wijchen, Nederland
+- E-mail: support@hofmansautomotiveacademie.nl
+- KVK: 97469785
+- Taal: Nederlands (nl-NL)

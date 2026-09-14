@@ -71,7 +71,7 @@ function NietTechnisch() {
       description="Specialistische trainingen voor niet-technisch personeel in de automotive sector. Verbeter uw kennis en vaardigheden met onze professionele cursussen."
       keywords="niet-technisch personeel, automotive training, Hofmans Automotive Academie, service adviseur, receptie"
       imageUrl="/assets/opleidingen-niet-technisch-personeel.jpg"
-      url="https://hofmansautomotiveacademie.nl/training/trainingen-autmotive-niet-technisch-personeel/"
+      url="https://hofmansautomotiveacademie.nl/niet-technisch"
       trainingId="niet-technisch"
       subtitle="Professionele trainingen voor service adviseurs, receptionisten en andere niet-technische functies in de automotive sector."
       mainContent={mainContent}

@@ -128,7 +128,6 @@ function NederlandsRekenen() {
         "postalCode": "6603 LD",
         "addressCountry": "NL"
       },
-      "telephone": "+31246413222",
       "email": "support@hofmansautomotiveacademie.nl"
     },
     "educationalLevel": "MBO niveau 2, 3 en 4",
@@ -195,7 +194,7 @@ function NederlandsRekenen() {
   return (
     <TrainingPageTemplate
       title="Nederlands & Rekenen Examens MBO | EVC Toetsing 2F & 3F"
-      description="✓ Officiële MBO examens Nederlands, Engels & Rekenen ✓ Niveau 2F en 3F ✓ EVC Toetsing ✓ Geaccrediteerd instituut ✓ Bel 024-6413222 voor info"
+      description="✓ Officiële MBO examens Nederlands, Engels & Rekenen ✓ Niveau 2F en 3F ✓ EVC Toetsing ✓ Geaccrediteerd instituut ✓ Persoonlijke begeleiding van A tot Z"
       keywords="Nederlands examen MBO, Rekenen examen MBO, EVC toetsing, taaltoets 2F, taaltoets 3F, rekentoets 2F, rekentoets 3F, Engels examen A2 B1, MBO diploma halen, taal en rekenen EVC, Nederlands 3F examen, Rekenen 3F examen, centrale examens MBO"
       imageUrl={nederlandsRekenenImg}
       url="https://hofmansautomotiveacademie.nl/nederlands-rekenen"
