@@ -396,7 +396,7 @@ function Aanmelden() {
         description="Meld je direct aan voor een training bij Hofmans Automotive Academie. Vul het aanmeldformulier in en wij nemen contact met je op."
         keywords="aanmelden training, automotive opleiding aanmelden, Hofmans Automotive Academie"
         image="/assets/logo-hofmans.png"
-        url="https://hofmansautomotiveacademie.github.io/aanmelden"
+        url="https://hofmansautomotiveacademie.nl/aanmelden"
       />
       
       <Box sx={{ 

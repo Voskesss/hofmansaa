@@ -159,7 +159,7 @@ function Contact() {
         description="Neem contact op met Hofmans Automotive Academie voor meer informatie over onze automotive opleidingen."
         keywords="contact Hofmans, automotive opleiding, Hofmans Automotive Academie"
         image="/assets/logo-hofmans.png"
-        url="https://hofmansautomotiveacademie.github.io/contact"
+        url="https://hofmansautomotiveacademie.nl/contact"
       />
       
       <Box sx={{ 

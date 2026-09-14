@@ -34,7 +34,7 @@ function Trainingen() {
         description="Ontdek ons uitgebreide aanbod aan automotive trainingen bij Hofmans Automotive Academie. Van voertuigtechniek tot Leven Lang Ontwikkelen en meer."
         keywords="automotive trainingen, voertuigtechniek, LLO, Leven Lang Ontwikkelen, Nederlands & Rekenen, Niet-Technisch Personeel, Hofmans Automotive Academie"
         image="/assets/logo-hofmans.png"
-        url="https://hofmansautomotiveacademie.github.io/trainingen"
+        url="https://hofmansautomotiveacademie.nl/trainingen"
       />
       <Box sx={{ 
         background: `linear-gradient(135deg, ${theme.palette.primary.dark}E6, ${theme.palette.tertiary.main}D9, ${theme.palette.secondary.main}CC)`, 
