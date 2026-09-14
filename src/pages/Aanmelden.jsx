@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions, useTheme, alpha, CircularProgress } from '@mui/material';
+import { Box, Typography, Container, TextField, Button, Grid, Card, CardContent, Select, MenuItem, InputLabel, FormControl, Dialog, DialogContent, DialogActions, useTheme, alpha, CircularProgress, Stepper, Step, StepLabel, Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -208,10 +208,62 @@ function Aanmelden() {
   };
 
 
+  // Formulier in stappen: overzichtelijker dan één lange lijst velden
+  const FORM_STEPS = ['Jouw gegevens', 'Adres & organisatie', 'Training & versturen'];
+  const [activeStep, setActiveStep] = useState(0);
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const STEP_FIELDS = {
+    0: ['firstName', 'lastName', 'email', 'phone', 'birthDate', 'birthPlace'],
+    1: ['postalCode', 'houseNumber', 'street', 'city', 'country'],
+  };
+
+  const FIELD_LABELS = {
+    firstName: 'Voornaam', lastName: 'Achternaam', email: 'Email', phone: 'Telefoonnummer',
+    birthDate: 'Geboortedatum', birthPlace: 'Geboorteplaats', postalCode: 'Postcode',
+    houseNumber: 'Huisnummer', street: 'Straatnaam', city: 'Plaats', country: 'Land',
+  };
+
+  const validateStep = (step) => {
+    const errors = {};
+    (STEP_FIELDS[step] || []).forEach((field) => {
+      const value = (formData[field] || '').toString().trim();
+      if (!value) {
+        errors[field] = `${FIELD_LABELS[field]} is verplicht`;
+      } else if (field === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        errors[field] = 'Vul een geldig e-mailadres in';
+      }
+    });
+    return errors;
+  };
+
+  const handleNextStep = () => {
+    const errors = validateStep(activeStep);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length === 0) {
+      setActiveStep((prev) => prev + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleBackStep = () => {
+    setFieldErrors({});
+    setActiveStep((prev) => prev - 1);
+  };
+
+  // Foutstatus per veld voor nette inline feedback
+  const errProps = (field) => ({
+    error: !!fieldErrors[field],
+    helperText: fieldErrors[field] || undefined,
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     
     setFormData(prevState => ({ ...prevState, [name]: value }));
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => { const next = { ...prev }; delete next[name]; return next; });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -433,11 +485,28 @@ function Aanmelden() {
                   Aanmeldformulier
                 </Typography>
                 
+                <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
+                  {FORM_STEPS.map((label) => (
+                    <Step key={label}>
+                      <StepLabel>{label}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+
+                {!loadingTrainingen && uniqueTrainingen.length === 0 && (
+                  <Alert severity="warning" sx={{ mb: 3 }}>
+                    Er zijn momenteel geen trainingen of toetsingen beschikbaar om je voor aan te melden.
+                    Neem gerust contact met ons op via het contactformulier.
+                  </Alert>
+                )}
+
                 <form onSubmit={handleSubmit} autoComplete="off">
+                  {activeStep === 0 && (<>
                   <Box sx={{ mb: 2, display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 0.6fr' }, gap: 2 }}>
                     <TextField 
                       label="Voornaam" 
                       name="firstName"
+                      {...errProps('firstName')}
                       value={formData.firstName}
                       onChange={handleChange}
                       required
@@ -456,6 +525,7 @@ function Aanmelden() {
                     fullWidth
                     label="Achternaam" 
                     name="lastName"
+                      {...errProps('lastName')}
                     value={formData.lastName}
                     onChange={handleChange}
                     required
@@ -467,6 +537,7 @@ function Aanmelden() {
                     fullWidth 
                     label="Email" 
                     name="email"
+                      {...errProps('email')}
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
@@ -479,6 +550,7 @@ function Aanmelden() {
                     fullWidth 
                     label="Telefoonnummer" 
                     name="phone"
+                      {...errProps('phone')}
                     value={formData.phone}
                     onChange={handleChange}
                     required
@@ -492,6 +564,7 @@ function Aanmelden() {
                       type="date"
                       InputLabelProps={{ shrink: true }}
                       name="birthDate"
+                      {...errProps('birthDate')}
                       value={formData.birthDate}
                       onChange={handleChange}
                       required
@@ -505,6 +578,7 @@ function Aanmelden() {
                     <TextField 
                       label="Geboorteplaats"
                       name="birthPlace"
+                      {...errProps('birthPlace')}
                       value={formData.birthPlace}
                       onChange={handleChange}
                       required
@@ -517,7 +591,10 @@ function Aanmelden() {
                   </Box>
 
 
-                  <Typography variant="h6" sx={{ mt: 3, mb: 2, color: 'primary.main', fontWeight: 600 }}>
+                  </>)}
+
+                  {activeStep === 1 && (<>
+                  <Typography variant="h6" sx={{ mb: 2, color: 'primary.main', fontWeight: 600 }}>
                     📍 Adresgegevens
                   </Typography>
 
@@ -525,6 +602,7 @@ function Aanmelden() {
                     <TextField 
                       label="Postcode"
                       name="postalCode"
+                      {...errProps('postalCode')}
                       value={formData.postalCode}
                       onChange={handleChange}
                       required
@@ -534,6 +612,7 @@ function Aanmelden() {
                     <TextField 
                       label="Huisnummer"
                       name="houseNumber"
+                      {...errProps('houseNumber')}
                       value={formData.houseNumber}
                       onChange={handleChange}
                       required
@@ -546,6 +625,7 @@ function Aanmelden() {
                     fullWidth
                     label="Straatnaam"
                     name="street"
+                      {...errProps('street')}
                     value={formData.street}
                     onChange={handleChange}
                     required
@@ -557,6 +637,7 @@ function Aanmelden() {
                     fullWidth
                     label="Plaats"
                     name="city"
+                      {...errProps('city')}
                     value={formData.city}
                     onChange={handleChange}
                     required
@@ -614,6 +695,9 @@ function Aanmelden() {
                     />
                   </Box>
 
+                  </>)}
+
+                  {activeStep === 2 && (<>
                   {/* Training/Toetsing Selectie */}
                   {loadingTrainingen ? (
                     // Laden...
@@ -754,6 +838,7 @@ function Aanmelden() {
                     required
                     sx={{ mb: 3 }}
                   />
+                  </>)}
                   
                   {/* Honeypot field - verborgen anti-bot veld */}
                   <TextField 
@@ -772,23 +857,36 @@ function Aanmelden() {
                     aria-hidden="true"
                   />
                   
-                  <Button 
-                    type="submit" 
-                    variant="contained" 
-                    size="large" 
-                    fullWidth
-                    endIcon={isSubmitting ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <SendIcon />}
-                    disabled={isSubmitting}
-                    sx={{
-                      position: 'relative',
-                      '&.Mui-disabled': {
-                        backgroundColor: 'primary.main',
-                        opacity: 0.8
-                      }
-                    }}
-                  >
-                    {isSubmitting ? 'Bezig met verzenden...' : 'Verstuur Aanmelding'}
-                  </Button>
+                  <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
+                    {activeStep > 0 && (
+                      <Button variant="outlined" size="large" onClick={handleBackStep} sx={{ flex: 1 }}>
+                        Terug
+                      </Button>
+                    )}
+                    {activeStep < FORM_STEPS.length - 1 ? (
+                      <Button variant="contained" size="large" onClick={handleNextStep} sx={{ flex: 2 }}>
+                        Volgende
+                      </Button>
+                    ) : (
+                      <Button 
+                        type="submit" 
+                        variant="contained" 
+                        size="large" 
+                        endIcon={isSubmitting ? <CircularProgress size={20} sx={{ color: 'white' }} /> : <SendIcon />}
+                        disabled={isSubmitting}
+                        sx={{
+                          flex: 2,
+                          position: 'relative',
+                          '&.Mui-disabled': {
+                            backgroundColor: 'primary.main',
+                            opacity: 0.8
+                          }
+                        }}
+                      >
+                        {isSubmitting ? 'Bezig met verzenden...' : 'Verstuur Aanmelding'}
+                      </Button>
+                    )}
+                  </Box>
                 </form>
               </CardContent>
             </Card>
