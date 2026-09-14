@@ -16,6 +16,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
 import { useAdminFeedback } from '../components/admin/useAdminFeedback';
+import { adminFetch } from '../utils/adminApi';
 
 function AdminSessions() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ function AdminSessions() {
 
   const fetchTrainingen = async () => {
     try {
-      const response = await fetch('/api/admin/trainingen?filter=sessies');
+      const response = await adminFetch('/api/admin/trainingen?filter=sessies');
       const data = await response.json();
       if (data.success) {
         setTrainingen(data.data || []);
@@ -66,12 +67,7 @@ function AdminSessions() {
     setError('');
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/sessions', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch('/api/admin/sessions', {});
 
       if (response.status === 401) {
         navigate('/admin/login');
@@ -132,10 +128,9 @@ function AdminSessions() {
         ? { ...formData, id: editingSession.id }
         : formData;
 
-      const response = await fetch('/api/admin/sessions', {
+      const response = await adminFetch('/api/admin/sessions', {
         method,
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
@@ -157,11 +152,9 @@ function AdminSessions() {
   const handleStatusUpdate = async (id, newStatus) => {
     setUpdatingStatus(id);
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/sessions', {
+      const response = await adminFetch('/api/admin/sessions', {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id, status: newStatus })
@@ -187,11 +180,9 @@ function AdminSessions() {
   const handleRegistrationToggle = async (id, currentValue) => {
     setUpdatingRegistration(id);
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/sessions', {
+      const response = await adminFetch('/api/admin/sessions', {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id, allow_public_registration: !currentValue })
@@ -220,13 +211,8 @@ function AdminSessions() {
     }
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/sessions?id=${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch(`/api/admin/sessions?id=${id}`, {
+        method: 'DELETE'});
 
       const data = await response.json();
 

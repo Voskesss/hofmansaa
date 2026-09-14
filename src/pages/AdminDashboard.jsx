@@ -23,6 +23,7 @@ import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
 import { useAdminFeedback } from '../components/admin/useAdminFeedback';
+import { adminFetch } from '../utils/adminApi';
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -61,12 +62,7 @@ function AdminDashboard() {
 
   const fetchAllSessions = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/sessions', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch('/api/admin/sessions', {});
 
       if (response.ok) {
         const data = await response.json();
@@ -82,13 +78,8 @@ function AdminDashboard() {
     setError('');
 
     try {
-      const token = localStorage.getItem('adminToken');
       
-      const response = await fetch('/api/admin/registrations', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch('/api/admin/registrations', {});
 
       if (response.status === 401) {
         // Token verlopen of ongeldig
@@ -194,13 +185,11 @@ function AdminDashboard() {
     setUpdating(id);
 
     try {
-      const token = localStorage.getItem('adminToken');
       
-      const response = await fetch('/api/admin/registrations', {
+      const response = await adminFetch('/api/admin/registrations', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ id, status: newStatus })
       });
@@ -407,13 +396,8 @@ function AdminDashboard() {
     }
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/registrations?id=${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch(`/api/admin/registrations?id=${id}`, {
+        method: 'DELETE'});
 
       const data = await response.json();
 
@@ -436,11 +420,9 @@ function AdminDashboard() {
     }
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/link-to-session', {
+      const response = await adminFetch('/api/admin/link-to-session', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -479,11 +461,9 @@ function AdminDashboard() {
     }
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/link-to-session', {
+      const response = await adminFetch('/api/admin/link-to-session', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

@@ -18,6 +18,7 @@ import * as XLSX from 'xlsx';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
 import { useAdminFeedback } from '../components/admin/useAdminFeedback';
+import { adminFetch } from '../utils/adminApi';
 
 function AdminSessionDetail() {
   const navigate = useNavigate();
@@ -71,12 +72,7 @@ function AdminSessionDetail() {
     setError('');
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/session-participants?sessionId=${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch(`/api/admin/session-participants?sessionId=${id}`, {});
 
       if (response.status === 401) {
         navigate('/admin/login');
@@ -101,12 +97,7 @@ function AdminSessionDetail() {
 
   const fetchAllSessions = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/sessions', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch('/api/admin/sessions', {});
 
       if (response.ok) {
         const data = await response.json();
@@ -137,11 +128,9 @@ function AdminSessionDetail() {
     if (!targetSessionId || selectedIds.length === 0) return;
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/session-participants', {
+      const response = await adminFetch('/api/admin/session-participants', {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -172,11 +161,9 @@ function AdminSessionDetail() {
     if (!targetSessionId || selectedIds.length === 0) return;
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/session-participants', {
+      const response = await adminFetch('/api/admin/session-participants', {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -216,12 +203,10 @@ function AdminSessionDetail() {
     }
 
     try {
-      const token = localStorage.getItem('adminToken');
       
-      const response = await fetch('/api/admin/link-to-session', {
+      const response = await adminFetch('/api/admin/link-to-session', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -339,11 +324,9 @@ function AdminSessionDetail() {
 
   const handleAddParticipant = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/session-participants', {
+      const response = await adminFetch('/api/admin/session-participants', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

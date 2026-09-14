@@ -13,6 +13,10 @@ function AdminLogin() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // Melding tonen wanneer de gebruiker hier belandde door een verlopen sessie
+  const [sessionExpired] = useState(
+    () => typeof window !== 'undefined' && window.location.search.includes('expired=1')
+  );
 
   const handleChange = (e) => {
     setFormData({
@@ -82,6 +86,12 @@ function AdminLogin() {
                   Hofmans Automotive Academie
                 </Typography>
               </Box>
+
+              {sessionExpired && !error && (
+                <Alert severity="info" sx={{ mb: 3 }}>
+                  Je sessie is verlopen. Log opnieuw in om verder te gaan.
+                </Alert>
+              )}
 
               {error && (
                 <Alert severity="error" sx={{ mb: 3 }}>

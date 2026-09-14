@@ -2,14 +2,14 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Container, Tabs, Tab, Button } from '@mui/material';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleIcon from '@mui/icons-material/People';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const NAV_ITEMS = [
-  { label: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
-  { label: 'Sessies', icon: <CalendarMonthIcon />, path: '/admin/sessions' },
+  { label: 'Aanmeldingen', icon: <PeopleIcon />, path: '/admin/dashboard' },
+  { label: 'Sessies & Planning', icon: <CalendarMonthIcon />, path: '/admin/sessions' },
   { label: 'Instellingen', icon: <SettingsIcon />, path: '/admin/settings' },
 ];
 

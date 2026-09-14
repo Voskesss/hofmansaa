@@ -15,6 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { SEO } from '../utils/seo.jsx';
 import AdminNav from '../components/admin/AdminNav';
 import { useAdminFeedback } from '../components/admin/useAdminFeedback';
+import { adminFetch } from '../utils/adminApi';
 
 function AdminSettings() {
   const navigate = useNavigate();
@@ -53,12 +54,7 @@ function AdminSettings() {
     setError('');
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch('/api/admin/settings', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch('/api/admin/settings', {});
 
       if (response.status === 401) {
         navigate('/admin/login');
@@ -87,7 +83,7 @@ function AdminSettings() {
 
   const fetchTrainingen = async () => {
     try {
-      const response = await fetch('/api/admin/trainingen');
+      const response = await adminFetch('/api/admin/trainingen');
       const data = await response.json();
       if (data.success) {
         setTrainingen(data.data || []);
@@ -133,16 +129,14 @@ function AdminSettings() {
 
   const handleSaveTraining = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
       const method = editingTraining ? 'PUT' : 'POST';
       const body = editingTraining 
         ? { ...trainingForm, id: editingTraining.id }
         : trainingForm;
 
-      const response = await fetch('/api/admin/trainingen', {
+      const response = await adminFetch('/api/admin/trainingen', {
         method,
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
@@ -168,13 +162,8 @@ function AdminSettings() {
     }
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await fetch(`/api/admin/trainingen?id=${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await adminFetch(`/api/admin/trainingen?id=${id}`, {
+        method: 'DELETE'});
 
       const data = await response.json();
       if (data.success) {
@@ -202,13 +191,10 @@ function AdminSettings() {
     setSuccess('');
 
     try {
-      const token = localStorage.getItem('adminToken');
-
       // Update session_selection_enabled
-      const response = await fetch('/api/admin/settings', {
+      const response = await adminFetch('/api/admin/settings', {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -387,10 +373,7 @@ function AdminSettings() {
                           color="primary"
                           onClick={async () => {
                             try {
-                              const token = localStorage.getItem('adminToken');
-                              const response = await fetch('/api/admin/trainingen?setup=true', {
-                                headers: { 'Authorization': `Bearer ${token}` }
-                              });
+                              const response = await adminFetch('/api/admin/trainingen?setup=true');
                               const data = await response.json();
                               if (data.success) {
                                 setSuccess('Database tabel aangemaakt! Trainingen geladen.');
